@@ -16,20 +16,15 @@ struct AuthenticatedUserView: View {
                     Image(systemName: "house")
                     Text("Board")
                 }
-            SprintView()
-                .tabItem{
-                    Image(systemName: "person.3.fill")
-                    Text("Reports")
-                }
             BacklogsView()
                 .tabItem{
                     Image(systemName: "list.dash")
                     Text("Backlog")
                 }
-            //HomeView()
+            DashboardView()
                 .tabItem{
-                    Image(systemName: "person.fill")
-                    Text("Account")
+                    Image(systemName: "person.3.fill")
+                    Text("Reports")
                 }
         }
     }

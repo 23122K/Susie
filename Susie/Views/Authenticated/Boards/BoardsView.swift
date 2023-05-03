@@ -21,6 +21,9 @@ struct BoardsView: View {
                     .frame(width: 380, height: 650)
                 }
             }
+            .refreshable {
+                logic.fetchTasks()
+            }
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
     }

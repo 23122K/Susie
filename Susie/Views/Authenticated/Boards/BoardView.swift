@@ -14,6 +14,7 @@ struct BoardView: View {
     
     //State isPresented is used to toggle bettwen sheet and a task
     @State private var selectedTask: Task?
+    @State private var isPresented: Bool = false
     
     //Make task view flexible
     let columns = [GridItem(.flexible())]
@@ -43,8 +44,8 @@ struct BoardView: View {
                                 self.selectedTask = task
                             }
                             .sheet(item: $selectedTask){ task in
-                                TaskDetailedView(task: task)
-                                    .presentationDetents([.medium])
+                                IssueDetailedView(issue: task)
+                                    .presentationDetents([.large])
                             }
                     }
                 }
@@ -52,7 +53,6 @@ struct BoardView: View {
         }
     }
 }
-
 
 
 struct BoardView_Previews: PreviewProvider {

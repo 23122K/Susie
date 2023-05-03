@@ -2,6 +2,7 @@ import Foundation
 import Combine
 
 class HTTPClient: ObservableObject{
+
     enum Endpoint: String {
         case updateTask = "/api/v1/tasks/update"
         case createTask = "/api/v1/tasks/create"
@@ -10,19 +11,14 @@ class HTTPClient: ObservableObject{
         case getTasks = "/api/v1/tasks/all" //Fetches only taks assigned to authenticated user
         case register = "/api/v1/auth/register"
         case authenticate = "/api/v1/auth/authenticate"
-        
     }
     
-    static func createRequest(_ url: URL, _ token: String) -> URLRequest {
-        var request = URLRequest(url: url)
-        
-        request.httpMethod = "GET"
-        request.addValue("*/*", forHTTPHeaderField: "Accept")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        return request
+    enum Method: String {
+        case GET = "GET"
+        case POST = "POST"
     }
     
+
     static func createRequest(_ url: URL, _ jsonData: Data) -> URLRequest {
         var request = URLRequest(url: url)
         
@@ -33,6 +29,17 @@ class HTTPClient: ObservableObject{
         return request
     }
     
+    //Overloaded createRequest
+    static func createRequest(_ url: URL, _ method: Method, _ token: String) -> URLRequest {
+        var request = URLRequest(url: url)
+        
+        request.httpMethod = method.rawValue
+        request.addValue("*/*", forHTTPHeaderField: "Accept")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return request
+    }
+    
     static func createURL(endpoint: Endpoint) -> URL {
         var urlComponent = URLComponents()
         
@@ -40,10 +47,8 @@ class HTTPClient: ObservableObject{
         urlComponent.host = "localhost"
         urlComponent.port = 8080
         urlComponent.path = endpoint.rawValue
-        return urlComponent.url!
+        return urlComponent.url! //Make function throwable or change it to return Result<URL,ERROR>
     }
-    
-    
     
     static func fetchDataFromURL<T: Codable>(_ url: URL) -> AnyPublisher<[T], Error> {
         URLSession.shared.dataTaskPublisher(for: url)

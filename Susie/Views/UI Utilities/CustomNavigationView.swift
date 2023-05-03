@@ -10,6 +10,7 @@ import SwiftUI
 struct CustomNavigationViewModifier: ViewModifier {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     let title: String
+    
     func body(content: Content) -> some View {
         content
             .navigationBarBackButtonHidden(true)

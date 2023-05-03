@@ -12,26 +12,28 @@ struct TaskView: View {
     let tag: String
     let color: Color
     let assignetToInitials: String
+    
     var body: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
                 Text(title)
-                    .font(.title3)
                     .bold()
                     .padding(.bottom, 1)
                 HStack(alignment: .bottom) {
                     TagView(tag: tag, color: color)
-                    PriotiryIndicatorView()
+                    PriotiryIndicatorView(color: .red, text: "Urgent")
                     Spacer()
                     AssignedPersonView(initials: assignetToInitials, size: 30)
+                        .padding(.trailing, 4)
+                        .padding(.bottom, 4)
                 }
                 .padding(.horizontal, 1)
             }
         }
-        .padding(15)
+        .padding(7)
         .padding(.horizontal, 10)
         .background{
-            RoundedRectangle(cornerRadius: 20)
+            RoundedRectangle(cornerRadius: 15)
             .fill(.white)
             .padding(.horizontal, 10)
             .shadow(color: Color.gray,

@@ -1,10 +1,3 @@
-//
-//  WelcomePageView.swift
-//  Suzie
-//
-//  Created by Patryk Maciąg on 03/04/2023.
-//
-
 import SwiftUI
 
 struct WelcomePageView: View {

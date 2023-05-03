@@ -49,7 +49,7 @@ class Client: ObservableObject {
     func fetchTasks() {
         let url = HTTPClient.createURL(endpoint: .getTasks)
         if let token = self.token {
-            let request = HTTPClient.createRequest(url, token)
+            let request = HTTPClient.createRequest(url, .GET, token)
             
             let publisher: AnyPublisher<Array<Task>, Error> = HTTPClient.fetchDataFromRequest(request)
             

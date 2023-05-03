@@ -19,6 +19,7 @@ class Logic: ObservableObject {
 
     var isAuthenticated: Bool {
         model.isAuthenticated
+        //Return true to bypass login
     }
     
     var tasks: Array<Task> {
