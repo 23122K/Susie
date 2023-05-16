@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct UserAccountView: View {
-    @EnvironmentObject var logic: Logic
+    @EnvironmentObject var vm: ViewModel
     var body: some View {
         VStack{
             Button("Fetch tasks") {
-                logic.fetchTasks()
+                vm.fetchTasks()
             }
             
             Button("Log out") {
-                logic.model.signOut()
+                vm.model.signOut()
             }
             
-            List(logic.tasks) { task in
+            List(vm.tasks) { task in
                 Text(task.title)
             }
         }
@@ -29,6 +29,6 @@ struct UserAccountView: View {
 struct UserAccountView_Previews: PreviewProvider {
     static var previews: some View {
         UserAccountView()
-            .environmentObject(Logic())
+            .environmentObject(ViewModel())
     }
 }

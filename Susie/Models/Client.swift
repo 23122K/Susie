@@ -4,13 +4,15 @@ import Combine
 class Client: ObservableObject {
     
     //MARK: - JWT Token
+    //Well as it is so called secret, it should't be kept here <- Use keychain? in development earlier
+    //https://developer.apple.com/documentation/security/keychain_services/keychain_items/using_the_keychain_to_manage_user_secrets
+    
     private var token: String? {
         willSet(token){
-            //objectWillChange.send() check what it does, and if can be replacment to .sink { [weak self] _ in self?.objectWillChange.send() }
             isAuthenticated.toggle()
+            //print(isAuthenticated.description)
         }
     }
-    
     private(set) var cancellables = Set<AnyCancellable>()
     
     //MARK: Variables published to model

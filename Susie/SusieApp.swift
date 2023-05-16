@@ -4,7 +4,7 @@ import SwiftUI
 struct Susie: App {
     var body: some Scene {
         WindowGroup {
-            SusieView(logic: Logic())
+            SusieView()
         }
     }
 }

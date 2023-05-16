@@ -1,21 +1,21 @@
 import SwiftUI
 
 struct SusieView: View {
-    @StateObject var logic: Logic
+    @StateObject var vm = ViewModel()
     
     var body: some View {
-        if(logic.isAuthenticated){
+        if(vm.isAuthenticated){
             AuthenticatedUserView()
-                .environmentObject(logic)
+                .environmentObject(vm)
         } else {
             WelcomePageView()
-                .environmentObject(logic)
+                .environmentObject(vm)
         }
     }
 }
 
 struct SusieView_Previews: PreviewProvider {
     static var previews: some View {
-        SusieView(logic: Logic())
+        SusieView()
     }
 }

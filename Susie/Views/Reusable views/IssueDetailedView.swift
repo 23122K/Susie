@@ -23,15 +23,15 @@ struct IssueDetailedView: View {
                 Text(issue.title)
                     .font(.system(size: 30))
                     .bold()
-                    .padding(.bottom, 10)
+                    .padding(.top, 10)
                 
-                HStack(spacing: 2){
+                HStack(spacing: 0){
                     VStack{
                         Text("Overview")
                             .bold(!isAcitve ? true : false)
                             .foregroundColor(!isAcitve ? .blue : .gray)
                             .offset(y: 10)
-                        RoundedRectangle(cornerRadius: 10)
+                        RoundedRectangle(cornerRadius: 1)
                             .fill(!isAcitve ? .blue : .gray)
                             .frame(height: 5)
                     }
@@ -40,12 +40,12 @@ struct IssueDetailedView: View {
                             .bold(isAcitve ? true : false)
                             .foregroundColor(isAcitve ? .blue : .gray)
                             .offset(y: 10)
-                        RoundedRectangle(cornerRadius: 10)
+                        RoundedRectangle(cornerRadius: 1)
                             .fill(isAcitve ? .blue : .gray)
                             .frame(height: 5)
                     }
                 }
-            }.padding()
+            }.padding(.horizontal)
             
             TabView(content: {
                 IssueOverviewView(issue: issue)

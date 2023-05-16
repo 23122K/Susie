@@ -13,8 +13,8 @@ extension Task {
     }
 }
 
-class Logic: ObservableObject {
-    private(set) var model: Scrumapp
+class ViewModel: ObservableObject {
+    @Injected(\.model) var model
     private var cancellabels = Set<AnyCancellable>()
 
     var isAuthenticated: Bool {
@@ -29,7 +29,6 @@ class Logic: ObservableObject {
     //MARK: - Init
     //.recive(on: DispatchQueue.main) is used due "Updating UI should alwawys be done from main thread"
     init(){
-        self.model = Scrumapp()
         model.$isAuthenticated
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in self?.objectWillChange.send() }
@@ -57,7 +56,6 @@ class Logic: ObservableObject {
     func signOut() {
         model.signOut()
     }
-    
     
     func register(_ user: RegisterRequest) {
         model.register(user)

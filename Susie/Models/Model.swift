@@ -1,8 +1,7 @@
 import Foundation
 import Combine
 
-class Scrumapp: ObservableObject {
-    
+class Model: ObservableObject {
     private(set) var client: Client
     
     private var boards = ["To Do", "In progress", "In review", "Done"]

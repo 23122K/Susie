@@ -1,10 +1,3 @@
-//
-//  AuthenticatedUserView.swift
-//  Susie
-//
-//  Created by Patryk Maciąg on 04/04/2023.
-//
-
 import SwiftUI
 
 struct AuthenticatedUserView: View {
@@ -16,15 +9,17 @@ struct AuthenticatedUserView: View {
                     Image(systemName: "house")
                     Text("Board")
                 }
+            
             BacklogsView()
                 .tabItem{
                     Image(systemName: "list.dash")
                     Text("Backlog")
                 }
+            
             DashboardView()
                 .tabItem{
-                    Image(systemName: "person.3.fill")
-                    Text("Reports")
+                    Image(systemName: "speedometer")
+                    Text("Dashboard")
                 }
         }
     }

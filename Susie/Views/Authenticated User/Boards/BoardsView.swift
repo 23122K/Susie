@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct BoardsView: View {
-    @EnvironmentObject var logic: Logic
+    @EnvironmentObject var vm: ViewModel
     var body: some View {
         VStack(alignment: .trailing){
             TabView {
                 ForEach(0..<4) { i in
-                    let filterdTasks = logic.tasks.filter{ $0.businessValue == i}
-                    let boards = logic.getBoardNames()
+                    let filterdTasks = vm.tasks.filter{ $0.businessValue == i}
+                    let boards = vm.getBoardNames()
                     GeometryReader { g in
                         BoardView(tasks: filterdTasks, tasksCount: filterdTasks.count, boardName: boards[i])
                     }
@@ -22,7 +22,7 @@ struct BoardsView: View {
                 }
             }
             .refreshable {
-                logic.fetchTasks()
+                vm.fetchTasks()
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
