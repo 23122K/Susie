@@ -5,13 +5,13 @@ struct BacklogsView: View {
         VStack(alignment: .leading) {
             ScrollView(content: {
                 ToggableSection(title: "Sprint 1", isEditable: true, content: {
-                    TaskView(title: "Test", tag: "BUG", color: .red, assignetToInitials: "PM")
+                    IssueView(title: "Test", tag: "BUG", color: .red, assignetToInitials: "PM")
                 })
                 .padding(.bottom, 5)
                 Divider()
                 ToggableSection(title: "Product backlog", content: {
-                    TaskView(title: "Test", tag: "BUG", color: .red, assignetToInitials: "PM")
-                    TaskView(title: "Test", tag: "BUG", color: .red, assignetToInitials: "PM")
+                    IssueView(title: "Test", tag: "BUG", color: .red, assignetToInitials: "PM")
+                    IssueView(title: "Test", tag: "BUG", color: .red, assignetToInitials: "PM")
                     Menu(content: {
                         Menu("Move to", content: {
                             Text("Sprint 1")
@@ -20,7 +20,7 @@ struct BacklogsView: View {
                             
                         }
                     }, label: {
-                        TaskView(title: "Test", tag: "BUG", color: .red, assignetToInitials: "PM")
+                        IssueView(title: "Test", tag: "BUG", color: .red, assignetToInitials: "PM")
                     })
                     ZStack{
                         RoundedRectangle(cornerRadius: 15)

@@ -12,7 +12,7 @@ struct SignInView: View {
             })
             
             PasswordField(title: "Password", text: $vm.password)
-            
+            Text(vm.error.occured ? vm.error.description : "")
             SecondaryButton(content: "Sign in", state: vm.isValid)
                 .disabled(!vm.isValid)
                 .onTapGesture {

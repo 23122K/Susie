@@ -37,8 +37,8 @@ struct SignUpView: View {
         }
         
         Spacer()
-        Checkbox(title: "Register as a Scrum Master", isChecked: $vm.registerAsAScrumMaster)
-            .padding()
+//        Checkbox(title: "Register as a Scrum Master", isChecked: $vm.registerAsAScrumMaster)
+//            .padding()
     }
 }
 

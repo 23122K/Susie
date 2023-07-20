@@ -13,16 +13,16 @@ struct BoardsView: View {
         VStack(alignment: .trailing){
             TabView {
                 ForEach(0..<4) { i in
-                    let filterdTasks = vm.tasks.filter{ $0.businessValue == i}
+                    let filterIssues = vm.issues.filter{ $0.businessValue == i}
                     let boards = vm.getBoardNames()
                     GeometryReader { g in
-                        BoardView(tasks: filterdTasks, tasksCount: filterdTasks.count, boardName: boards[i])
+                        BoardView(issues: filterIssues, issueCount: filterIssues.count, boardName: boards[i])
                     }
                     .frame(width: 380, height: 650)
                 }
             }
             .refreshable {
-                vm.fetchTasks()
+                vm.fetchIssues()
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
         }

@@ -1,11 +1,11 @@
-class User: Codable {
+struct User: Codable {
     var id: Int32
     var firstname: String
     var lastname: String
     var email: String
     var password: String
     var role: String
-    var tasks: Array<Task>
+    var issues: Array<Issue>
     var team: Team
     var enabled: Bool
     var accountNonExpired: Bool

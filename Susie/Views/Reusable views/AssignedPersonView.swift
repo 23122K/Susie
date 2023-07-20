@@ -12,16 +12,6 @@ struct AssignedPersonView: View {
     let size: CGFloat
     var body: some View {
         ZStack{
-            /*
-            Text(initials)
-                .foregroundColor(.blue)
-                .bold()
-                .padding(1)
-            Circle()
-                .fill(.blue)
-                .opacity(0.2)
-            */
-            
             Text(initials)
                 .font(.callout)
                 .foregroundColor(.blue)

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct IssueDetailedView: View {
-    let issue: Task
+    let issue: Issue
     
     @State private var isPresented: Bool = false
     

@@ -1,5 +1,5 @@
 //
-//  TaskView.swift
+//  IssueView.swift
 //  Suzie
 //
 //  Created by Patryk Maciąg on 10/03/2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TaskView: View {
+struct IssueView: View {
     let title: String
     let tag: String
     let color: Color
@@ -44,8 +44,8 @@ struct TaskView: View {
     }
 }
 
-struct TaskView_Previews: PreviewProvider {
+struct IssueView_Previews: PreviewProvider {
     static var previews: some View {
-        TaskView(title: "Fix performance issues while fetching data", tag: "Bug", color: .red, assignetToInitials: "KL")
+        IssueView(title: "Fix performance issues while fetching data", tag: "Bug", color: .red, assignetToInitials: "KL")
     }
 }

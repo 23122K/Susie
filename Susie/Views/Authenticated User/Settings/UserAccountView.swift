@@ -11,16 +11,16 @@ struct UserAccountView: View {
     @EnvironmentObject var vm: ViewModel
     var body: some View {
         VStack{
-            Button("Fetch tasks") {
-                vm.fetchTasks()
+            Button("Fetch issues") {
+                vm.fetchIssues()
             }
             
             Button("Log out") {
                 vm.model.signOut()
             }
             
-            List(vm.tasks) { task in
-                Text(task.title)
+            List(vm.issues) { issue in
+                Text(issue.title)
             }
         }
     }

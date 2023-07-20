@@ -1,8 +1,8 @@
-class Sprint: Codable {
+struct Sprint: Codable {
     var id: Int32
     var name: String
-    var date_from: String
-    var date_expiration: String
+    var dateFrom: String
+    var dateExpiration: String
     var team: Team
-    var tasks: Array<Task>
+    var issues: Array<Issue>
 }

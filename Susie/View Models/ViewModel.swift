@@ -1,7 +1,7 @@
 import SwiftUI
 import Combine
 
-extension Task {
+extension Issue {
     var color: Color {
         switch(self.tag) {
         case "Bug": return .red
@@ -22,19 +22,20 @@ class ViewModel: ObservableObject {
         //Return true to bypass login
     }
     
-    var tasks: Array<Task> {
-        model.tasks
+    var issues: Array<Issue> {
+        model.issues
     }
     
     //MARK: - Init
     //.recive(on: DispatchQueue.main) is used due "Updating UI should alwawys be done from main thread"
+    
     init(){
         model.$isAuthenticated
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in self?.objectWillChange.send() }
             .store(in: &cancellabels)
         
-        model.$tasks
+        model.$issues
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in self?.objectWillChange.send() }
             .store(in: &cancellabels)
@@ -45,8 +46,8 @@ class ViewModel: ObservableObject {
         model.authenticate(with: credentials)
     }
     
-    func fetchTasks() {
-        model.fetchTasks()
+    func fetchIssues() {
+        model.fetchIssues()
     }
     
     func getBoardNames() -> Array<String> {

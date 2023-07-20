@@ -10,21 +10,21 @@ class Client: ObservableObject {
     private var token: String? {
         willSet(token){
             isAuthenticated.toggle()
-            //print(isAuthenticated.description)
         }
     }
     private(set) var cancellables = Set<AnyCancellable>()
     
     //MARK: Variables published to model
-    @Published private(set) var tasks = Array<Task>()
+    @Published private(set) var issues = Array<Issue>()
     @Published private(set) var isAuthenticated = false
+    @Published private(set) var error: Error?
     
     //MARK: - Sign out - logs out user from current session
     func signOut() {
         self.token = nil
     }
     
-    //MARK: - Authentication function, also fetches tasks from db if authentication was granted
+    //MARK: - Authentication function, also fetches issues from db if authentication was granted
     func authenticate(with credentials: AuthenticationRequest) {
         let url = HTTPClient.createURL(endpoint: .authenticate)
         let data = try? JSONEncoder().encode(credentials)
@@ -37,8 +37,9 @@ class Client: ObservableObject {
                 .sink(receiveCompletion: { completion in
                     switch(completion){
                     case .finished:
-                        self.fetchTasks()
-                    case .failure(let err): print(err)
+                        self.fetchIssues()
+                    case .failure(let error):
+                        self.error = error
                     }
                 }, receiveValue: { (response: AuthenticationResponse) in
                     self.token = response.token
@@ -48,22 +49,23 @@ class Client: ObservableObject {
     }
     
     //MARK: - fetches tasks from DB assigned to logged user
-    func fetchTasks() {
-        let url = HTTPClient.createURL(endpoint: .getTasks)
+    func fetchIssues() {
+        let url = HTTPClient.createURL(endpoint: .getIussue)
         if let token = self.token {
             let request = HTTPClient.createRequest(url, .GET, token)
             
-            let publisher: AnyPublisher<Array<Task>, Error> = HTTPClient.fetchDataFromRequest(request)
+            let publisher: AnyPublisher<Array<Issue>, Error> = HTTPClient.fetchDataFromRequest(request)
             
             publisher
                 .sink(receiveCompletion: { completion in
                     switch(completion){
-                    case .finished: print("Task fetched succesfully!")
-                    case .failure(let err): print(err)
+                    case .finished: ()
+                    case .failure(let error):
+                        self.error = error
                     }
-                }, receiveValue: { (tasks: Array<Task>) in
-                    self.tasks.removeAll()
-                    self.tasks = tasks
+                }, receiveValue: { (issues: Array<Issue>) in
+                    self.issues.removeAll()
+                    self.issues = issues
                 })
                 .store(in: &cancellables)
         }
@@ -85,7 +87,8 @@ class Client: ObservableObject {
                 .handleEvents(receiveOutput: { _ in})
                 .sink(receiveCompletion: { completion in
                     switch(completion) {
-                    case .failure(let err): print(err)
+                    case .failure(let error):
+                        self.error = error
                     case .finished: self.authenticate(with: credentials)
                     }
                 }, receiveValue: { _ in }) //Register token is unused due to first attribute

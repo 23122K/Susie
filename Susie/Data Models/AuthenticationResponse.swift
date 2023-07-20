@@ -1,3 +1,3 @@
-class AuthenticationResponse: Codable {
+struct AuthenticationResponse: Codable {
     var token: String
 }

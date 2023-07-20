@@ -1,4 +1,4 @@
-class RegisterRequest: Codable {
+struct RegisterRequest: Codable {
     var firstname: String
     var lastname: String
     var email: String

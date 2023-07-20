@@ -1,5 +1,5 @@
 import Foundation
 
-class GrantedAuthority: Codable {
+struct GrantedAuthority: Codable {
     var authority: String
 }

@@ -9,23 +9,21 @@ class Model: ObservableObject {
     
     //MARK: - Data fetched form 'Client' is stored below
     @Published private(set) var isAuthenticated: Bool = false
-    @Published private(set) var tasks = Array<Task>()
+    @Published private(set) var issues = Array<Issue>()
+    @Published private(set) var error: Error?
     
     
     //MARK: - Init
     init() {
         self.client = Client()
-        client.$isAuthenticated
-            .sink(receiveValue: { status in
-                self.isAuthenticated = status
-            })
-            .store(in: &cancellables)
+        client.$error
+            .assign(to: &$error)
         
-        client.$tasks
-            .sink(receiveValue: { tasks in
-                self.tasks = tasks
-            })
-            .store(in: &cancellables)
+        client.$isAuthenticated
+            .assign(to: &$isAuthenticated)
+        
+        client.$issues
+            .assign(to: &$issues)
     }
     
     
@@ -45,14 +43,18 @@ class Model: ObservableObject {
     }
     
     //MARK: - Fetches tasks assigned to logged user
-    func fetchTasks() {
-        client.fetchTasks()
+    func fetchIssues() {
+        client.fetchIssues()
     }
     
     //MARK: - Static variable of prediefined agile boards name
     //Leave them as they are, in the future we might add option to customise them
     func getBoardNames() -> Array<String> {
         return boards
+    }
+    
+    func dismissError() {
+        self.error = nil
     }
     
 }

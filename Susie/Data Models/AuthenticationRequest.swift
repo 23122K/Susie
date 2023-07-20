@@ -1,4 +1,4 @@
-class AuthenticationRequest: Codable {
+struct AuthenticationRequest: Codable {
     var email: String
     var password: String
     

@@ -1,4 +1,9 @@
-class Task: Identifiable, Codable {
+struct Issue: Identifiable, Equatable, Codable {
+    
+    static func == (lhs: Issue, rhs: Issue) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     var id: Int32
     var title: String
     var description: String
@@ -18,4 +23,6 @@ class Task: Identifiable, Codable {
         self.deadline = deadline
         self.businessValue = businessValue
     }
+    
+    
 }

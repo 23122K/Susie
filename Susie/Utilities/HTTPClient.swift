@@ -2,13 +2,20 @@ import Foundation
 import Combine
 
 class HTTPClient: ObservableObject{
+    
+    enum APIError: String, Error {
+        case invalidResponse = "Server is unavailable"
+    }
 
     enum Endpoint: String {
-        case updateTask = "/api/v1/tasks/update"
-        case createTask = "/api/v1/tasks/create"
-        case assignTask = "/api/v1/tasks/assign"
-        case deleteTask = "/api/v1/tasks/delete/"
-        case getTasks = "/api/v1/tasks/all" //Fetches only taks assigned to authenticated user
+        //Issues
+        case updateIussue = "/api/v1/tasks/update"
+        case createIussue = "/api/v1/tasks/create"
+        case assignIussue = "/api/v1/tasks/assign"
+        case deleteIussue = "/api/v1/tasks/delete/"
+        case getIussue = "/api/v1/tasks/all" //Fetches only taks assigned to authenticated user
+        
+        //User
         case register = "/api/v1/auth/register"
         case authenticate = "/api/v1/auth/authenticate"
     }
@@ -55,8 +62,9 @@ class HTTPClient: ObservableObject{
             .tryMap({ result in
                 let decoder = JSONDecoder()
                 guard let urlRespone = result.response as? HTTPURLResponse, (200...299).contains(urlRespone.statusCode) else {
-                    fatalError("Error to handel later")
+                    throw APIError.invalidResponse
                 }
+                
                 return try decoder.decode([T].self, from: result.data)
             })
             .eraseToAnyPublisher()
@@ -68,7 +76,7 @@ class HTTPClient: ObservableObject{
             .tryMap({ result in
                 let decoder = JSONDecoder()
                 guard let urlRespone = result.response as? HTTPURLResponse, (200...299).contains(urlRespone.statusCode) else {
-                    fatalError("Error to handel later")
+                    throw APIError.invalidResponse
                 }
                 return try decoder.decode(T.self, from: result.data)
             })
@@ -79,8 +87,7 @@ class HTTPClient: ObservableObject{
         URLSession.shared.dataTaskPublisher(for: request)
             .tryMap({ result in
                 guard let urlRespone = result.response as? HTTPURLResponse, (200...299).contains(urlRespone.statusCode) else {
-                    let err = result.response as? HTTPURLResponse
-                    fatalError("\(err!.statusCode)")
+                    throw APIError.invalidResponse
                 }
                 return result.data
             })

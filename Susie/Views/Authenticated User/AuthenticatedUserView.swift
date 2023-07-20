@@ -2,8 +2,13 @@ import SwiftUI
 
 struct AuthenticatedUserView: View {
     var body: some View {
-        LoggedPersonView()
         TabView{
+            HomeView()
+                .tabItem{
+                    Image("home")
+                    Text("Home")
+                }
+            
             BoardsView()
                 .tabItem{
                     Image(systemName: "house")
@@ -18,7 +23,7 @@ struct AuthenticatedUserView: View {
             
             DashboardView()
                 .tabItem{
-                    Image(systemName: "speedometer")
+                    Image("dashboard")
                     Text("Dashboard")
                 }
         }

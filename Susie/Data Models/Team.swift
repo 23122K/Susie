@@ -1,4 +1,4 @@
-class Team: Codable {
+struct Team: Codable {
     var id: Int32
     var name: String
     var domain: String

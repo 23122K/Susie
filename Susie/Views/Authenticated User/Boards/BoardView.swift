@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct BoardView: View {
-    let tasks: Array<Task>
-    let tasksCount: Int
+    let issues: Array<Issue>
+    let issueCount: Int
     let boardName: String
     
     //State isPresented is used to toggle bettwen sheet and a task
-    @State private var selectedTask: Task?
+    @State private var selectedIssue: Issue?
     @State private var isPresented: Bool = false
     
     //Make task view flexible
@@ -26,7 +26,7 @@ struct BoardView: View {
                     .padding(.leading, 30)
                     .padding(.vertical, 4)
                     .bold()
-                Text("\(tasksCount)")
+                Text("\(issueCount)")
                     .foregroundColor(.gray)
                     .padding(.horizontal,5)
                     .background{
@@ -37,14 +37,14 @@ struct BoardView: View {
             }
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns) {
-                    ForEach(tasks) { task in
-                        TaskView(title: task.title, tag: task.tag, color: task.color, assignetToInitials: "PM")
+                    ForEach(issues) { issue in
+                        IssueView(title: issue.title, tag: issue.tag, color: issue.color, assignetToInitials: "PM")
                             .offset(y: 8)
                             .onTapGesture {
-                                self.selectedTask = task
+                                self.selectedIssue = issue
                             }
-                            .sheet(item: $selectedTask){ task in
-                                IssueDetailedView(issue: task)
+                            .sheet(item: $selectedIssue){ issue in
+                                IssueDetailedView(issue: issue)
                                     .presentationDetents([.large])
                             }
                     }
@@ -57,7 +57,7 @@ struct BoardView: View {
 
 struct BoardView_Previews: PreviewProvider {
     static var previews: some View {
-        BoardView(tasks: [Task(id: 1, title: "Test Title", description: "Description", version: "32", deadline: "23", businessValue: 1)], tasksCount: 1, boardName: "To do")
+        BoardView(issues: [Issue(id: 1, title: "Test Title", description: "Description", version: "32", deadline: "23", businessValue: 1)], issueCount: 1, boardName: "To do")
     }
 }
 

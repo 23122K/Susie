@@ -10,7 +10,7 @@ import SwiftUI
 struct IssueOverviewView: View {
     
     @State private var isTapped: Bool = false
-    let issue: Task
+    let issue: Issue
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -80,6 +80,6 @@ struct IssueOverviewView: View {
 
 struct IssueOverviewView_Previews: PreviewProvider {
     static var previews: some View {
-        IssueOverviewView(issue: Task(id: 1, title: "Test", description: "Test", version: "3.4", deadline: "23:12:2023", businessValue: 4))
+        IssueOverviewView(issue: Issue(id: 1, title: "Test", description: "Test", version: "3.4", deadline: "23:12:2023", businessValue: 4))
     }
 }
