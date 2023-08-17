@@ -22,9 +22,8 @@ class ViewModel: ObservableObject {
         //Return true to bypass login
     }
     
-    var issues: Array<Issue> {
-        model.issues
-    }
+    @Published var issues = Array<Issue>()
+    @Published var sprints = Array<Sprint>()
     
     //MARK: - Init
     //.recive(on: DispatchQueue.main) is used due "Updating UI should alwawys be done from main thread"
@@ -36,9 +35,20 @@ class ViewModel: ObservableObject {
             .store(in: &cancellabels)
         
         model.$issues
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in self?.objectWillChange.send() }
-            .store(in: &cancellabels)
+            .assign(to: &$issues)
+        
+        model.$sprints
+            .assign(to: &$sprints)
+        
+//        model.$sprints
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] _ in self?.objectWillChange.send() }
+//            .store(in: &cancellabels)
+//
+//        model.$issues
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] _ in self?.objectWillChange.send() }
+//            .store(in: &cancellabels)
     }
                 
     

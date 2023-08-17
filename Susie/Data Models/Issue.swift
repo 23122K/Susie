@@ -1,28 +1,16 @@
+
 struct Issue: Identifiable, Equatable, Codable {
+    let id: Int32
+    let name: String
+    let description: String
+    let estimation: Int32
+    let reporterID: String
+    let assigneeID: Int32
+    let backlog: Backlog
+    let comments: Array<Comment>
+    let sprint: Sprint?
     
     static func == (lhs: Issue, rhs: Issue) -> Bool {
         return lhs.id == rhs.id
     }
-    
-    var id: Int32
-    var title: String
-    var description: String
-    var version: String //Wersja produktu, wersja oprogramowania która została wykupiona
-    var deadline: String
-    var businessValue: Int32 //Temp taking this value as a progress value | future task priority
-    var assignee: User?
-    //var progress: String
-    var sprint: Sprint?
-    //var tag: String
-    
-    init(id: Int32, title: String, description: String, version: String, deadline: String, businessValue: Int32) {
-        self.id = id
-        self.title = title
-        self.description = description
-        self.version = version
-        self.deadline = deadline
-        self.businessValue = businessValue
-    }
-    
-    
 }

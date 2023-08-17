@@ -20,25 +20,15 @@ struct SignUpView: View {
         }
         .padding()
         
-        switch(vm.registerAsAScrumMaster){
-        case true:
-            NavigationLink(destination: CreateTeamView(vm: vm)
-                .customNavigationView(title: "Back"),
-            label: {
-                SecondaryButton(content: "Next", state: !vm.areCrendentailsValid)
-            })
-            .disabled(vm.areCrendentailsValid)
-        case false:
-            NavigationLink(destination: SignUpFinalisationView(vm: vm)
-                .customNavigationView(title: "Back"), label: {
-                SecondaryButton(content: "Next", state: !vm.areCrendentailsValid)
-            })
-            .disabled(vm.areCrendentailsValid)
-        }
+        NavigationLink(destination: SignUpFinalisationView(vm: vm)
+            .customNavigationView(title: "Back"), label: {
+            SecondaryButton(content: "Next", state: !vm.areCrendentailsValid)
+        })
+        .disabled(vm.areCrendentailsValid)
         
         Spacer()
-//        Checkbox(title: "Register as a Scrum Master", isChecked: $vm.registerAsAScrumMaster)
-//            .padding()
+        
+        //TODO: Add some sort of checkbox so user can register as a Scrum Master
     }
 }
 

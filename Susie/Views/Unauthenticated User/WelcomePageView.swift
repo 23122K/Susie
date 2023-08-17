@@ -2,25 +2,22 @@ import SwiftUI
 
 struct WelcomePageView: View {
     var body: some View {
-        
         NavigationView {
             ScrollView{
                 VStack{
-                    
                     UserGreetingMessange()
-                    
                     NavigationLink(destination: SignInView().customNavigationView(title: "Cancel")
                         .navigationViewStyle(.stack), label: {
-                        PrimaryButtonView(content: "Sign in")
-                    })
-
+                            PrimaryButtonView(content: "Sign in")
+                        })
+                    
                     CustomDivider()
                         .padding(.vertical,1)
                     
                     NavigationLink(destination: SignUpView().customNavigationView(title: "Cancel")
                         .navigationViewStyle(.stack), label: {
-                        PrimaryButtonView(content: "Let's get started")
-                    })
+                            PrimaryButtonView(content: "Let's get started")
+                        })
                     
                     TermsOfService()
                 }

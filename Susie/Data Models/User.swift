@@ -1,16 +1,13 @@
-struct User: Codable {
-    var id: Int32
-    var firstname: String
-    var lastname: String
-    var email: String
-    var password: String
-    var role: String
-    var issues: Array<Issue>
-    var team: Team
-    var enabled: Bool
-    var accountNonExpired: Bool
-    var accountNonLocked: Bool
-    var credentialsNonExpired: Bool
-    var authorities: GrantedAuthority
-    var username: String
+struct UserDTO: Encodable {
+    let uuid: String
+    let email: String
+    let firstName: String
+    let lastName: String
+    
+    init(email: String, firstName: String, lastName: String) {
+        self.uuid = ""
+        self.email = email
+        self.firstName = firstName
+        self.lastName = lastName
+    }
 }

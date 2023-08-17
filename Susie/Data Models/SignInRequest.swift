@@ -1,6 +1,7 @@
-struct AuthenticationRequest: Codable {
-    var email: String
-    var password: String
+
+struct SignInRequest: Encodable {
+    let email: String
+    let password: String
     
     init(email: String, password: String) {
         self.email = email

@@ -19,7 +19,7 @@ struct SignUpFinalisationView: View {
         }
         .padding()
         
-        SecondaryButton(content: "Sign in", state: vm.doesPasswordsMatch)
+        SecondaryButton(content: "Sign up", state: vm.doesPasswordsMatch)
             .disabled(!vm.doesPasswordsMatch)
             .onTapGesture {
                 vm.register()

@@ -1,44 +1,48 @@
 import Foundation
 import Combine
 
-class HTTPClient: ObservableObject{
-    
-    enum APIError: String, Error {
-        case invalidResponse = "Server is unavailable"
+final class APIManager {
+    enum APIError: Error {
+        case invalidResponse
     }
 
-    enum Endpoint: String {
-        //Issues
-        case updateIussue = "/api/v1/tasks/update"
-        case createIussue = "/api/v1/tasks/create"
-        case assignIussue = "/api/v1/tasks/assign"
-        case deleteIussue = "/api/v1/tasks/delete/"
-        case getIussue = "/api/v1/tasks/all" //Fetches only taks assigned to authenticated user
+    internal enum Endpoint: String {
+        case issue = "/api/issue"
+        case project = "/api/scrum-project"
+        case assignUser = "/api/scrum-project/user-association"
+
+        //Account creation and authentication
+        case signUp = "/api/auth/register"
+        case signIn = "/api/auth/sign-in"
         
-        //User
-        case register = "/api/v1/auth/register"
-        case authenticate = "/api/v1/auth/authenticate"
+        //Returns information about currently logged user
+        case currentUserInfo = "/api/auth/user-info"
+        
+        //Returns information about user with specified uuid
+        case userInfo = "/api/auth/user-info/"
     }
     
-    enum Method: String {
+    internal enum HTTPMethod: String {
         case GET = "GET"
+        case PUT = "PUT"
         case POST = "POST"
+        case DELETE = "DELETE"
     }
     
-
-    static func createRequest(_ url: URL, _ jsonData: Data) -> URLRequest {
-        var request = URLRequest(url: url)
+    
+    static func createRequest(to endpoint: URL, method: HTTPMethod, payload: Data) -> URLRequest {
+        var request = URLRequest(url: endpoint)
         
-        request.httpMethod = "POST"
+        request.httpMethod = method.rawValue
         request.addValue("*/*", forHTTPHeaderField: "accept")
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = jsonData
+        request.httpBody = payload
+        
         return request
     }
     
-    //Overloaded createRequest
-    static func createRequest(_ url: URL, _ method: Method, _ token: String) -> URLRequest {
-        var request = URLRequest(url: url)
+    static func createRequest(to endpoint: URL, using method: HTTPMethod, token: String) -> URLRequest {
+        var request = URLRequest(url: endpoint)
         
         request.httpMethod = method.rawValue
         request.addValue("*/*", forHTTPHeaderField: "Accept")
@@ -47,17 +51,29 @@ class HTTPClient: ObservableObject{
         return request
     }
     
-    static func createURL(endpoint: Endpoint) -> URL {
+    static func createRequest(to endpoint: URL, using method: HTTPMethod, payload: Data, token: String) -> URLRequest {
+        var request = URLRequest(url: endpoint)
+        request.httpMethod = method.rawValue
+        request.addValue("*/*", forHTTPHeaderField: "Accept")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.httpBody = payload
+        
+        return request
+    }
+    
+    static func createURL(for endpoint: Endpoint) -> URL {
         var urlComponent = URLComponents()
         
         urlComponent.scheme = "http"
         urlComponent.host = "localhost"
-        urlComponent.port = 8080
+        urlComponent.port = 8081
         urlComponent.path = endpoint.rawValue
-        return urlComponent.url! //Make function throwable or change it to return Result<URL,ERROR>
+        return urlComponent.url!
     }
     
-    static func fetchDataFromURL<T: Codable>(_ url: URL) -> AnyPublisher<[T], Error> {
+    //MARK: Methods to help fetch data
+    static func fetchData<T: Decodable>(from url: URL) -> AnyPublisher<[T], Error> {
         URLSession.shared.dataTaskPublisher(for: url)
             .tryMap({ result in
                 let decoder = JSONDecoder()
@@ -71,7 +87,7 @@ class HTTPClient: ObservableObject{
     }
     
     //Takes a single Type as its parametter
-    static func fetchDataFromURL<T: Codable>(_ url: URL) -> AnyPublisher<T, Error> {
+    static func fetchData<T: Decodable>(from url: URL) -> AnyPublisher<T, Error> {
         URLSession.shared.dataTaskPublisher(for: url)
             .tryMap({ result in
                 let decoder = JSONDecoder()
@@ -83,10 +99,12 @@ class HTTPClient: ObservableObject{
             .eraseToAnyPublisher()
     }
     
-    static func fetchDataFromRequest<T: Codable>(_ request: URLRequest) -> AnyPublisher<T, Error> {
+    static func fetchData<T: Decodable>(from request: URLRequest) -> AnyPublisher<T, Error> {
         URLSession.shared.dataTaskPublisher(for: request)
             .tryMap({ result in
                 guard let urlRespone = result.response as? HTTPURLResponse, (200...299).contains(urlRespone.statusCode) else {
+                    let code = result.response as! HTTPURLResponse
+                    print(code.statusCode)
                     throw APIError.invalidResponse
                 }
                 return result.data
@@ -95,3 +113,4 @@ class HTTPClient: ObservableObject{
             .eraseToAnyPublisher()
     }
 }
+

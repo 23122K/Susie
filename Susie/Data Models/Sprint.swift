@@ -1,8 +1,9 @@
-struct Sprint: Codable {
-    var id: Int32
-    var name: String
-    var dateFrom: String
-    var dateExpiration: String
-    var team: Team
-    var issues: Array<Issue>
+import Foundation
+
+struct Sprint: Identifiable, Codable {
+    let id: Int32
+    let name: String
+    let startDate: Date //Gotta map response from string into data
+    let project: Project
+    let sprintIssues: Array<Issue>
 }

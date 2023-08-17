@@ -19,10 +19,6 @@ class SignOnViewModel: ObservableObject {
     @Published var confirmPassword: String = ""
     @Published var registerAsAScrumMaster = false
     
-    //Scrum Master additional input
-    @Published var teamName: String = ""
-    @Published var teamDescription: String = ""
-    
     //MARK: Temp validation code
     var areCrendentailsValid: Bool {
         if(self.firstName == "" || self.lastName == "" || self.emial == "") {

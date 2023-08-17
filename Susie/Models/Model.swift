@@ -2,13 +2,14 @@ import Foundation
 import Combine
 
 class Model: ObservableObject {
-    private(set) var client: Client
+    private(set) var client: NetworkManager
     
     private var boards = ["To Do", "In progress", "In review", "Done"]
     private var cancellables = Set<AnyCancellable>()
     
     //MARK: - Data fetched form 'Client' is stored below
     @Published private(set) var isAuthenticated: Bool = false
+    @Published private(set) var sprints = Array<Sprint>()
     @Published private(set) var issues = Array<Issue>()
     @Published private(set) var error: Error?
     
