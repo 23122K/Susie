@@ -1,5 +1,4 @@
-
-struct SignInRequest: Encodable {
+struct SignInRequest: Request {
     let email: String
     let password: String
     

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Project: Identifiable, Codable {
+struct Project: Response {    
     let id: Int32
     let name: String
     let description: String
@@ -17,7 +17,7 @@ struct Project: Identifiable, Codable {
     let sprints: Array<Sprint>?
     
     enum CodingKeys: String, CodingKey {
-        case id
+        case id = "projectID"
         case name
         case description
         case backlog
@@ -25,4 +25,5 @@ struct Project: Identifiable, Codable {
         case owner = "projectOwner"
         case sprints
     }
+    
 }

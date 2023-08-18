@@ -1,5 +1,5 @@
 
-struct SignUpRequest: Codable {
+struct SignUpRequest: Request {
     let username: String
     let email: String
     let password: String

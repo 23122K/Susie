@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Comment: Identifiable, Codable {
+struct Comment: Identifiable, Response {
     var id: Int32
     var title: String
     var body: String

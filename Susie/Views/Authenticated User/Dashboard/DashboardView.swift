@@ -1,8 +1,6 @@
 import SwiftUI
 import Charts
 
-
-
 struct DashboardView: View {
     var body: some View {
         VStack(alignment: .leading) {

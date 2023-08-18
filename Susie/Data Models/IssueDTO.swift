@@ -1,5 +1,5 @@
 
-struct IssueDTO: Codable {
+struct IssueDTO: Request {
     let issueID: Int32
     let name: String
     let description: String

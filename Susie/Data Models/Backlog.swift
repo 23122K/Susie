@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Backlog: Codable {
+struct Backlog: Response {
     let id: Int32
     let issues: Array<Issue>?
 }

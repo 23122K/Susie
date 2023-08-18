@@ -1,5 +1,5 @@
 
-struct Issue: Identifiable, Equatable, Codable {
+struct Issue: Identifiable, Response {
     let id: Int32
     let name: String
     let description: String

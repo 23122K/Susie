@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserAssociationDTO: Encodable {
+struct UserAssociationDTO: Request {
     let email: String
     let projectID: Int32
 }

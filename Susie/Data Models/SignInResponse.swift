@@ -2,7 +2,11 @@ enum DecodingError: Error {
     case decodingFailed
 }
 
-struct SignInResponse: Decodable {
+struct SignInResponse: Response {
+    static func == (lhs: SignInResponse, rhs: SignInResponse) -> Bool {
+        return lhs.accessToken == rhs.accessToken
+    }
+    
     let accessToken: String
     let refreshToken: String
     
