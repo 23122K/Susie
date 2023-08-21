@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct BoardsView: View {
-    @EnvironmentObject var vm: ViewModel
+    @EnvironmentObject var vm: ClientViewModel
     var body: some View {
         VStack(alignment: .trailing){
             TabView {
                 ForEach(0..<4) { i in
-                    let filterIssues = vm.issues.filter{ $0.businessValue == i}
+                    let filterIssues = vm.issues.filter{ $0.status == i}
                     let boards = vm.getBoardNames()
                     GeometryReader { g in
                         BoardView(issues: filterIssues, issueCount: filterIssues.count, boardName: boards[i])
@@ -21,18 +21,8 @@ struct BoardsView: View {
                     .frame(width: 380, height: 650)
                 }
             }
-            .refreshable {
-                vm.fetchIssues()
-            }
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
     }
 }
 
-/*
-struct BoardsView_Previews: PreviewProvider {
-    static var previews: some View {
-        BoardsView(tasks: [Task(id: 1, title: "Title", description: "Description", version: "1", deadline: "2", businessValue: 3, progress: 2, tag: "BUG")], boards: ["TO DO"])
-    }
-}
-*/

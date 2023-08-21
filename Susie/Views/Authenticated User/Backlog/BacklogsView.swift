@@ -3,7 +3,7 @@ import SwiftUI
 struct BacklogsView: View {
     @State private var draggedIssue: Issue?
     @State private var isInDropArea: Bool = false
-    @EnvironmentObject var vm: ViewModel
+    @EnvironmentObject var vm: ClientViewModel
     var body: some View {
         VStack{
             HStack{
@@ -28,7 +28,7 @@ struct BacklogsView: View {
             VStack{
                 List{
                     ForEach(vm.issues) { issue in
-                        IssueView(title: issue.title, tag: "YAY", color: .blue, assignetToInitials: "PM")
+                        IssueView(title: issue.name, tag: "YAY", color: .blue, assignetToInitials: "PM")
                             .padding(.vertical, 5)
                             .listRowSeparator(.hidden)
                             .listRowInsets(EdgeInsets())

@@ -1,8 +1,7 @@
 import Foundation
 
 extension Issue {
-    var tag: String {
-        let tags = ["Story", "Epic", "Task"]
-        return tags.randomElement()!
+    var status: Int {
+        return Int.random(in: 0..<4)
     }
 }

@@ -7,17 +7,17 @@ struct SignInView: View {
         VStack(alignment: .leading){
             FormTitleView(title: "Log in to", highlitedWord: "Susie")
             
-            FormRowView(title: "Emial Address", text: $vm.emialAddress, content: {
+            FormRowView(title: "Emial Address", text: $vm.email, content: {
                 Image(systemName: "envelope")
             })
             
             PasswordField(title: "Password", text: $vm.password)
-            Text(vm.error.occured ? vm.error.description : "")
+            
             SecondaryButton(content: "Sign in", state: vm.isValid)
                 .disabled(!vm.isValid)
                 .onTapGesture {
                     if(vm.isValid){
-                        vm.authenticate()
+                        vm.signIn()
                     }
                 }
             Spacer()

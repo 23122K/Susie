@@ -4,13 +4,9 @@ struct Issue: Identifiable, Response {
     let name: String
     let description: String
     let estimation: Int32
-    let reporterID: String
-    let assigneeID: Int32
+    let reporter: User
+    let assignee: User?
     let backlog: Backlog
     let comments: Array<Comment>
     let sprint: Sprint?
-    
-    static func == (lhs: Issue, rhs: Issue) -> Bool {
-        return lhs.id == rhs.id
-    }
 }

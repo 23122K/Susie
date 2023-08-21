@@ -23,8 +23,8 @@ struct SprintDropDelegate: DropDelegate {
             return false
         }
         
-        destination.issues.append(issue)
-        source.removeAll(where: { $0.id == issue.id})
+//        destination.issues.append(issue)
+//        source.removeAll(where: { $0.id == issue.id})
         dropFinalise()
         return true
     }

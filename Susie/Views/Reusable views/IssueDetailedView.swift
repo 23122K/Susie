@@ -20,7 +20,7 @@ struct IssueDetailedView: View {
         VStack(alignment: .leading){
             //Title
             VStack(alignment: .leading){
-                Text(issue.title)
+                Text(issue.name)
                     .font(.system(size: 30))
                     .bold()
                     .padding(.top, 10)

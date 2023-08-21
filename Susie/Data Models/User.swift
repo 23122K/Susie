@@ -1,4 +1,4 @@
-struct UserDTO: Encodable {
+struct User: Response {
     let uuid: String
     let email: String
     let firstName: String

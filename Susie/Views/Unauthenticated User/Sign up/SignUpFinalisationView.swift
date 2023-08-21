@@ -22,7 +22,7 @@ struct SignUpFinalisationView: View {
         SecondaryButton(content: "Sign up", state: vm.doesPasswordsMatch)
             .disabled(!vm.doesPasswordsMatch)
             .onTapGesture {
-                vm.register()
+                vm.signUp()
             }
         Spacer()
     }

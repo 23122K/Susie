@@ -1,6 +1,6 @@
 //
 //  BoardView.swift
-//  Suzie
+//  Susie
 //
 //  Created by Patryk Maciąg on 03/04/2023.
 //
@@ -38,7 +38,7 @@ struct BoardView: View {
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns) {
                     ForEach(issues) { issue in
-                        IssueView(title: issue.title, tag: issue.tag, color: issue.color, assignetToInitials: "PM")
+                        IssueView(title: issue.name, tag: "TEST", color: Color.red, assignetToInitials: "PM")
                             .offset(y: 8)
                             .onTapGesture {
                                 self.selectedIssue = issue
@@ -51,13 +51,6 @@ struct BoardView: View {
                 }
             }
         }
-    }
-}
-
-
-struct BoardView_Previews: PreviewProvider {
-    static var previews: some View {
-        BoardView(issues: [Issue(id: 1, title: "Test Title", description: "Description", version: "32", deadline: "23", businessValue: 1)], issueCount: 1, boardName: "To do")
     }
 }
 

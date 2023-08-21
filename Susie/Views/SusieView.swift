@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct SusieView: View {
-    @StateObject var vm = ViewModel()
+    @StateObject var vm = ClientViewModel()
     
     var body: some View {
         if(vm.isAuthenticated){

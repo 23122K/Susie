@@ -40,12 +40,14 @@ class SignOnViewModel: ObservableObject {
     }
     
     //MARK: Account creation request
-    func register() {
+    func signUp() {
         switch(self.registerAsAScrumMaster){
-        case true: print("User would be registered as a ScrumMaster, but curerentyl im missing that endpoint")
+        case true:
+            let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password, isScrumMaster: true)
+            model.signUp(with: credentials)
         case false:
-            let request = RegisterRequest(firstname: firstName, lastname: lastName, email: emial, password: password)
-            model.register(request)
+            let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password)
+            model.signUp(with: credentials)
         }
     }
 

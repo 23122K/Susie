@@ -1,27 +1,9 @@
 import SwiftUI
-import Combine
 
-extension Issue {
-    var color: Color {
-        switch(self.tag) {
-        case "Bug": return .red
-        case "Story": return .blue
-        case "Epic": return .purple
-        case "Task": return .orange
-        default: return .black
-        }
-    }
-}
-
-class ViewModel: ObservableObject {
+class ClientViewModel: ObservableObject {
     @Injected(\.model) var model
-    private var cancellabels = Set<AnyCancellable>()
 
-    var isAuthenticated: Bool {
-        model.isAuthenticated
-        //Return true to bypass login
-    }
-    
+    @Published var isAuthenticated = false
     @Published var issues = Array<Issue>()
     @Published var sprints = Array<Sprint>()
     
@@ -31,8 +13,7 @@ class ViewModel: ObservableObject {
     init(){
         model.$isAuthenticated
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in self?.objectWillChange.send() }
-            .store(in: &cancellabels)
+            .assign(to: &$isAuthenticated)
         
         model.$issues
             .assign(to: &$issues)
@@ -52,12 +33,8 @@ class ViewModel: ObservableObject {
     }
                 
     
-    func authenticate(with credentials: AuthenticationRequest){
-        model.authenticate(with: credentials)
-    }
-    
-    func fetchIssues() {
-        model.fetchIssues()
+    func signIn(with credentials: SignInRequest){
+        model.signIn(with: credentials)
     }
     
     func getBoardNames() -> Array<String> {
@@ -68,8 +45,8 @@ class ViewModel: ObservableObject {
         model.signOut()
     }
     
-    func register(_ user: RegisterRequest) {
-        model.register(user)
+    func signUp(with credentials: SignUpRequest) {
+        model.signUp(with: credentials)
     }
     
 }

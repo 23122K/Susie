@@ -36,20 +36,12 @@ struct IssueOverviewView: View {
             })
         
             CustomSection(title: "Details", content: {
-                DetailedRowView(title: "Issue type", content: {
-                    Text(issue.tag)
-                })
-                Divider()
-                DetailedRowView(title: "Priority", content: {
-                    Text(issue.businessValue.description)
-                })
-                Divider()
-                DetailedRowView(title: "Due date", content: {
-                    Text(issue.deadline)
+                DetailedRowView(title: "Estimation", content: {
+                    Text(issue.estimation.description)
                 })
                 Divider()
                 DetailedRowView(title: "Asagniee", content: {
-                    Text(issue.assignee?.firstname ?? "Unknown")
+                    Text(issue.assignee?.firstName ?? "Unknwon")
                 })
                 Divider()
                 DetailedRowView(title: "Logged time", content: {
@@ -78,8 +70,3 @@ struct IssueOverviewView: View {
     }
 }
 
-struct IssueOverviewView_Previews: PreviewProvider {
-    static var previews: some View {
-        IssueOverviewView(issue: Issue(id: 1, title: "Test", description: "Test", version: "3.4", deadline: "23:12:2023", businessValue: 4))
-    }
-}
