@@ -44,14 +44,14 @@ class ClientViewModel: ObservableObject {
     func userInfo() {
         model.userInfo()
     }
-    
-    func signOut() {
-        model.signOut()
-    }
-    
-    func signUp(with credentials: SignUpRequest) {
-        model.signUp(with: credentials)
-    }
+//    
+//    func signOut() {
+//        model.signOut()
+//    }
+//    
+//    func signUp(with credentials: SignUpRequest) {
+//        model.signUp(with: credentials)
+//    }
     
 }
 

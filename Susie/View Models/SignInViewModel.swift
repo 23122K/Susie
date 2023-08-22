@@ -20,6 +20,7 @@ class SignInViewModel: ObservableObject {
     }
     
     func signIn() {
+        print("VM")
         let credentials = SignInRequest(email: email, password: password)
         model.signIn(with: credentials)
     }

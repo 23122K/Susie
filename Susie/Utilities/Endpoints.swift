@@ -66,7 +66,6 @@ extension Endpoint {
 
         return request
     }
-    
 }
 
 enum Endpoints: Endpoint {

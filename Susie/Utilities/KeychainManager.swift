@@ -8,14 +8,6 @@
 import Foundation
 import Security
 
-enum KeychainError: Error {
-    case authObjectNotFound
-    case authObjectExists
-    case couldNotEncodeAuthObject
-    case couldNotDecodeAuthObject
-    case unexpectedStatus(OSStatus)
-}
-
 final class KeychainManager {
     private static func encode(_ auth: Auth) throws -> Data {
         guard let data = try? JSONEncoder().encode(auth) else {

@@ -10,7 +10,15 @@ import Foundation
 actor AuthManager {
     private var refreshTask: Task<Auth, Error>?
     
-    var authorize: Auth {
+    func authorize(request: URLRequest) async throws -> URLRequest {
+        let auth = try await auth
+        var request = request
+        request.addValue("Bearer \(auth.token)", forHTTPHeaderField: "Authorization")
+        
+        return request
+    }
+    
+    internal var auth: Auth {
         get async throws {
             if let task = refreshTask {
                 return try await task.value
@@ -45,7 +53,6 @@ actor AuthManager {
         let task = Task { () throws -> Auth in
             defer { refreshTask = nil }
             
-            //TODO: Make network call here to refresh token
             return Auth(token: "Dummy token", expiresIn: 99999)
         }
         
@@ -53,10 +60,4 @@ actor AuthManager {
         return try await task.value
         
     }
-}
-
-enum AuthError: Error {
-    case authObjectIsMissing
-    case couldNotRefreshAuthObject
-    
 }
