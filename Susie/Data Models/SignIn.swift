@@ -1,5 +1,22 @@
+//
+//  SignIn.swift
+//  Susie
+//
+//  Created by Patryk Maciąg on 22/08/2023.
+//
+
 enum DecodingError: Error {
     case decodingFailed
+}
+
+struct SignInRequest: Request {
+    let email: String
+    let password: String
+    
+    init(email: String, password: String) {
+        self.email = email
+        self.password = password
+    }
 }
 
 struct SignInResponse: Response {

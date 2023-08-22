@@ -1,4 +1,11 @@
-struct User: Response {
+//
+//  User.swift
+//  Susie
+//
+//  Created by Patryk Maciąg on 22/08/2023.
+//
+
+struct User: Response, Encodable {
     let uuid: String
     let email: String
     let firstName: String
@@ -10,4 +17,14 @@ struct User: Response {
         self.firstName = firstName
         self.lastName = lastName
     }
+}
+
+struct UserAssociationDTO: Request {
+    let email: String
+    let projectID: Int32
+}
+
+struct UserRole: Identifiable, Decodable {
+    let id: String
+    let name: String
 }

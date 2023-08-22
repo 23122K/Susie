@@ -80,27 +80,27 @@ enum Endpoints: Endpoint {
     case signUp(with: SignUpRequest)
     
     //Project
-    case fetchProject(id: Int, token: String)
-    case fetchProjects(token: String)
-    case updateProject(with: ProjectDTO, token: String)
-    case createProject(with: ProjectDTO, token: String)
-    case deleteProject(id: Int, token: String)
-    case assignToProject(email: String, projectID: Int, token: String)
+    case fetchProject(id: Int)
+    case fetchProjects
+    case updateProject(with: ProjectDTO)
+    case createProject(with: ProjectDTO)
+    case deleteProject(id: Int)
+    case assignToProject(email: String, projectID: Int)
     
     //Issue
     ///Fetches issues assigned to project with given id
-    case fetchIssues(id: Int, token: String)
-    case updateIssue(with: IssueDTO, token: String)
-    case createIssue(with: IssueDTO, token: String)
-    case deleteIssue(id: Int, token: String)
-    case fetchIssueDetails(id: Int, token: String)
+    case fetchIssues(id: Int)
+    case updateIssue(with: IssueDTO)
+    case createIssue(with: IssueDTO)
+    case deleteIssue(id: Int)
+    case fetchIssueDetails(id: Int)
     ///Assigns particular issue specified via id to user who initiated the action
-    case assignIssue(id: Int, token: String)
+    case assignIssue(id: Int)
     ///Deletes assignment of particular issue specified via id to user who initiated the action
-    case deleteIssueAssignment(id: Int, token: String)
+    case deleteIssueAssignment(id: Int)
     
     //User
-    case currentUserInfo(token: String)
+    case currentUserInfo
     
     var httpMethod: HTTPMethod {
         switch self {
@@ -128,7 +128,7 @@ enum Endpoints: Endpoint {
             return "/auth/sign-in"
         case .signUp:
             return "/auth/register"
-        case .fetchProject(let id, _), .deleteProject(let id, _):
+        case .fetchProject(let id), .deleteProject(let id):
             return "/scrum-project/\(id)"
         case .fetchProjects, .updateProject, .createProject:
             return "/scrum-project"
@@ -136,13 +136,13 @@ enum Endpoints: Endpoint {
             return "/scrum-project/user-association"
         case .fetchIssues, .updateIssue, .createIssue:
             return "/issue"
-        case .fetchIssueDetails(let id, _):
+        case .fetchIssueDetails(let id):
             return "/issue/details/\(id)"
-        case .deleteIssue(let id, _):
+        case .deleteIssue(let id):
             return "/issue/\(id)"
-        case .assignIssue(let id, _):
+        case .assignIssue(let id):
             return "/issue/\(id)/assign"
-        case .deleteIssueAssignment(let id, _):
+        case .deleteIssueAssignment(let id):
             return "/issue/\(id)/delete-assignment"
         case .currentUserInfo:
             return "/auth/user-info"
@@ -151,7 +151,7 @@ enum Endpoints: Endpoint {
     
     var queries: [String:String]? {
         switch self {
-        case .fetchIssues(let id, _):
+        case .fetchIssues(let id):
             return ["projectID":"\(id)"]
         default:
             return nil
@@ -160,25 +160,10 @@ enum Endpoints: Endpoint {
     }
     
     var headers: [String:String] {
-        var headers = [
+        [
             "Content-Type": "application/json",
             "Accept": "application/json",
         ]
-        
-        switch self {
-        case .signIn, .signUp:
-            break
-        case .fetchProject(_, let token), .fetchProjects(let token), .createProject(_, let token) ,.updateProject(_, let token), .deleteProject(_, let token):
-            headers["Authorization"] = "Bearer \(token)"
-        case .fetchIssues(_, let token), .updateIssue(_, let token), .createIssue(_, let token), .deleteIssue(_, let token), .fetchIssueDetails(_, let token):
-            headers["Authorization"] = "Bearer \(token)"
-        case .assignToProject(_, _, let token), .assignIssue(_, let token), .deleteIssueAssignment(_, let token):
-            headers["Authorization"] = "Bearer \(token)"
-        case .currentUserInfo(let token):
-            headers["Authorization"] = "Bearer \(token)"
-        }
-        
-        return headers
     }
     
     
@@ -188,9 +173,9 @@ enum Endpoints: Endpoint {
             return try? encoder.encode(credentials)
         case .signUp(let credentials):
             return try? encoder.encode(credentials)
-        case .createProject(let details, _), .updateProject(let details, _):
+        case .createProject(let details), .updateProject(let details):
             return try? encoder.encode(details)
-        case .createIssue(let details, _), .updateIssue(let details, _):
+        case .createIssue(let details), .updateIssue(let details):
             return try? encoder.encode(details)
         default:
             return nil

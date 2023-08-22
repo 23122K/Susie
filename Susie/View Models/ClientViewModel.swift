@@ -41,6 +41,10 @@ class ClientViewModel: ObservableObject {
         model.getBoardNames()
     }
     
+    func userInfo() {
+        model.userInfo()
+    }
+    
     func signOut() {
         model.signOut()
     }

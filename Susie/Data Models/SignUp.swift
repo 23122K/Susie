@@ -1,3 +1,9 @@
+//
+//  SignUp.swift
+//  Susie
+//
+//  Created by Patryk Maciąg on 22/08/2023.
+//
 
 struct SignUpRequest: Request {
     let email: String
@@ -13,4 +19,9 @@ struct SignUpRequest: Request {
         self.password = password
         self.isScrumMaster = isScrumMaster
     }
+}
+
+struct SignUpResponse: Response {
+    let result: String
+    let success: Bool
 }

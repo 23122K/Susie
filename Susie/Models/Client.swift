@@ -31,6 +31,10 @@ class Model: ObservableObject {
         network.signUp(with: credentials)
     }
     
+    func userInfo() {
+        network.userInfo()
+    }
+    
     func signOut() {
         network.signOut()
     }

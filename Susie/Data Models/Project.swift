@@ -7,23 +7,33 @@
 
 import Foundation
 
-struct Project: Response {    
+struct Project: Identifiable, Response {
     let id: Int32
     let name: String
     let description: String
-    let backlog: Backlog
-    let users: Array<String>
-    let owner: String //Is it his ID?
+    let users: Array<User>
+    let owner: User
     let sprints: Array<Sprint>?
     
     enum CodingKeys: String, CodingKey {
         case id = "projectID"
         case name
         case description
-        case backlog
         case users = "userIDs"
         case owner = "projectOwner"
         case sprints
     }
     
+}
+
+struct ProjectDTO: Response, Request {
+    let projectID: Int32
+    let name: String
+    let description: String
+    
+    init(projectID: Int32 = 0, name: String, description: String) {
+        self.projectID = projectID
+        self.name = name
+        self.description = description
+    }
 }
