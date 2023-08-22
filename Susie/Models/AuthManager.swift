@@ -8,40 +8,45 @@
 import Foundation
 
 actor AuthManager {
-    private var refreshTask: Task<String, Error>?
+    private var refreshTask: Task<Auth, Error>?
     
-    func isValid() async throws -> String {
-        print("1")
-        if let task = refreshTask {
-            return try await task.value
+    var authorize: Auth {
+        get async throws {
+            if let task = refreshTask {
+                return try await task.value
+            }
+            
+            guard let accessToken = try? KeychainManager.fetch(key: "accessToken") else {
+                throw AuthError.authObjectIsMissing
+            }
+            
+
+            guard accessToken.isValid else {
+                return try await refresh()
+            }
+            
+            return accessToken
         }
-        
-        print("2")
-        guard let accessToken = try? KeychainManager.fetch(key: "accessToken") else {
-            print("Not found")
-            throw AuthError.tokenIsMissing
-        }
-        
-        print("3")
-        return accessToken
-        //TODO: Check if token is valid, if so return it
-        //Here i should check if token is still valid, for now just return true
-        
-        
-        //return try await refreshToken() //Token has expired, refresh request is made here
     }
     
-    func refreshToken() async throws -> String {
+    func refresh() async throws -> Auth {
         if let refreshTask = refreshTask {
             return try await refreshTask.value
         }
         
-        let task = Task { () throws -> String in
+        guard let refreshToken = try? KeychainManager.fetch(key: "refreshToken") else {
+            throw AuthError.authObjectIsMissing
+        }
+        
+        guard refreshToken.isValid else {
+            throw AuthError.couldNotRefreshAuthObject
+        }
+        
+        let task = Task { () throws -> Auth in
             defer { refreshTask = nil }
             
             //TODO: Make network call here to refresh token
-            //If succeeds token = refreshToken
-            return "Token"
+            return Auth(token: "Dummy token", expiresIn: 99999)
         }
         
         self.refreshTask = task
@@ -51,8 +56,7 @@ actor AuthManager {
 }
 
 enum AuthError: Error {
-    case tokenIsMissing
-    case tokenIsInvalid
-    case couldNotRefreshToken
+    case authObjectIsMissing
+    case couldNotRefreshAuthObject
     
 }

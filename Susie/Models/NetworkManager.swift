@@ -23,9 +23,9 @@ class NetworkManager: ObservableObject, RemoteDataProvider {
     func authorizeRequest(request: URLRequest, needsAuthorization: Bool = true) async throws -> URLRequest {
         guard needsAuthorization else { return request }
         
-        let accessToken = try await authManager.isValid()
+        let auth = try await authManager.authorize
         var authorizedRequest = request
-        authorizedRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        authorizedRequest.setValue("Bearer \(auth.token)", forHTTPHeaderField: "Authorization")
         
         return authorizedRequest
     }
@@ -71,18 +71,17 @@ class NetworkManager: ObservableObject, RemoteDataProvider {
         let endpoint = Endpoints.signIn(with: credentials)
         Task {
             let response: SignInResponse = try await self.data(for: endpoint.request, needsAuthorization: false)
-            print(response.accessToken)
+            let accessToken = Auth(token: response.accessToken, expiresIn: response.expiresIn)
+            let refreshToken = Auth(token: response.refreshToken, expiresIn: response.refreshExpiresIn)
             
-            //Saving tokens from response into Keychain
             do {
-                try KeychainManager.insert(response.accessToken, for: "accessToken")
-                try KeychainManager.insert(response.refreshToken, for: "refreshToken")
-            } catch KeychainError.duplicateEntry {
+                try KeychainManager.insert(accessToken, for: "accessToken")
+                try KeychainManager.insert(refreshToken, for: "refreshToken")
+            } catch {
                 signOut()
-                try KeychainManager.insert(response.accessToken, for: "accessToken")
-                try KeychainManager.insert(response.refreshToken, for: "refreshToken")
+                try KeychainManager.insert(accessToken, for: "accessToken")
+                try KeychainManager.insert(refreshToken, for: "refreshToken")
             }
-            
             isAuthenticated = true
         }
     }

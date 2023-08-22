@@ -9,24 +9,32 @@ import Foundation
 import Security
 
 enum KeychainError: Error {
-    case entryNotFound
-    case duplicateEntry
-    case couldNotEncodeEntry
-    case couldNotDecodeEntry
+    case authObjectNotFound
+    case authObjectExists
+    case couldNotEncodeAuthObject
+    case couldNotDecodeAuthObject
     case unexpectedStatus(OSStatus)
 }
 
 final class KeychainManager {
-    private static func encode(_ value: String) throws -> Data {
-        guard let data = value.data(using: .utf8) else {
-            throw KeychainError.couldNotEncodeEntry
+    private static func encode(_ auth: Auth) throws -> Data {
+        guard let data = try? JSONEncoder().encode(auth) else {
+            throw KeychainError.couldNotDecodeAuthObject
         }
         
         return data
     }
     
-    static func insert(_ value: String, for key: String) throws {
-        let data = try encode(value)
+    private static func decode(_ data: Data) throws -> Auth {
+        guard let object = try? JSONDecoder().decode(Auth.self, from: data) else {
+            throw KeychainError.couldNotEncodeAuthObject
+        }
+        
+        return object
+    }
+    
+    static func insert(_ auth: Auth, for key: String) throws {
+        let data = try encode(auth)
         let insertQuery = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key,
@@ -36,13 +44,13 @@ final class KeychainManager {
         let status = SecItemAdd(insertQuery, nil)
         guard status == errSecSuccess else {
             if status == errSecDuplicateItem {
-                throw KeychainError.duplicateEntry
+                throw KeychainError.authObjectExists
             }
             throw KeychainError.unexpectedStatus(status)
         }
     }
     
-    static func fetch(key: String) throws -> String {
+    static func fetch(key: String) throws -> Auth {
         let fetchQuery = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key,
@@ -54,24 +62,24 @@ final class KeychainManager {
         let status = SecItemCopyMatching(fetchQuery, &data)
         
         guard status == errSecSuccess else {
-            if status == errSecItemNotFound { throw KeychainError.entryNotFound }
+            if status == errSecItemNotFound { throw KeychainError.authObjectNotFound }
             throw KeychainError.unexpectedStatus(status)
         }
         
-        guard let result = String(data: data as! Data, encoding: .utf8) else {
-            throw KeychainError.couldNotDecodeEntry
+        guard let object = try? decode(data as! Data) else {
+            throw KeychainError.couldNotDecodeAuthObject
         }
         
-        return result
+        return object
     }
     
-    static func update(key: String, with value: String) throws {
+    static func update(key: String, with auth: Auth) throws {
         let updateQuery = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key
         ] as CFDictionary
         
-        let data = try encode(value)
+        let data = try encode(auth)
         let newValue = [
             kSecValueData: data
         ] as CFDictionary
@@ -79,7 +87,7 @@ final class KeychainManager {
         let status = SecItemUpdate(updateQuery, newValue)
         guard status == errSecSuccess else {
             if status == errSecItemNotFound {
-                throw KeychainError.entryNotFound
+                throw KeychainError.authObjectNotFound
             }
             throw KeychainError.unexpectedStatus(status)
         }
@@ -97,4 +105,3 @@ final class KeychainManager {
         }
     }
 }
-
