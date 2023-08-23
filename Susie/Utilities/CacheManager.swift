@@ -7,38 +7,34 @@
 
 import Foundation
 
-actor CacheManager<Key: Hashable, Value> {
-    private let wrapped = NSCache<WrappedKey, Entry>()
-}
-
-private extension CacheManager {
-    final class WrappedKey: NSObject {
-        let key: Key
-        
-        init(_ key: Key) {
-            self.key = key
-        }
-        
-        override var hash: Int {
-            return key.hashValue
-        }
-        
-        override func isEqual(_ object: Any?) -> Bool {
-            guard let value = object as? WrappedKey else {
-                return false
-            }
-            
-            return value.key == key
-        }
+class CacheManager {
+    private let cache = NSCache<NSString, EntryObject>()
+    
+    func insertResponse(value: EntryObject, for url: URL) {
+        cache.setObject(value, forKey: url.asNSString)
+    }
+    
+    func fetchResponse(for url: URL) -> Entry? {
+        cache.object(forKey: url.asNSString)?.entry
+    }
+    
+    func deleteResponse(url: URL) {
+        cache.removeObject(forKey: url.asNSString)
+    }
+    
+    func clearCache() {
+        cache.removeAllObjects()
     }
 }
 
-private extension CacheManager {
-    final class Entry {
-        let value: Value
-        
-        init(_ value: Value) {
-            self.value = value
-        }
-    }
+final class EntryObject {
+    let entry: Entry
+    
+    init(entry: Entry) { self.entry = entry }
 }
+
+enum Entry {
+    case pending(Task<Codable, Error>)
+    case cached(Codable)
+}
+

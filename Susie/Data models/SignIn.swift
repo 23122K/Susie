@@ -9,7 +9,7 @@ enum DecodingError: Error {
     case decodingFailed
 }
 
-struct SignInRequest: Request {
+struct SignInRequest: Codable {
     let email: String
     let password: String
     
@@ -19,11 +19,7 @@ struct SignInRequest: Request {
     }
 }
 
-struct SignInResponse: Response {
-    static func == (lhs: SignInResponse, rhs: SignInResponse) -> Bool {
-        return lhs.accessToken == rhs.accessToken
-    }
-    
+struct SignInResponse: Codable {
     let accessToken: String
     let refreshToken: String
     
@@ -40,26 +36,26 @@ struct SignInResponse: Response {
         case userRoles
     }
     
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let accessToken = try container.decodeIfPresent(String.self, forKey: .accessToken)
-        let refreshToken = try container.decodeIfPresent(String.self, forKey: .refreshToken)
-        let expiresIn = try container.decodeIfPresent(Int32.self, forKey: .expiresIn)
-        let refreshExpiresIn = try container.decodeIfPresent(Int32.self, forKey: .refreshExpiresIn)
-        let userRoles = try container.decodeIfPresent(Array<UserRole>.self, forKey: .userRoles)
-
-        guard let accessToken = accessToken,
-              let refreshToken = refreshToken,
-              let expiresIn = expiresIn,
-              let refreshExpiresIn = refreshExpiresIn,
-              let userRoles = userRoles else {
-            throw DecodingError.decodingFailed
-        }
-
-        self.accessToken = accessToken
-        self.refreshToken = refreshToken
-        self.expiresIn = expiresIn
-        self.refreshExpiresIn = refreshExpiresIn
-        self.userRoles = userRoles
-    }
+//    init(from decoder: Decoder) throws {
+//        let container = try decoder.container(keyedBy: CodingKeys.self)
+//        let accessToken = try container.decodeIfPresent(String.self, forKey: .accessToken)
+//        let refreshToken = try container.decodeIfPresent(String.self, forKey: .refreshToken)
+//        let expiresIn = try container.decodeIfPresent(Int32.self, forKey: .expiresIn)
+//        let refreshExpiresIn = try container.decodeIfPresent(Int32.self, forKey: .refreshExpiresIn)
+//        let userRoles = try container.decodeIfPresent(Array<UserRole>.self, forKey: .userRoles)
+//
+//        guard let accessToken = accessToken,
+//              let refreshToken = refreshToken,
+//              let expiresIn = expiresIn,
+//              let refreshExpiresIn = refreshExpiresIn,
+//              let userRoles = userRoles else {
+//            throw DecodingError.decodingFailed
+//        }
+//
+//        self.accessToken = accessToken
+//        self.refreshToken = refreshToken
+//        self.expiresIn = expiresIn
+//        self.refreshExpiresIn = refreshExpiresIn
+//        self.userRoles = userRoles
+//    }
 }

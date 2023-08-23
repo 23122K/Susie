@@ -16,6 +16,10 @@ struct HomeView: View {
             Button("User info") {
                 vm.userInfo()
             }
+            
+            Button("Fetch projects") {
+                vm.fetchProjects()
+            }
         }
     }
 }

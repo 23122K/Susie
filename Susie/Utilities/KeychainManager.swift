@@ -9,6 +9,11 @@ import Foundation
 import Security
 
 final class KeychainManager {
+    internal enum Key: String {
+        case accessToken
+        case refreshToken
+    }
+    
     private static func encode(_ auth: Auth) throws -> Data {
         guard let data = try? JSONEncoder().encode(auth) else {
             throw KeychainError.couldNotDecodeAuthObject
@@ -25,11 +30,11 @@ final class KeychainManager {
         return object
     }
     
-    static func insert(_ auth: Auth, for key: String) throws {
+    static func insert(_ auth: Auth, for key: Key) throws {
         let data = try encode(auth)
         let insertQuery = [
             kSecClass: kSecClassGenericPassword,
-            kSecAttrAccount: key,
+            kSecAttrAccount: key.rawValue,
             kSecValueData: data
         ] as CFDictionary
         
@@ -42,10 +47,10 @@ final class KeychainManager {
         }
     }
     
-    static func fetch(key: String) throws -> Auth {
+    static func fetch(key: Key) throws -> Auth {
         let fetchQuery = [
             kSecClass: kSecClassGenericPassword,
-            kSecAttrAccount: key,
+            kSecAttrAccount: key.rawValue,
             kSecMatchLimit: 1,
             kSecReturnData: true
         ] as CFDictionary
@@ -65,10 +70,10 @@ final class KeychainManager {
         return object
     }
     
-    static func update(key: String, with auth: Auth) throws {
+    static func update(key: Key, with auth: Auth) throws {
         let updateQuery = [
             kSecClass: kSecClassGenericPassword,
-            kSecAttrAccount: key
+            kSecAttrAccount: key.rawValue
         ] as CFDictionary
         
         let data = try encode(auth)
@@ -85,10 +90,10 @@ final class KeychainManager {
         }
     }
     
-    static func delete(key: String) throws {
+    static func delete(key: Key) throws {
         let deleteQuery = [
             kSecClass: kSecClassGenericPassword,
-            kSecAttrAccount: key
+            kSecAttrAccount: key.rawValue
         ] as CFDictionary
         
         let status = SecItemDelete(deleteQuery)

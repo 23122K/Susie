@@ -5,7 +5,7 @@
 //  Created by Patryk Maciąg on 22/08/2023.
 //
 
-struct User: Response, Encodable {
+struct User: Codable {
     let uuid: String
     let email: String
     let firstName: String
@@ -19,12 +19,12 @@ struct User: Response, Encodable {
     }
 }
 
-struct UserAssociationDTO: Request {
+struct UserAssociationDTO: Codable {
     let email: String
     let projectID: Int32
 }
 
-struct UserRole: Identifiable, Decodable {
+struct UserRole: Identifiable, Codable {
     let id: String
     let name: String
 }

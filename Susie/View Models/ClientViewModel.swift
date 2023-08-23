@@ -32,6 +32,9 @@ class ClientViewModel: ObservableObject {
 //            .store(in: &cancellabels)
     }
                 
+    func fetchProjects() {
+        model.fetchProjects()
+    }
     
     func signIn(with credentials: SignInRequest){
         model.signIn(with: credentials)

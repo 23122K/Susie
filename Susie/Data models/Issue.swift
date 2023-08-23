@@ -5,7 +5,7 @@
 //  Created by Patryk Maciąg on 22/08/2023.
 //
 
-struct Issue: Identifiable, Response {
+struct Issue: Identifiable, Codable {
     let id: Int32
     let name: String
     let description: String
@@ -17,7 +17,7 @@ struct Issue: Identifiable, Response {
     let sprint: Sprint?
 }
 
-struct IssueDTO: Request {
+struct IssueDTO: Codable {
     let issueID: Int32
     let name: String
     let description: String
@@ -27,18 +27,18 @@ struct IssueDTO: Request {
     let projectID: Int32?
 }
 
-struct IssueGeneralDTO: Identifiable, Response {
+struct IssueGeneralDTO: Identifiable, Codable {
     let id: Int32
     let name: String
     let asignee: User
 }
 
-struct IssueCreateRequest: Request {
+struct IssueCreateRequest: Codable {
     let name: String
     let description: String
 }
 
-struct IssueUpdateRequest: Request {
+struct IssueUpdateRequest: Codable {
     let id: Int32
     let name: String
     let description: String

@@ -24,7 +24,7 @@ actor AuthManager {
                 return try await task.value
             }
             
-            guard let accessToken = try? KeychainManager.fetch(key: "accessToken") else {
+            guard let accessToken = try? KeychainManager.fetch(key: .accessToken) else {
                 throw AuthError.authObjectIsMissing
             }
             
@@ -42,7 +42,7 @@ actor AuthManager {
             return try await refreshTask.value
         }
         
-        guard let refreshToken = try? KeychainManager.fetch(key: "refreshToken") else {
+        guard let refreshToken = try? KeychainManager.fetch(key: .refreshToken) else {
             throw AuthError.authObjectIsMissing
         }
         

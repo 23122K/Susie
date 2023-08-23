@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Project: Identifiable, Response {
+struct Project: Identifiable, Codable {
     let id: Int32
     let name: String
     let description: String
@@ -26,7 +26,7 @@ struct Project: Identifiable, Response {
     
 }
 
-struct ProjectDTO: Response, Request {
+struct ProjectDTO: Codable {
     let projectID: Int32
     let name: String
     let description: String

@@ -5,7 +5,7 @@
 //  Created by Patryk Maciąg on 16/08/2023.
 //
 
-struct Comment: Identifiable, Response {
+struct Comment: Identifiable, Codable {
     var id: Int32
     var title: String
     var body: String

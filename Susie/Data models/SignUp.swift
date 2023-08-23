@@ -5,7 +5,7 @@
 //  Created by Patryk Maciąg on 22/08/2023.
 //
 
-struct SignUpRequest: Request {
+struct SignUpRequest: Codable {
     let email: String
     let password: String
     let firstName: String
@@ -21,7 +21,7 @@ struct SignUpRequest: Request {
     }
 }
 
-struct SignUpResponse: Response {
+struct SignUpResponse: Codable {
     let result: String
     let success: Bool
 }

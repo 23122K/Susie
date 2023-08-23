@@ -1,6 +1,5 @@
 import Foundation
 
-
 class Model: ObservableObject {
     private(set) var networkManager: NetworkManager
     
@@ -23,14 +22,22 @@ class Model: ObservableObject {
     func signUp(with credentials: SignUpRequest) {
         let endpoint = Endpoints.signUp(with: credentials)
         Task {
-            let _: [SignUpResponse] = try await networkManager.data(for: endpoint.request, authorize: false, retry: false)
+            let _: SignUpResponse = try await networkManager.data(from: endpoint, authorize: false)
+        }
+    }
+    
+    func fetchProjects() {
+        let endpoint = Endpoints.fetchProjects
+        Task {
+            let response: [ProjectDTO] = try await networkManager.data(from: endpoint)
+            print(response)
         }
     }
     
     func userInfo() {
         let endpoint = Endpoints.currentUserInfo
         Task {
-            let response: User = try await networkManager.data(for: endpoint.request)
+            let response: User = try await networkManager.data(from: endpoint)
             print(response)
         }
     }
@@ -38,14 +45,14 @@ class Model: ObservableObject {
     func signIn(with credentials: SignInRequest) {
         let endpoint = Endpoints.signIn(with: credentials)
         Task {
-            let response: SignInResponse = try await networkManager.data(for: endpoint.request, authorize: false, retry: false)
+            let response: SignInResponse = try await networkManager.data(from: endpoint, authorize: false, retry: false)
             do {
-                try KeychainManager.insert(Auth(token: response.accessToken, expiresIn: response.expiresIn), for: "accessToken")
-                try KeychainManager.insert(Auth(token: response.refreshToken, expiresIn: response.refreshExpiresIn), for: "refreshToken")
+                try KeychainManager.insert(Auth(token: response.accessToken, expiresIn: response.expiresIn), for: .accessToken)
+                try KeychainManager.insert(Auth(token: response.refreshToken, expiresIn: response.refreshExpiresIn), for: .refreshToken)
                 isAuthenticated.toggle()
             } catch KeychainError.authObjectExists {
-                try KeychainManager.delete(key: "accessToken")
-                try KeychainManager.delete(key: "refreshToken")
+                try KeychainManager.delete(key: .accessToken)
+                try KeychainManager.delete(key: .refreshToken)
             }
             
         }

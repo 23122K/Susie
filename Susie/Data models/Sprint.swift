@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct Sprint: Identifiable, Response {
+struct Sprint: Identifiable, Codable {
     let id: Int32
     let name: String
     let startTime: String //Date
@@ -14,7 +14,7 @@ struct Sprint: Identifiable, Response {
     let sprintIssues: Array<Issue>
 }
 
-struct SprintCreationRequest: Request {
+struct SprintCreationRequest: Codable {
     let name: String
     let projectID: Int32
     let startTime: String //Date
