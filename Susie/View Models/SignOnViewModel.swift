@@ -8,18 +8,16 @@
 import SwiftUI
 
 class SignOnViewModel: ObservableObject {
-    @Injected(\.model) var model
+    @Injected(\.client) var client
     
-    //MARK: Registration from inputs
-    //Devs & Poroduct Owners
-    @Published var firstName: String = ""
-    @Published var lastName: String = ""
-    @Published var emial: String = ""
-    @Published var password: String = ""
-    @Published var confirmPassword: String = ""
-    @Published var registerAsAScrumMaster = false
+    @Published var firstName = String()
+    @Published var lastName = String()
+    @Published var emial = String()
+    @Published var password = String()
+    @Published var confirmPassword = String()
+    @Published var isScrumMaster = false
     
-    //MARK: Temp validation code
+    //TODO: Chage to real validation
     var areCrendentailsValid: Bool {
         if(self.firstName == "" || self.lastName == "" || self.emial == "") {
             return true
@@ -28,29 +26,32 @@ class SignOnViewModel: ObservableObject {
     }
     
     var doesPasswordsMatch: Bool {
-        if(self.password == "" || self.confirmPassword == ""){
-            return false
-        }
-        
-        if(self.password == self.confirmPassword) {
-            return true
+        guard password.isEmpty || confirmPassword.isEmpty else {
+            return password.hashValue == confirmPassword.hashValue
         }
         
         return false
     }
     
-    //MARK: Account creation request
     func signUp() {
-        switch(self.registerAsAScrumMaster){
+        switch isScrumMaster {
         case true:
             let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password, isScrumMaster: true)
-            model.signUp(with: credentials)
+            client.signUp(with: credentials)
         case false:
             let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password)
-            model.signUp(with: credentials)
+            client.signUp(with: credentials)
         }
+        
+        cleanForms()
     }
-
     
-    
+    func cleanForms() {
+        firstName = .init()
+        lastName = .init()
+        emial = .init()
+        password = .init()
+        confirmPassword = .init()
+        isScrumMaster = false
+    }
 }

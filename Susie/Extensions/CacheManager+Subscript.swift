@@ -8,11 +8,11 @@
 import Foundation
 
 extension CacheManager {
-    subscript(_ url: URL) -> Entry? {
+    subscript(_ url: URL) -> Cache? {
         get { fetchResponse(for: url) }
         set {
-            if let entry = newValue {
-                let value = EntryObject(entry: entry)
+            if let response = newValue {
+                let value = ResponseCache(response: response)
                 insertResponse(value: value, for: url)
             } else {
                 deleteResponse(url: url)

@@ -1,54 +1,68 @@
 import Foundation
+import Network
 
 actor NetworkManager {
-    private let decoder: JSONDecoder
-    internal let authManager: AuthManager
-    internal let cacheManager = CacheManager()
+    private let monitor = NWPathMonitor()
+    private let decoder = JSONDecoder()
+    private let monitorQueue = DispatchQueue(label: "monitor.queue", attributes: .initiallyInactive)
+    internal let auth: AuthManager
+    internal let cache: CacheManager
     
-    func data<T: Codable>(from endpoint: Endpoint, authorize: Bool = true, retry: Bool = true) async throws -> T {
-        if let status = cacheManager[endpoint.url] {
-            switch status {
+    func startMonitoringNetwork() {
+        monitor.pathUpdateHandler = { path in
+            guard path.status == .satisfied else {
+                print("Disconnected")
+                return
+            }
+            print("Connected")
+        }
+        
+        monitor.start(queue: monitorQueue)
+    }
+    
+    func stopMonitoringNetwork() {
+        monitor.cancel()
+    }
+    
+    //TODO: Check if casting response as! T is save
+    func data<T: Codable>(from endpoint: Endpoint, authorize: Bool = true, retry: Bool = true, policy: CachePolicy = CachePolicy()) async throws -> T {
+        //Cache policy set to false wont trigger it as it requires endpoint to be cachable
+        if let cache = cache[endpoint.url] {
+            switch cache.status {
             case .cached(let response):
-                print("response is cached")
                 return response as! T
-            case .pending(let task):
-                print("response is pending")
+            case .ongoing(let task):
                 return try await task.value as! T
             }
         }
         
-        print("Request")
-        let request = authorize ? try await authManager.authorize(request: endpoint.request) : endpoint.request
-    
+        print("Request is made")
+        let request = authorize ? try await auth.authorize(request: endpoint.request) : endpoint.request
         let task = Task<Codable, Error> {
             guard let (data, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
                 throw NetworkError.invalidHttpResponse
             }
             
-            guard let (data, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
-                throw NetworkError.invalidHttpResponse
-            }
-            
             guard (200...299).contains( response.statusCode ) else {
-//                if response.statusCode == 401 { //Unauthorized access
-//                    let _ = try await authManager.refresh()
-//                    print("token has been refreshed")
-//                    return try await data(from: endpoint, retry: false)
-//                }
                 throw NetworkError.failure(statusCode: response.statusCode)
             }
             
             return try decoder.decode(T.self, from: data)
         }
         
-        cacheManager[endpoint.url] = .pending(task)
+        
+        guard policy.shouldCache else {
+            return try await task.value as! T
+        }
+        
+        cache[endpoint.url] = Cache(status: .ongoing(task))
         let response = try await task.value
-        cacheManager[endpoint.url] = .cached(response)
+        cache[endpoint.url] = Cache(status: .cached(response))
         return response as! T
     }
     
-    init(authManager: AuthManager = AuthManager(), decoder: JSONDecoder = JSONDecoder()) {
-        self.authManager = authManager
-        self.decoder = decoder
+    init(authManager: AuthManager = AuthManager(), cacheManager: CacheManager = CacheManager { Date() }){
+        self.auth = authManager
+        self.cache = cacheManager
     }
 }

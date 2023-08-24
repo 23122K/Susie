@@ -12,13 +12,16 @@ struct HomeView: View {
     var body: some View {
         VStack{
             LoggedPersonView()
-            Spacer()
             Button("User info") {
                 vm.userInfo()
             }
             
             Button("Fetch projects") {
                 vm.fetchProjects()
+            }
+            
+            List(vm.projects) { project in
+                Text(project.name)
             }
         }
     }

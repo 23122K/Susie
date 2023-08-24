@@ -8,22 +8,29 @@
 import SwiftUI
 
 class SignInViewModel: ObservableObject {
-    @Injected(\.model) var model
-    @Published var email = ""
-    @Published var password = ""
+    @Injected(\.client) var client
     
+    @Published var email = String()
+    @Published var password = String()
+    
+    //TODO: Add real validation here
     var isValid: Bool {
-        if (email != "" && password != "") {
+        guard email.isEmpty || password.isEmpty else {
             return true
         }
+        
         return false
     }
     
     func signIn() {
-        print("VM")
         let credentials = SignInRequest(email: email, password: password)
-        model.signIn(with: credentials)
+        client.signIn(with: credentials)
+        self.cleanForms()
     }
     
-    init() { }
+    func cleanForms() {
+        email = .init()
+        password = .init()
+    }
+    
 }

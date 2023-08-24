@@ -47,14 +47,14 @@ struct Injected<T> {
 
 //MARK: MODEL Extension
 extension InjectedValues {
-    var model: Model {
-        get { Self[ModelKey.self] }
-        set { Self[ModelKey.self] = newValue }
+    var client: Client {
+        get { Self[ClientKey.self] }
+        set { Self[ClientKey.self] = newValue }
     }
 }
 
 
 //MARK: List ofe depencencies
-private struct ModelKey: InjectionKey {
-    static var currentValue: Model = Model()
+private struct ClientKey: InjectionKey {
+    static var currentValue: Client = Client()
 }

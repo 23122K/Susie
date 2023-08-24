@@ -11,17 +11,15 @@ struct Project: Identifiable, Codable {
     let id: Int32
     let name: String
     let description: String
-    let users: Array<User>
+    let members: Array<User>
     let owner: User
-    let sprints: Array<Sprint>?
     
     enum CodingKeys: String, CodingKey {
         case id = "projectID"
         case name
         case description
-        case users = "userIDs"
-        case owner = "projectOwner"
-        case sprints
+        case members
+        case owner
     }
     
 }

@@ -8,7 +8,13 @@
 import Foundation
 
 extension Date {
-    func addMinutes(_ minutes: Int32) -> Date {
+    func add(minutes: Int) -> Date {
         addingTimeInterval(Double(minutes) * 60)
     }
+    
+    func add(seconds: Int) -> Date {
+        addingTimeInterval(Double(seconds/60) * 60)
+    }
+    
+    
 }

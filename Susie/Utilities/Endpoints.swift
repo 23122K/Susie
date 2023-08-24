@@ -14,59 +14,6 @@ enum HTTPMethod: String {
     case delete = "DELETE"
 }
 
-protocol Endpoint {
-    var encoder: JSONEncoder { get }
-
-    var schema: String { get }
-    var host: String { get }
-    var port: Int { get }
-    
-    var version: String { get }
-    var path: String { get }
-    
-    var httpMethod: HTTPMethod { get }
-    
-    var headers: [String: String] { get }
-    var queries: [String: String]? { get }
-    var body: Data? { get }
-}
-
-extension Endpoint {
-    internal var baseUrl: URL {
-        var components = URLComponents()
-        components.scheme = self.schema
-        components.host = self.host
-        components.port = self.port
-        
-        return components.url.unsafelyUnwrapped
-    }
-    
-    public var url: URL {
-        var url = self.baseUrl
-        url.append(path: self.version)
-        url.append(path: self.path)
-        
-        if let queries = queries {
-            url.append(queryItems: queries.compactMap { query -> URLQueryItem in
-                return URLQueryItem(name: query.key, value: query.value)
-            })
-        }
-        
-        return url
-    }
-    
-    public var request: URLRequest {
-        var request = URLRequest(url: self.url)
-        request.httpMethod = httpMethod.rawValue
-        request.allHTTPHeaderFields = self.headers
-        
-        if let body = self.body {
-            request.httpBody = body
-        }
-
-        return request
-    }
-}
 
 enum Endpoints: Endpoint {
     var encoder: JSONEncoder {
@@ -77,6 +24,7 @@ enum Endpoints: Endpoint {
     //Authentication
     case signIn(with: SignInRequest)
     case signUp(with: SignUpRequest)
+    case refreshToken(token: String)
     
     //Project
     case fetchProject(id: Int)
@@ -103,7 +51,7 @@ enum Endpoints: Endpoint {
     
     var httpMethod: HTTPMethod {
         switch self {
-        case .signUp, .signIn, .createProject, .assignToProject, .createIssue, .assignIssue:
+        case .signUp, .signIn, .refreshToken ,.createProject, .assignToProject, .createIssue, .assignIssue:
             return .post
         case .fetchProject, .fetchProjects, .fetchIssues, .fetchIssueDetails, .currentUserInfo:
             return .get
@@ -127,6 +75,8 @@ enum Endpoints: Endpoint {
             return "/auth/sign-in"
         case .signUp:
             return "/auth/register"
+        case .refreshToken:
+            return "/auth/refresh"
         case .fetchProject(let id), .deleteProject(let id):
             return "/scrum-project/\(id)"
         case .fetchProjects, .updateProject, .createProject:
@@ -150,6 +100,8 @@ enum Endpoints: Endpoint {
     
     var queries: [String:String]? {
         switch self {
+        case .refreshToken(let token):
+            return ["refreshToken":"\(token)"]
         case .fetchIssues(let id):
             return ["projectID":"\(id)"]
         default:
@@ -164,7 +116,6 @@ enum Endpoints: Endpoint {
             "Accept": "application/json",
         ]
     }
-    
     
     var body: Data? {
         switch self {

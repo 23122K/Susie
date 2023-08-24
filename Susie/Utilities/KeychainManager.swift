@@ -9,12 +9,12 @@ import Foundation
 import Security
 
 final class KeychainManager {
-    internal enum Key: String {
-        case accessToken
-        case refreshToken
+    internal enum AuthKey: String {
+        case accessAuth
+        case refreshAuth
     }
     
-    private static func encode(_ auth: Auth) throws -> Data {
+    private func encode(_ auth: Auth) throws -> Data {
         guard let data = try? JSONEncoder().encode(auth) else {
             throw KeychainError.couldNotDecodeAuthObject
         }
@@ -22,7 +22,7 @@ final class KeychainManager {
         return data
     }
     
-    private static func decode(_ data: Data) throws -> Auth {
+    private func decode(_ data: Data) throws -> Auth {
         guard let object = try? JSONDecoder().decode(Auth.self, from: data) else {
             throw KeychainError.couldNotEncodeAuthObject
         }
@@ -30,7 +30,7 @@ final class KeychainManager {
         return object
     }
     
-    static func insert(_ auth: Auth, for key: Key) throws {
+     func insert(_ auth: Auth, for key: AuthKey) throws {
         let data = try encode(auth)
         let insertQuery = [
             kSecClass: kSecClassGenericPassword,
@@ -47,7 +47,7 @@ final class KeychainManager {
         }
     }
     
-    static func fetch(key: Key) throws -> Auth {
+     func fetch(key: AuthKey) throws -> Auth {
         let fetchQuery = [
             kSecClass: kSecClassGenericPassword,
             kSecAttrAccount: key.rawValue,
@@ -70,35 +70,35 @@ final class KeychainManager {
         return object
     }
     
-    static func update(key: Key, with auth: Auth) throws {
-        let updateQuery = [
-            kSecClass: kSecClassGenericPassword,
-            kSecAttrAccount: key.rawValue
-        ] as CFDictionary
-        
-        let data = try encode(auth)
-        let newValue = [
-            kSecValueData: data
-        ] as CFDictionary
-        
-        let status = SecItemUpdate(updateQuery, newValue)
-        guard status == errSecSuccess else {
-            if status == errSecItemNotFound {
-                throw KeychainError.authObjectNotFound
-            }
-            throw KeychainError.unexpectedStatus(status)
-        }
-    }
+    func update(key: AuthKey, with auth: Auth) throws {
+    let updateQuery = [
+        kSecClass: kSecClassGenericPassword,
+        kSecAttrAccount: key.rawValue
+    ] as CFDictionary
     
-    static func delete(key: Key) throws {
-        let deleteQuery = [
-            kSecClass: kSecClassGenericPassword,
-            kSecAttrAccount: key.rawValue
-        ] as CFDictionary
-        
-        let status = SecItemDelete(deleteQuery)
-        guard status == errSecSuccess || status == errSecItemNotFound else {
-            throw KeychainError.unexpectedStatus(status)
+    let data = try encode(auth)
+    let newValue = [
+        kSecValueData: data
+    ] as CFDictionary
+    
+    let status = SecItemUpdate(updateQuery, newValue)
+    guard status == errSecSuccess else {
+        if status == errSecItemNotFound {
+            throw KeychainError.authObjectNotFound
         }
+        throw KeychainError.unexpectedStatus(status)
     }
+}
+    
+    func delete(key: AuthKey) throws {
+    let deleteQuery = [
+        kSecClass: kSecClassGenericPassword,
+        kSecAttrAccount: key.rawValue
+    ] as CFDictionary
+    
+    let status = SecItemDelete(deleteQuery)
+    guard status == errSecSuccess || status == errSecItemNotFound else {
+        throw KeychainError.unexpectedStatus(status)
+    }
+}
 }

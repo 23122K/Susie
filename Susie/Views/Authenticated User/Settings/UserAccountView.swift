@@ -12,7 +12,7 @@ struct UserAccountView: View {
     var body: some View {
         VStack{
             Button("Log out") {
-                vm.model.signOut()
+                print("Logged out")
             }
         }
     }
