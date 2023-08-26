@@ -1,46 +1,55 @@
 import Foundation
 import Network
 
-actor NetworkManager {
-    private let monitor = NWPathMonitor()
-    private let decoder = JSONDecoder()
-    private let monitorQueue = DispatchQueue(label: "monitor.queue", attributes: .initiallyInactive)
-    internal let auth: AuthManager
-    internal let cache: CacheManager
+protocol NetworkStatusDelegate: AnyObject {
+    func networkStatusDidChange(to status: NetworkStatus)
+}
+
+enum NetworkStatus {
+    case connected
+    case disconnected
+}
+
+class NetworkManager: NetworkStatusDelegate {
+
+    let auth: AuthManager
+    let cache: CacheManager
+    let networkMonitor: NetworkMonitor
+    let decoder: JSONDecoder = JSONDecoder()
     
-    func startMonitoringNetwork() {
-        monitor.pathUpdateHandler = { path in
-            guard path.status == .satisfied else {
-                print("Disconnected")
-                return
-            }
-            print("Connected")
+    var hasInternetConnection: Bool = false
+    
+    func networkStatusDidChange(to status: NetworkStatus) {
+        switch status {
+        case .connected:
+            hasInternetConnection = true
+        case.disconnected:
+            hasInternetConnection = false
+        }
+    }
+
+    //TODO: Check if casting response as! T is save
+    func data<T: Codable>(from endpoint: Endpoint, authorize: Bool = true, retry: Bool = true, policy: CachePolicy = CachePolicy(shouldCache: true)) async throws -> T {
+        
+        guard hasInternetConnection else {
+            throw NetworkError.noInternetConnection
         }
         
-        monitor.start(queue: monitorQueue)
-    }
-    
-    func stopMonitoringNetwork() {
-        monitor.cancel()
-    }
-    
-    //TODO: Check if casting response as! T is save
-    func data<T: Codable>(from endpoint: Endpoint, authorize: Bool = true, retry: Bool = true, policy: CachePolicy = CachePolicy()) async throws -> T {
-        //Cache policy set to false wont trigger it as it requires endpoint to be cachable
-        if let cache = cache[endpoint.url] {
-            switch cache.status {
-            case .cached(let response):
-                return response as! T
+        if let entry = await cache.fetch(for: endpoint.url) {
+            switch entry.status {
             case .ongoing(let task):
                 return try await task.value as! T
+            case .cached(let response):
+                return response as! T
+            case .completed:
+                break
             }
         }
         
-        print("Request is made")
         let request = authorize ? try await auth.authorize(request: endpoint.request) : endpoint.request
         let task = Task<Codable, Error> {
             guard let (data, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
-                throw NetworkError.invalidHttpResponse
+                throw NetworkError.invalidHTTPResponse
             }
             
             guard (200...299).contains( response.statusCode ) else {
@@ -51,18 +60,26 @@ actor NetworkManager {
         }
         
         
+        var entry = CacheEntry(status: .ongoing(task))
+        await cache.insert(entry: entry, for: endpoint.url)
+        let response = try await task.value
+        
         guard policy.shouldCache else {
-            return try await task.value as! T
+            entry = CacheEntry(status: .completed)
+            await cache.insert(entry: entry, for: endpoint.url)
+            return response as! T
+            
         }
         
-        cache[endpoint.url] = Cache(status: .ongoing(task))
-        let response = try await task.value
-        cache[endpoint.url] = Cache(status: .cached(response))
+        entry = CacheEntry(status: .cached(response))
+        await cache.insert(entry: entry, for: endpoint.url)
         return response as! T
     }
     
-    init(authManager: AuthManager = AuthManager(), cacheManager: CacheManager = CacheManager { Date() }){
+    init(authManager: AuthManager = AuthManager(), networkMonitor: NetworkMonitor = NetworkMonitor(), cacheManager: CacheManager = CacheManager { Date() }){
         self.auth = authManager
         self.cache = cacheManager
+        self.networkMonitor = networkMonitor
+        self.networkMonitor.delegate = self
     }
 }

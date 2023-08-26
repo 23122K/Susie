@@ -14,7 +14,6 @@ enum HTTPMethod: String {
     case delete = "DELETE"
 }
 
-
 enum Endpoints: Endpoint {
     var encoder: JSONEncoder {
         return JSONEncoder()

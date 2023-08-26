@@ -12,7 +12,7 @@ class Client: ObservableObject {
     var projects: Array<Project> {
         get async throws {
             var newProjects = Array<Project>()
-            let projectIDs: Array<Int32> = try await fetchProjects().map{ project -> Int32 in
+            let projectIDs: Array<Int32> = try await fetchProjects().map { project -> Int32 in
                 return project.projectID
             }
             
@@ -39,8 +39,7 @@ class Client: ObservableObject {
     //MARK: - Init
     init(networkManager: NetworkManager = NetworkManager()) {
         self.network = networkManager
-        
-        Task { await networkManager.startMonitoringNetwork() }
+        Task { networkManager.networkMonitor.start() }
         
     }
     
@@ -52,7 +51,7 @@ class Client: ObservableObject {
         let endpoint = Endpoints.signUp(with: credentials)
         let policy = CachePolicy(shouldCache: false)
         Task {
-            let _: SignUpResponse = try await network.data(from: endpoint, authorize: false)
+            let _: SignUpResponse = try await network.data(from: endpoint, authorize: false, policy: policy)
         }
     }
     
@@ -71,8 +70,8 @@ class Client: ObservableObject {
     }
     
     func userInfo() {
-        let policy = CachePolicy(shouldCache: false)
         let endpoint = Endpoints.currentUserInfo
+        let policy = CachePolicy(shouldCache: false)
         Task {
             let response: User = try await network.data(from: endpoint, policy: policy)
             print(response)
@@ -81,9 +80,8 @@ class Client: ObservableObject {
     
     func signIn(with credentials: SignInRequest) {
         let endpoint = Endpoints.signIn(with: credentials)
-        let policy = CachePolicy(shouldCache: false)
         Task {
-            let response: SignInResponse = try await network.data(from: endpoint, authorize: false, retry: false, policy: policy)
+            let response: SignInResponse = try await network.data(from: endpoint, authorize: false, retry: false)
             keychain[.accessAuth] = Auth(token: response.accessToken, expiresIn: response.expiresIn)
             keychain[.refreshAuth] = Auth(token: response.refreshToken, expiresIn: response.refreshExpiresIn)
             isAuthenticated = true

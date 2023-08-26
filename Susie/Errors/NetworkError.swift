@@ -8,17 +8,20 @@
 import Foundation
 
 enum NetworkError: Error {
-    case invalidHttpResponse
+    case noInternetConnection
+    case invalidHTTPResponse
     case failure(statusCode: Int)
 }
 
 extension NetworkError: LocalizedError {
     var errorDescription: String? {
         switch self {
-        case .invalidHttpResponse:
+        case .invalidHTTPResponse:
             return NSLocalizedString("Recived response is invalid", comment: "")
         case let .failure(statusCode):
             return NSLocalizedString("Response status code \(statusCode)", comment: "")
+        case let .noInternetConnection:
+            return NSLocalizedString("Device is currently offline", comment: "")
         }
     }
 }

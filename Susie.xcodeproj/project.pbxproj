@@ -74,8 +74,8 @@
 		6FD870972A003A4000AA3EB7 /* CustomSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD870962A003A4000AA3EB7 /* CustomSection.swift */; };
 		6FD870992A003AA000AA3EB7 /* IssueOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD870982A003AA000AA3EB7 /* IssueOverviewView.swift */; };
 		6FD904742A9614B3009AA849 /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD904732A9614B3009AA849 /* URL+Extension.swift */; };
-		6FD904762A9614D3009AA849 /* CacheManager+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD904752A9614D3009AA849 /* CacheManager+Subscript.swift */; };
 		6FD904792A9620D3009AA849 /* URLSession+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD904782A9620D3009AA849 /* URLSession+Extension.swift */; };
+		6FE5179A2A9A111A001A5EDF /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE517992A9A111A001A5EDF /* NetworkMonitor.swift */; };
 		6FE816382A69603B005D6817 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE816372A69603B005D6817 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
@@ -148,8 +148,8 @@
 		6FD870962A003A4000AA3EB7 /* CustomSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSection.swift; sourceTree = "<group>"; };
 		6FD870982A003AA000AA3EB7 /* IssueOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueOverviewView.swift; sourceTree = "<group>"; };
 		6FD904732A9614B3009AA849 /* URL+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extension.swift"; sourceTree = "<group>"; };
-		6FD904752A9614D3009AA849 /* CacheManager+Subscript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CacheManager+Subscript.swift"; sourceTree = "<group>"; };
 		6FD904782A9620D3009AA849 /* URLSession+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Extension.swift"; sourceTree = "<group>"; };
+		6FE517992A9A111A001A5EDF /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		6FE816372A69603B005D6817 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -406,7 +406,6 @@
 				6F908B0F2A9791D10012463A /* Endpoint+Extension.swift */,
 				6FD904732A9614B3009AA849 /* URL+Extension.swift */,
 				6FD904782A9620D3009AA849 /* URLSession+Extension.swift */,
-				6FD904752A9614D3009AA849 /* CacheManager+Subscript.swift */,
 				6F908B0A2A974CA70012463A /* KeychainManager+Subscript.swift */,
 			);
 			path = Extensions;
@@ -429,6 +428,7 @@
 				6F5F5EE829DC472100B9BCE6 /* NetworkManager.swift */,
 				6F895BF12A93C8F20026438D /* Endpoints.swift */,
 				6F5F9D842A13833C00F51B8E /* DependencyInjectionManager.swift */,
+				6FE517992A9A111A001A5EDF /* NetworkMonitor.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -528,6 +528,7 @@
 				6FD870952A003A1800AA3EB7 /* DetailedRowView.swift in Sources */,
 				6FD0152C29DAB662009F2A77 /* SecondaryButton.swift in Sources */,
 				6F895C2C2A955CCE0026438D /* KeychainError.swift in Sources */,
+				6FE5179A2A9A111A001A5EDF /* NetworkMonitor.swift in Sources */,
 				6F5F5EFB29DDA72800B9BCE6 /* LoggedPersonView.swift in Sources */,
 				6F5F5EFF29DEE82700B9BCE6 /* Issue+Extension.swift in Sources */,
 				6F63307D2A71A60600719862 /* SprintDropDelegate.swift in Sources */,
@@ -543,7 +544,6 @@
 				6FD0151829DAADDE009F2A77 /* BoardView.swift in Sources */,
 				6F8497042A8FAF1200A3F46A /* Sprint.swift in Sources */,
 				6FD0152329DAB0D9009F2A77 /* SignInView.swift in Sources */,
-				6FD904762A9614D3009AA849 /* CacheManager+Subscript.swift in Sources */,
 				6FD008B22A0266AE00D3B760 /* Checkbox.swift in Sources */,
 				6FD0153729DAED26009F2A77 /* BacklogsView.swift in Sources */,
 				6F895C232A9512850026438D /* CacheManager.swift in Sources */,

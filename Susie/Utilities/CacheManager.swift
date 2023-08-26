@@ -7,32 +7,32 @@
 
 import Foundation
 
-class CacheManager {
-    private let cache = NSCache<NSString, ResponseCache>()
+actor CacheManager {
+    private let cache = NSCache<NSString, CacheObject>()
     private let dateProvider: () -> Date
     
-    internal func insertResponse(value: ResponseCache, for url: URL) {
+    internal func insert(entry: CacheEntry, for url: URL) {
+        let value = CacheObject(entry: entry)
         cache.setObject(value, forKey: url.asNSString)
     }
     
-    internal func fetchResponse(for url: URL) -> Cache? {
-        guard let response = cache.object(forKey: url.asNSString)?.response else {
+    internal func fetch(for url: URL) -> CacheEntry? {
+        guard let entry = cache.object(forKey: url.asNSString)?.entry else {
             return nil
         }
         
-        guard response.expiresAt > dateProvider() else {
-            deleteResponse(url: url)
+        guard entry.expiresAt > dateProvider() else {
             return nil
         }
         
-        return response
+        return entry
     }
     
-    internal func deleteResponse(url: URL) {
+    internal func delete(url: URL) {
         cache.removeObject(forKey: url.asNSString)
     }
     
-    func clearCache() {
+    func clearCache() async {
         cache.removeAllObjects()
     }
     
@@ -41,43 +41,43 @@ class CacheManager {
     }
 }
 
-final class ResponseCache: NSDiscardableContent {
-    let response: Cache
+//NSCache must take AnyObject as its parameter
+final class CacheObject: NSDiscardableContent {
+    let entry: CacheEntry
     
     internal func endContentAccess() { }
     internal func beginContentAccess() -> Bool { return true }
     internal func isContentDiscarded() -> Bool { return false }
     internal func discardContentIfPossible() { }
     
-    init(response: Cache) {
-        print("ResponseCache has been initialised")
-        self.response = response
+    init(entry: CacheEntry) {
+        self.entry = entry
+    }
+}
+
+struct CacheEntry {
+    let status: Status
+    let expiresAt: Date
+    
+    init(status: Status, expiresIn: TimeInterval = 5) {
+        self.status = status
+        self.expiresAt = Date().addingTimeInterval(expiresIn)
     }
 }
 
 struct CachePolicy {
     let shouldCache: Bool
-    let cacheExpiresIn: TimeInterval
+    let shouldExpireIn: TimeInterval
     
-    ///Default cache policy are `shouldCache = true` and `cacheExpiresIn = 15` seconds
-    init(shouldCache: Bool = true, cacheExpiresIn: TimeInterval = 15) {
+    init(shouldCache: Bool, shouldExpireIn: TimeInterval = 0) {
         self.shouldCache = shouldCache
-        self.cacheExpiresIn = cacheExpiresIn
+        self.shouldExpireIn = shouldExpireIn
     }
 }
 
-struct Cache {
-    public let status: RequestStatus
-    public let expiresAt: Date
-
-    init(status: RequestStatus) {
-        self.status = status
-        self.expiresAt = Date().add(seconds: 60)
-    }
-}
-
-enum RequestStatus {
+enum Status {
     case ongoing(Task<Codable, Error>)
+    case completed
     case cached(Codable)
 }
 
