@@ -18,7 +18,6 @@ enum Endpoints: Endpoint {
     var encoder: JSONEncoder {
         return JSONEncoder()
     }
-    
     //MARK: Endpoints
     //Authentication
     case signIn(with: SignInRequest)
@@ -122,7 +121,9 @@ enum Endpoints: Endpoint {
             return try? encoder.encode(credentials)
         case .signUp(let credentials):
             return try? encoder.encode(credentials)
-        case .createProject(let details), .updateProject(let details):
+        case .createProject(let details):
+            return try? encoder.encode(details)
+        case .updateProject(let details):
             return try? encoder.encode(details)
         case .createIssue(let details), .updateIssue(let details):
             return try? encoder.encode(details)

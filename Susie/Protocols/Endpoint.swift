@@ -22,4 +22,6 @@ protocol Endpoint {
     var headers: [String: String] { get }
     var queries: [String: String]? { get }
     var body: Data? { get }
+    
+//    var desciption: String { get}
 }

@@ -34,16 +34,17 @@ class SignOnViewModel: ObservableObject {
     }
     
     func signUp() {
-        switch isScrumMaster {
-        case true:
-            let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password, isScrumMaster: true)
-            client.signUp(with: credentials)
-        case false:
-            let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password)
-            client.signUp(with: credentials)
+        Task {
+            switch isScrumMaster {
+            case true:
+                let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password, isScrumMaster: true)
+                try await client.signUp(with: credentials)
+            case false:
+                let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password)
+                try await client.signUp(with: credentials)
+            }
+            cleanForms()
         }
-        
-        cleanForms()
     }
     
     func cleanForms() {

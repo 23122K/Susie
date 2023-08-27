@@ -20,7 +20,7 @@ extension NetworkError: LocalizedError {
             return NSLocalizedString("Recived response is invalid", comment: "")
         case let .failure(statusCode):
             return NSLocalizedString("Response status code \(statusCode)", comment: "")
-        case let .noInternetConnection:
+        case .noInternetConnection:
             return NSLocalizedString("Device is currently offline", comment: "")
         }
     }

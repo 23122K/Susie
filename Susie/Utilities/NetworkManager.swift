@@ -10,32 +10,85 @@ enum NetworkStatus {
     case disconnected
 }
 
-class NetworkManager: NetworkStatusDelegate {
 
-    let auth: AuthManager
+actor NetworkManager {
     let cache: CacheManager
-    let networkMonitor: NetworkMonitor
-    let decoder: JSONDecoder = JSONDecoder()
+    let keychain: KeychainManager
     
-    var hasInternetConnection: Bool = false
+    private var hasInternetConnection: Bool = true
+    private var refreshTask: Task<Auth, Error>?
     
-    func networkStatusDidChange(to status: NetworkStatus) {
-        switch status {
-        case .connected:
-            hasInternetConnection = true
-        case.disconnected:
-            hasInternetConnection = false
+    private var decoder: JSONDecoder = JSONDecoder()
+    
+    //MARK: Authorization
+    private var auth: Auth {
+        get async throws {
+            if let task = refreshTask {
+                return try await task.value
+            }
+        
+            guard let accessAuth = keychain[.accessAuth] else {
+                throw AuthError.authObjectIsMissing
+            }
+            
+
+            guard accessAuth.isValid else {
+                return try await refresh()
+            }
+            
+            return accessAuth
         }
     }
-
-    //TODO: Check if casting response as! T is save
-    func data<T: Codable>(from endpoint: Endpoint, authorize: Bool = true, retry: Bool = true, policy: CachePolicy = CachePolicy(shouldCache: true)) async throws -> T {
+    
+    private func authorize(request: URLRequest) async throws -> URLRequest {
+        let auth = try await auth
+        var request = request
+        request.addValue("Bearer \(auth.token)", forHTTPHeaderField: "Authorization")
         
-        guard hasInternetConnection else {
-            throw NetworkError.noInternetConnection
+        return request
+    }
+    
+    private func refresh() async throws -> Auth {
+        if let refreshTask = refreshTask {
+            return try await refreshTask.value
         }
         
-        if let entry = await cache.fetch(for: endpoint.url) {
+        guard let refreshAuth = keychain[.refreshAuth] else {
+            throw AuthError.authObjectIsMissing
+        }
+        
+        guard refreshAuth.isValid else {
+            throw AuthError.couldNotRefreshAuthObject
+        }
+        
+        let task = Task { () throws -> Auth in
+            defer { refreshTask = nil }
+            
+            let endpoint = Endpoints.refreshToken(token: refreshAuth.token)
+            return try await response(from: endpoint)
+        }
+        
+        self.refreshTask = task
+        return try await task.value
+    }
+    
+    private func response<T: Codable>(from endpoint: Endpoint) async throws -> T {
+        guard hasInternetConnection else { throw NetworkError.noInternetConnection }
+        guard let (data, response) = try await URLSession.shared.data(for: endpoint.request) as? (Data, HTTPURLResponse) else {
+            throw NetworkError.invalidHTTPResponse
+        }
+        
+        guard (200...299).contains( response.statusCode ) else {
+            throw NetworkError.failure(statusCode: response.statusCode)
+        }
+        
+        return try decoder.decode(T.self, from: data)
+    }
+    
+    func response<T: Codable>(from endpoint: Endpoint, authorize: Bool = true, retry: Bool = true, policy: CachePolicy = CachePolicy()) async throws -> T {
+        guard hasInternetConnection else { throw NetworkError.noInternetConnection }
+        
+        if let entry = cache[endpoint] {
             switch entry.status {
             case .ongoing(let task):
                 return try await task.value as! T
@@ -46,7 +99,8 @@ class NetworkManager: NetworkStatusDelegate {
             }
         }
         
-        let request = authorize ? try await auth.authorize(request: endpoint.request) : endpoint.request
+        let request = authorize ? try await self.authorize(request: endpoint.request) : endpoint.request
+        
         let task = Task<Codable, Error> {
             guard let (data, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
                 throw NetworkError.invalidHTTPResponse
@@ -56,30 +110,53 @@ class NetworkManager: NetworkStatusDelegate {
                 throw NetworkError.failure(statusCode: response.statusCode)
             }
             
-            return try decoder.decode(T.self, from: data)
+            
+            return try? decoder.decode(T.self, from: data)
         }
         
-        
-        var entry = CacheEntry(status: .ongoing(task))
-        await cache.insert(entry: entry, for: endpoint.url)
+        //Caching
+        cache[endpoint] = CacheObject(status: .ongoing(task))
         let response = try await task.value
         
         guard policy.shouldCache else {
-            entry = CacheEntry(status: .completed)
-            await cache.insert(entry: entry, for: endpoint.url)
+            cache[endpoint] = CacheObject(status: .completed)
             return response as! T
-            
         }
         
-        entry = CacheEntry(status: .cached(response))
-        await cache.insert(entry: entry, for: endpoint.url)
+        cache[endpoint] = CacheObject(status: .cached(response), expiresIn: policy.shouldExpireIn)
         return response as! T
+        
     }
     
-    init(authManager: AuthManager = AuthManager(), networkMonitor: NetworkMonitor = NetworkMonitor(), cacheManager: CacheManager = CacheManager { Date() }){
-        self.auth = authManager
+    //TODO: Add -> Some sort of resposne, Kacper did not implemented it yet
+    func request(to endpoint: Endpoint, authorize: Bool = true, retry: Bool = true) async throws {
+        guard hasInternetConnection else { throw NetworkError.noInternetConnection }
+        
+        let request = authorize ? try await self.authorize(request: endpoint.request) : endpoint.request
+        guard let (_, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
+            throw NetworkError.invalidHTTPResponse
+        }
+            
+        guard (200...299).contains( response.statusCode ) else {
+            throw NetworkError.failure(statusCode: response.statusCode)
+        }
+    }
+    
+    func updateNetworkStatus(to status: NetworkStatus) {
+        switch status {
+        case .connected:
+            hasInternetConnection = true
+        case .disconnected:
+            hasInternetConnection = false
+        }
+    }
+    
+    func clearEndpointCache(endpoint: Endpoint) {
+        cache[endpoint] = nil
+    }
+    
+    init(keychainManager: KeychainManager, cacheManager: CacheManager = CacheManager{ Date() }){
         self.cache = cacheManager
-        self.networkMonitor = networkMonitor
-        self.networkMonitor.delegate = self
+        self.keychain = keychainManager
     }
 }

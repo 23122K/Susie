@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 class SignInViewModel: ObservableObject {
     @Injected(\.client) var client
     
@@ -24,8 +25,10 @@ class SignInViewModel: ObservableObject {
     
     func signIn() {
         let credentials = SignInRequest(email: email, password: password)
-        client.signIn(with: credentials)
-        self.cleanForms()
+        Task {
+            try await client.signIn(with: credentials)
+            self.cleanForms()
+        }
     }
     
     func cleanForms() {

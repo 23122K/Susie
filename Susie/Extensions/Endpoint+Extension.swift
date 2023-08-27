@@ -42,4 +42,10 @@ extension Endpoint {
 
         return request
     }
+    
+    //self.request.hash or Hasher() usese random seed so result difer every time app is relunched
+    public var uid: String {
+        return String.init(self.httpMethod.rawValue + self.path)
+    }
+
 }

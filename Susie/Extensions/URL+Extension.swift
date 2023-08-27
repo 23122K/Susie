@@ -7,8 +7,8 @@
 
 import Foundation
 
-extension URL {
+extension String {
     var asNSString: NSString {
-        return self.absoluteString as NSString
+        return self as NSString
     }
 }

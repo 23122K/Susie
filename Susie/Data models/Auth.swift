@@ -13,7 +13,8 @@ struct Auth: Codable {
     
     init(token: String, expiresIn: Int32) {
         self.token = token
-        self.expiresAt = Date().add(minutes: Int(expiresIn))
+        let timeInterval = Double(expiresIn)
+        self.expiresAt = Date().addingTimeInterval(timeInterval)
     }
 }
 

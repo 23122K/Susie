@@ -24,14 +24,25 @@ struct Project: Identifiable, Codable {
     
 }
 
-struct ProjectDTO: Codable {
-    let projectID: Int32
+struct ProjectDTO: Identifiable, Codable {
+    let id: Int32
     let name: String
     let description: String
     
-    init(projectID: Int32 = 0, name: String, description: String) {
-        self.projectID = projectID
+    private enum CodingKeys: String, CodingKey {
+        case id = "projectID"
+        case name
+        case description
+    }
+    
+    init(id: Int32 = 0, name: String, description: String) {
+        self.id = id
         self.name = name
         self.description = description
     }
+}
+
+struct ProjectUpdateRequest: Codable {
+    let name: String
+    let description: String
 }
