@@ -8,18 +8,25 @@
 import Foundation
 
 class CacheManager {
-    private let cache = NSCache<NSString, CacheObject>()
+    let cache = NSCache<NSString, Cache>()
+    let status = NSCache<NSString, StatusObject>()
+    
+    private var networkStatus: NetworkStatus = .connected
     private let dateProvider: () -> Date
-    internal func insert(entry: CacheObject, for endpoint: Endpoint) {
+    
+    
+    internal func insert(entry: Cache, for endpoint: Endpoint) {
         cache.setObject(entry, forKey: endpoint.uid.asNSString)
     }
     
-    internal func fetch(from endpoint: Endpoint) -> CacheObject? {
+    internal func fetch(from endpoint: Endpoint) -> Cache? {
         guard let entry = cache.object(forKey: endpoint.uid.asNSString) else {
             return nil
         }
         
-        guard entry.expiresAt > dateProvider() else {
+        //Basicly, if our client has lost internet connection we don't want to remove cached data even if it is expired
+        //due to obvious reasons
+        guard entry.expiresAt > dateProvider() && networkStatus == .connected else {
             return nil
         }
         
@@ -30,8 +37,14 @@ class CacheManager {
         cache.removeObject(forKey: endpoint.uid.asNSString)
     }
     
-    func clearCache() async {
+    ///Removes all cached data which is currently stored in `CacheManager` object
+    ///aka `cache` and `status`
+    func flush() async {
         cache.removeAllObjects()
+    }
+    
+    func updateNetworkStatus(to status: NetworkStatus) {
+        networkStatus = status
     }
     
     init(dateProvider: @escaping () -> Date) {
@@ -40,9 +53,8 @@ class CacheManager {
 }
 
 //NSCache must take AnyObject as its parameter
-final class CacheObject: NSDiscardableContent {
-    
-    let status: Status
+final class Cache: NSDiscardableContent {
+    let data: Data
     let expiresAt: Date
     
     func endContentAccess() { }
@@ -50,10 +62,23 @@ final class CacheObject: NSDiscardableContent {
     func isContentDiscarded() -> Bool { return false }
     func discardContentIfPossible() { }
     
-    init(status: Status, expiresIn: TimeInterval = 5) {
-        self.status = status
+    init(data: Data, for expiresIn: TimeInterval) {
+        self.data = data
         self.expiresAt = Date().addingTimeInterval(expiresIn)
     }
+}
+
+final class StatusObject {
+    let status: Status
+    
+    init(status: Status) {
+        self.status = status
+    }
+}
+
+enum Status {
+    case ongoing(Task<Data, Error>)
+    case completed
 }
 
 struct CachePolicy {
@@ -65,10 +90,3 @@ struct CachePolicy {
         self.shouldExpireIn = shouldExpireIn
     }
 }
-
-enum Status {
-    case ongoing(Task<Codable, Error>)
-    case completed
-    case cached(Codable)
-}
-

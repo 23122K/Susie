@@ -1,21 +1,9 @@
 import Foundation
-import Network
-
-protocol NetworkStatusDelegate: AnyObject {
-    func networkStatusDidChange(to status: NetworkStatus)
-}
-
-enum NetworkStatus {
-    case connected
-    case disconnected
-}
-
 
 actor NetworkManager {
     let cache: CacheManager
     let keychain: KeychainManager
     
-    private var hasInternetConnection: Bool = true
     private var refreshTask: Task<Auth, Error>?
     
     private var decoder: JSONDecoder = JSONDecoder()
@@ -31,7 +19,6 @@ actor NetworkManager {
                 throw AuthError.authObjectIsMissing
             }
             
-
             guard accessAuth.isValid else {
                 return try await refresh()
             }
@@ -72,36 +59,19 @@ actor NetworkManager {
         return try await task.value
     }
     
-    private func response<T: Codable>(from endpoint: Endpoint) async throws -> T {
-        guard hasInternetConnection else { throw NetworkError.noInternetConnection }
-        guard let (data, response) = try await URLSession.shared.data(for: endpoint.request) as? (Data, HTTPURLResponse) else {
-            throw NetworkError.invalidHTTPResponse
-        }
-        
-        guard (200...299).contains( response.statusCode ) else {
-            throw NetworkError.failure(statusCode: response.statusCode)
-        }
-        
-        return try decoder.decode(T.self, from: data)
-    }
-    
     func response<T: Codable>(from endpoint: Endpoint, authorize: Bool = true, retry: Bool = true, policy: CachePolicy = CachePolicy()) async throws -> T {
-        guard hasInternetConnection else { throw NetworkError.noInternetConnection }
-        
-        if let entry = cache[endpoint] {
-            switch entry.status {
+        if let status = cache.status[endpoint] {
+            switch status {
             case .ongoing(let task):
-                return try await task.value as! T
-            case .cached(let response):
-                return response as! T
+                let data = try await task.value
+                return try decoder.decode(T.self, from: data)
             case .completed:
                 break
             }
         }
         
         let request = authorize ? try await self.authorize(request: endpoint.request) : endpoint.request
-        
-        let task = Task<Codable, Error> {
+        let task = Task<Data, Error> {
             guard let (data, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
                 throw NetworkError.invalidHTTPResponse
             }
@@ -110,52 +80,49 @@ actor NetworkManager {
                 throw NetworkError.failure(statusCode: response.statusCode)
             }
             
-            
-            return try? decoder.decode(T.self, from: data)
+            return data
         }
         
-        //Caching
-        cache[endpoint] = CacheObject(status: .ongoing(task))
-        let response = try await task.value
-        
-        guard policy.shouldCache else {
-            cache[endpoint] = CacheObject(status: .completed)
-            return response as! T
-        }
-        
-        cache[endpoint] = CacheObject(status: .cached(response), expiresIn: policy.shouldExpireIn)
-        return response as! T
+        cache.status[endpoint] = .ongoing(task)
+        let data = try await task.value
+        cache.status[endpoint] = .completed
+        if policy.shouldCache { cache[endpoint] = Cache(data: data, for: policy.shouldExpireIn) }
+        return try decoder.decode(T.self, from: data)
         
     }
     
     //TODO: Add -> Some sort of resposne, Kacper did not implemented it yet
     func request(to endpoint: Endpoint, authorize: Bool = true, retry: Bool = true) async throws {
-        guard hasInternetConnection else { throw NetworkError.noInternetConnection }
+        if let status = cache.status[endpoint] {
+            switch status {
+            case .ongoing:
+                return
+            case .completed:
+                break
+            }
+        }
         
         let request = authorize ? try await self.authorize(request: endpoint.request) : endpoint.request
-        guard let (_, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
-            throw NetworkError.invalidHTTPResponse
-        }
+        let task = Task<Data, Error> {
+            guard let (_, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
+                throw NetworkError.invalidHTTPResponse
+            }
             
-        guard (200...299).contains( response.statusCode ) else {
-            throw NetworkError.failure(statusCode: response.statusCode)
+            guard (200...299).contains( response.statusCode ) else {
+                throw NetworkError.failure(statusCode: response.statusCode)
+            }
+            
+            //TODO: Response of error or success should be returned here
+            //Disclamer: If responses will be implemented from server side to all endpoints, might marge this method with `Response`
+            return Data()
         }
+        
+        cache.status[endpoint] = .ongoing(task)
+        let _ = try await task.value
+        cache.status[endpoint] = .completed
     }
     
-    func updateNetworkStatus(to status: NetworkStatus) {
-        switch status {
-        case .connected:
-            hasInternetConnection = true
-        case .disconnected:
-            hasInternetConnection = false
-        }
-    }
-    
-    func clearEndpointCache(endpoint: Endpoint) {
-        cache[endpoint] = nil
-    }
-    
-    init(keychainManager: KeychainManager, cacheManager: CacheManager = CacheManager{ Date() }){
+    init(keychainManager: KeychainManager, cacheManager: CacheManager){
         self.cache = cacheManager
         self.keychain = keychainManager
     }

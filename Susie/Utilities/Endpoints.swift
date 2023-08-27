@@ -11,6 +11,7 @@ enum HTTPMethod: String {
     case get = "GET"
     case put = "PUT"
     case post = "POST"
+    case patch = "PATCH"
     case delete = "DELETE"
 }
 
@@ -18,6 +19,7 @@ enum Endpoints: Endpoint {
     var encoder: JSONEncoder {
         return JSONEncoder()
     }
+    
     //MARK: Endpoints
     //Authentication
     case signIn(with: SignInRequest)
@@ -63,9 +65,7 @@ enum Endpoints: Endpoint {
     var schema: String { "http" }
     var host: String { "127.0.0.1" }
     var port: Int { 8081 }
-    var version: String {
-        return "/api"
-    }
+    var version: String { "/api" }
     
     var path: String {
         switch self {

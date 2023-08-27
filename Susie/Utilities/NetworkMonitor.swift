@@ -8,6 +8,15 @@
 import Foundation
 import Network
 
+protocol NetworkStatusDelegate: AnyObject {
+    func networkStatusDidChange(to status: NetworkStatus)
+}
+
+enum NetworkStatus {
+    case connected
+    case disconnected
+}
+
 class NetworkMonitor {
     private let monitor = NWPathMonitor()
     private let queue = DispatchQueue(label: "NetworkMonitor.monitor.queue")
@@ -15,6 +24,7 @@ class NetworkMonitor {
     weak var delegate: NetworkStatusDelegate?
     
     //For unknown to me reasons monitor handler outputs same value several times
+    //thus `currentNetworkStatus` property has been introduced to eliminate mentioned inconvenience
     func configure() {
         monitor.pathUpdateHandler = { [self] path in
             if path.status == .satisfied {
