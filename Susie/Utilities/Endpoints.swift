@@ -15,6 +15,24 @@ enum HTTPMethod: String {
     case delete = "DELETE"
 }
 
+protocol Endpoint {
+    var encoder: JSONEncoder { get }
+
+    var schema: String { get }
+    var host: String { get }
+    var port: Int { get }
+    
+    var version: String { get }
+    var path: String { get }
+    
+    var httpMethod: HTTPMethod { get }
+    
+    var headers: [String: String] { get }
+    var queries: [String: String]? { get }
+    var body: Data? { get }
+    
+}
+
 enum Endpoints: Endpoint {
     var encoder: JSONEncoder {
         return JSONEncoder()
