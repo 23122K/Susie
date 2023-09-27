@@ -8,13 +8,36 @@
 import SwiftUI
 
 struct ProjectsView: View {
-    @StateObject private var projectViewModel = ProjectViewModel()
+    @StateObject private var vm = ProjectViewModel()
+    
     var body: some View {
-        VStack {
-            ForEach(projectViewModel.client.projectsDTOs) { project in
-                ProjectRowView(project: project)
+        NavigationStack {
+            List(vm.projectsDTOs) { project in
+                NavigationLink(value: project) {
+                    ProjectRowView(project: project)
+                        .padding(.horizontal)
+                        .padding(.bottom, 5)
+                }
+                .swipeActions {
+                    Button("Delete") {
+                        vm.delete(project: project)
+                    }
+                }
+            }
+            .navigationTitle("Projects")
+            .toolbar(.hidden, for: .navigationBar)
+            .navigationDestination(for: ProjectDTO.self) { _ in
+                AuthenticatedUserView()
+            }
+            
+            Button("Create") {
+                let rndm = Int.random(in: 0..<9999)
+                vm.name = "Test_\(rndm)"
+                vm.description = "Test"
+                vm.createProject()
             }
         }
+        .onAppear{ vm.fetch() }
     }
 }
 

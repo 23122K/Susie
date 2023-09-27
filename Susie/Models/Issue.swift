@@ -5,9 +5,6 @@
 //  Created by Patryk Maciąg on 22/08/2023.
 //
 
-
-//MARK: DAO
-
 struct Issue: Identifiable, Codable {
     let id: Int32
     let name: String
@@ -28,6 +25,9 @@ struct IssueDTO: Codable {
     let repoter: User
     let asignee: User
     let projectID: Int32?
+    let type: IssueType
+    let priority: IssuePriority
+    let status: IssueStatus
     
     enum CodingKeys: String, CodingKey {
         case id = "issueID"
@@ -37,6 +37,9 @@ struct IssueDTO: Codable {
         case repoter
         case asignee
         case projectID
+        case type = "issueTypeID"
+        case priority = "issuePriorityID"
+        case status = "issueStatusID"
     }
 }
 
@@ -44,20 +47,15 @@ struct IssueGeneralDTO: Identifiable, Codable {
     let id: Int32
     let name: String
     let asignee: User
+    let status: IssueStatus
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case asignee
+        case status = "issueStatusID"
+    }
 }
-
-struct IssueCreateRequest: Codable {
-    let name: String
-    let description: String
-}
-
-struct IssueUpdateRequest: Codable {
-    let id: Int32
-    let name: String
-    let description: String
-    let estimation: Int32
-}
-
 
 struct IssueType: Identifiable, Codable {
     let id: Int32

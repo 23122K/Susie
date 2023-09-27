@@ -5,10 +5,6 @@
 //  Created by Patryk Maciąg on 22/08/2023.
 //
 
-enum DecodingError: Error {
-    case decodingFailed
-}
-
 struct SignInRequest: Codable {
     let email: String
     let password: String
@@ -35,27 +31,4 @@ struct SignInResponse: Codable {
         case refreshExpiresIn = "refresh_expires_in"
         case userRoles
     }
-    
-//    init(from decoder: Decoder) throws {
-//        let container = try decoder.container(keyedBy: CodingKeys.self)
-//        let accessToken = try container.decodeIfPresent(String.self, forKey: .accessToken)
-//        let refreshToken = try container.decodeIfPresent(String.self, forKey: .refreshToken)
-//        let expiresIn = try container.decodeIfPresent(Int32.self, forKey: .expiresIn)
-//        let refreshExpiresIn = try container.decodeIfPresent(Int32.self, forKey: .refreshExpiresIn)
-//        let userRoles = try container.decodeIfPresent(Array<UserRole>.self, forKey: .userRoles)
-//
-//        guard let accessToken = accessToken,
-//              let refreshToken = refreshToken,
-//              let expiresIn = expiresIn,
-//              let refreshExpiresIn = refreshExpiresIn,
-//              let userRoles = userRoles else {
-//            throw DecodingError.decodingFailed
-//        }
-//
-//        self.accessToken = accessToken
-//        self.refreshToken = refreshToken
-//        self.expiresIn = expiresIn
-//        self.refreshExpiresIn = refreshExpiresIn
-//        self.userRoles = userRoles
-//    }
 }

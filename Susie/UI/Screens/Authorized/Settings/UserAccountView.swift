@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct UserAccountView: View {
-    @EnvironmentObject var vm: ClientViewModel
     var body: some View {
         VStack{
             Button("Log out") {

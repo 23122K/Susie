@@ -46,7 +46,7 @@ class ClientViewModel: ObservableObject {
     
     func delete(project: ProjectDTO) {
         Task {
-            try await client.deleteProject(with: Int(project.id))
+            try await client.deleteProject(with: project.id)
 //            projectDTOs = client.projectsDTOs
 //            projects = client.projectsDetailed
         }
@@ -56,12 +56,6 @@ class ClientViewModel: ObservableObject {
         Task {
             try await client.fetchProject(with: project.id)
 //            projects = client.projectsDetailed
-        }
-    }
-    
-    func signIn(with credentials: SignInRequest){
-        Task {
-            try await client.signIn(with: credentials)
         }
     }
     

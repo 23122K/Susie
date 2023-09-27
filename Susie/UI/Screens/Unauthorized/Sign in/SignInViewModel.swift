@@ -28,7 +28,9 @@ class SignInViewModel: ObservableObject {
         defer { clean() }
         let credentials = SignInRequest(email: email, password: password)
         Task {
-            try await client.signIn(with: credentials)
+            do { try await client.signIn(with: credentials) } catch {
+                print("Invalid credentials")
+            }
         }
     }
     
@@ -37,7 +39,7 @@ class SignInViewModel: ObservableObject {
         password = .init()
     }
     
-    init() {
-        self.client = Container.shared.client()
+    init(container: Container = Container.shared) {
+        self.client = container.client()
     }
 }

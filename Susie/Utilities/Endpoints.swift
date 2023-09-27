@@ -45,12 +45,12 @@ enum Endpoints: Endpoint {
     case refreshToken(token: String)
     
     //Project
-    case fetchProject(id: Int)
+    case fetchProject(id: Int32)
     case fetchProjects
     case updateProject(with: ProjectDTO)
     case createProject(with: ProjectDTO)
-    case deleteProject(id: Int)
-    case assignToProject(email: String, projectID: Int)
+    case deleteProject(id: Int32)
+    case assignToProject(email: String, projectID: Int32)
     
     //Issue
     ///Fetches issues assigned to project with given id

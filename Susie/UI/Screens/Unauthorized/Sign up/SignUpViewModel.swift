@@ -9,7 +9,7 @@ import SwiftUI
 import Factory
 
 class SignUpViewModel: ObservableObject {
-    @Injected(\.client) var client
+    private var client: Client
     
     @Published var firstName = String()
     @Published var lastName = String()
@@ -46,6 +46,8 @@ class SignUpViewModel: ObservableObject {
                 let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password)
                 try await client.signUp(with: credentials)
             }
+            
+            try await client.signIn(with: SignInRequest(email: emial, password: password))
         }
     }
     
@@ -58,5 +60,7 @@ class SignUpViewModel: ObservableObject {
         isScrumMaster = false
     }
     
-    init() {}
+    init(container: Container = Container.shared) {
+        self.client = container.client()
+    }
 }

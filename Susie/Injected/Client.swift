@@ -12,9 +12,14 @@ class Client: ObservableObject {
     private(set) var networkStatus: NetworkStatus = .connected
     private var boards = ["To Do", "In progress", "In review", "Done"]
     
-    @Published private(set) var isAuthenticated: Bool = false 
+    @Published private(set) var isAuthenticated: Bool = false {
+        willSet {
+            Task { try await userInfo() }
+        }
+    }
+    
     @Published private(set) var projectsDTOs: Array<ProjectDTO> = .init()
-    @Published private(set) var projectsDetailed: Array<Project> = .init()
+    @Published private(set) var projects: Array<Project> = .init()
     
     var user: User?
     
@@ -25,24 +30,21 @@ class Client: ObservableObject {
     }
         
     func signUp(with credentials: SignUpRequest) async throws {
-        print(#function)
         let endpoint = Endpoints.signUp(with: credentials)
         let _: SignUpResponse = try await network.response(from: endpoint, authorize: false, retry: false)
     }
     
     func signIn(with credentials: SignInRequest) async throws {
-        print(#function)
         let endpoint = Endpoints.signIn(with: credentials)
         let response: SignInResponse = try await network.response(from: endpoint, authorize: false, retry: false)
+        
         keychain[.accessAuth] = Auth(token: response.accessToken, expiresIn: response.expiresIn)
         keychain[.refreshAuth] = Auth(token: response.refreshToken, expiresIn: response.refreshExpiresIn)
         
-        print("Authenitcated")
         isAuthenticated = true
     }
     
     func userInfo() async throws {
-        print(#function)
         let endpoint = Endpoints.currentUserInfo
         let user: User = try await network.response(from: endpoint)
         self.user = user
@@ -72,14 +74,13 @@ class Client: ObservableObject {
     func fetchProject(with id: Int32) async throws {
         //TODO: Fix Ints in project
         print(#function)
-        let id = Int(id)
         let endpoint = Endpoints.fetchProject(id: id)
         print(endpoint.uid)
         let project: Project = try await network.response(from: endpoint)
         
         //TODO: Don't just append, check if exist, if not
-        projectsDetailed.removeAll(where: { $0.id == project.id })
-        projectsDetailed.append(project)
+        projects.removeAll(where: { $0.id == project.id })
+        projects.append(project)
     }
     
     func updateProject(with details: ProjectDTO) async throws {
@@ -95,16 +96,16 @@ class Client: ObservableObject {
     //TODO: Fix int casting 
     func assignToPoject(user: User, to project: ProjectDTO) async throws {
         //TODO: It does not return anything (not couting status)
-        let endpoint = Endpoints.assignToProject(email: user.email, projectID: Int(project.id))
+        let endpoint = Endpoints.assignToProject(email: user.email, projectID: project.id)
         let _ :SignInResponse = try await network.response(from: endpoint)
     }
     
-    func deleteProject(with id: Int) async throws {
+    func deleteProject(with id: Int32) async throws {
         let endpoint = Endpoints.deleteProject(id: id)
         try await network.request(to: endpoint)
         
-        projectsDTOs.removeAll(where: { $0.id == Int32(id)})
-        projectsDetailed.removeAll(where: { $0.id == Int32(id)})
+        projectsDTOs.removeAll(where: { $0.id == id})
+        projects.removeAll(where: { $0.id == id})
     }
     
     func getBoardNames() -> Array<String> {

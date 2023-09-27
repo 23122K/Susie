@@ -33,7 +33,7 @@ extension Project {
 
 //MARK: DTO
 
-struct ProjectDTO: Identifiable, Codable {
+struct ProjectDTO: Identifiable, Codable, Hashable {
     let id: Int32
     let name: String
     let description: String

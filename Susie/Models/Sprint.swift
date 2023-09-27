@@ -10,19 +10,16 @@ struct Sprint: Identifiable, Codable {
     let id: Int32
     let name: String
     let startTime: String //Date
-    let project: Project
-    let sprintIssues: Array<Issue>
-}
-
-struct SprintCreationRequest: Codable {
-    let name: String
     let projectID: Int32
-    let startTime: String //Date
+    let active: Bool
     
-    init(name: String, projectID: Int32, startTime: Date) {
+    init(name: String, projectID: Int32, startTime: Date, active: Bool = false) {
+        let dateFormatter = DateFormatter()
+        
+        self.id = -1
         self.name = name
         self.projectID = projectID
-        let dateFormatter = DateFormatter()
         self.startTime = dateFormatter.string(from: startTime)
+        self.active = active
     }
 }
