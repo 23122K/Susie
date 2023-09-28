@@ -71,34 +71,34 @@ final class KeychainManager {
     }
     
     func update(key: AuthKey, with auth: Auth) throws {
-    let updateQuery = [
-        kSecClass: kSecClassGenericPassword,
-        kSecAttrAccount: key.rawValue
-    ] as CFDictionary
-    
-    let data = try encode(auth)
-    let newValue = [
-        kSecValueData: data
-    ] as CFDictionary
-    
-    let status = SecItemUpdate(updateQuery, newValue)
-    guard status == errSecSuccess else {
-        if status == errSecItemNotFound {
-            throw KeychainError.authObjectNotFound
+        let updateQuery = [
+            kSecClass: kSecClassGenericPassword,
+            kSecAttrAccount: key.rawValue
+        ] as CFDictionary
+        
+        let data = try encode(auth)
+        let newValue = [
+            kSecValueData: data
+        ] as CFDictionary
+        
+        let status = SecItemUpdate(updateQuery, newValue)
+        guard status == errSecSuccess else {
+            if status == errSecItemNotFound {
+                throw KeychainError.authObjectNotFound
+            }
+            throw KeychainError.unexpectedStatus(status)
         }
-        throw KeychainError.unexpectedStatus(status)
     }
-}
     
     func delete(key: AuthKey) throws {
-    let deleteQuery = [
-        kSecClass: kSecClassGenericPassword,
-        kSecAttrAccount: key.rawValue
-    ] as CFDictionary
-    
-    let status = SecItemDelete(deleteQuery)
-    guard status == errSecSuccess || status == errSecItemNotFound else {
-        throw KeychainError.unexpectedStatus(status)
+        let deleteQuery = [
+            kSecClass: kSecClassGenericPassword,
+            kSecAttrAccount: key.rawValue
+        ] as CFDictionary
+        
+        let status = SecItemDelete(deleteQuery)
+        guard status == errSecSuccess || status == errSecItemNotFound else {
+            throw KeychainError.unexpectedStatus(status)
+        }
     }
-}
 }

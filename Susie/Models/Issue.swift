@@ -5,36 +5,25 @@
 //  Created by Patryk Maciąg on 22/08/2023.
 //
 
+
 struct Issue: Identifiable, Codable {
     let id: Int32
     let name: String
     let description: String
     let estimation: Int32
     let reporter: User
-    let assignee: User?
-    let backlog: Backlog
-    let comments: Array<Comment>?
-    let sprint: Sprint?
-}
-
-struct IssueDTO: Codable {
-    let id: Int32
-    let name: String
-    let description: String
-    let estimation: Int32
-    let repoter: User
-    let asignee: User
+    let asignee: User?
     let projectID: Int32?
-    let type: IssueType
-    let priority: IssuePriority
-    let status: IssueStatus
+    let type: Int32
+    let priority: Int32
+    let status: Int32
     
     enum CodingKeys: String, CodingKey {
         case id = "issueID"
         case name
         case description
         case estimation
-        case repoter
+        case reporter
         case asignee
         case projectID
         case type = "issueTypeID"
@@ -43,32 +32,78 @@ struct IssueDTO: Codable {
     }
 }
 
-struct IssueGeneralDTO: Identifiable, Codable {
-    let id: Int32
-    let name: String
-    let asignee: User
-    let status: IssueStatus
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case name
-        case asignee
-        case status = "issueStatusID"
+extension Array where Element == IssueGeneralDTO {
+    func with(status: IssueStatus) -> Array<IssueGeneralDTO> {
+        self.filter{ issue in
+            issue.issueStatusID == status.id
+        }
     }
 }
 
-struct IssueType: Identifiable, Codable {
+struct IssueDTO: Identifiable, Codable {
     let id: Int32
-    let type: String
+    let name: String
+    let description: String
+    let estimation: Int32
+    let projectID: Int32
+    let issueTypeID: Int32
+    let issuePriorityID: Int32
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "issueID"
+        case name
+        case description
+        case estimation
+        case projectID
+        case issueTypeID
+        case issuePriorityID
+    }
+    
+    init(id: Int32 = -1, name: String, description: String, estimation: Int32, project: Project, issueType: IssueType, issuePriority: IssuePriority) {
+        self.id = id
+        self.name = name
+        self.description = description
+        self.estimation = estimation
+        self.projectID = project.id
+        self.issueTypeID = issueType.id
+        self.issuePriorityID = issuePriority.id
+    }
 }
 
-struct IssueStatus: Identifiable, Codable {
+struct IssueGeneralDTO: Identifiable, Codable {
     let id: Int32
-    let status: String
+    let name: String
+    let asignee: User?
+    let issueStatusID: Int32
 }
 
-struct IssuePriority: Identifiable, Codable {
+struct IssueType: Identifiable, Codable, Hashable {
     let id: Int32
-    let priority: String
+    let description: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case description = "type"
+    }
+}
+
+struct IssueStatus: Identifiable, Codable, Hashable {
+    let id: Int32
+    let description: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case description = "statusName"
+    }
+}
+
+struct IssuePriority: Identifiable, Codable, Hashable {
+    let id: Int32
+    let description: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case description = "priority"
+    }
 }
 

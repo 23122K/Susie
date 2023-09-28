@@ -8,21 +8,32 @@
 import SwiftUI
 
 struct BoardsView: View {
-    @EnvironmentObject var vm: ClientViewModel
+    @State var isPresented: Bool = false
+    @StateObject var vm: BoardsViewModel
     var body: some View {
         VStack(alignment: .trailing){
             TabView {
-                ForEach(0..<4) { i in
-                    let filterIssues = vm.issues.filter{ $0.status == i}
-                    let boards = vm.getBoardNames()
+                ForEach(vm.statuses) { status in
                     GeometryReader { g in
-                        BoardView(issues: filterIssues, issueCount: filterIssues.count, boardName: boards[i])
+                        BoardView(issues: vm.issues, status: status)
                     }
                     .frame(width: 380, height: 650)
                 }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
+            Button("Create issue") {
+                isPresented.toggle()
+            }
+        }
+        .sheet(isPresented: $isPresented) {
+            IssueFormView(project: vm.project)
         }
     }
+    
+    init(project: Project) {
+        _vm = StateObject(wrappedValue: BoardsViewModel(project: project))
+    }
+    
+    
 }
 

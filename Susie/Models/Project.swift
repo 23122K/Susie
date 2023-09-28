@@ -7,8 +7,6 @@
 
 import Foundation
 
-//MARK: DAO
-
 struct Project: Identifiable, Codable {
     let id: Int32
     let name: String
@@ -31,8 +29,6 @@ extension Project {
     }
 }
 
-//MARK: DTO
-
 struct ProjectDTO: Identifiable, Codable, Hashable {
     let id: Int32
     let name: String
@@ -44,7 +40,7 @@ struct ProjectDTO: Identifiable, Codable, Hashable {
         case description
     }
     
-    init(id: Int32 = 0, name: String, description: String) { //In some cases project id is not necessary
+    init(id: Int32 = -1, name: String, description: String) { //In some cases project id is not necessary
         self.id = id
         self.name = name
         self.description = description

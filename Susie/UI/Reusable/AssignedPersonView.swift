@@ -1,5 +1,5 @@
 //
-//  AssignedPersonView.swift
+//  AssignedUserView.swift
 //  Suzie
 //
 //  Created by Patryk Maciąg on 03/04/2023.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct AssignedPersonView: View {
-    let initials: String
+struct AssignedUserView: View {
+    let user: User?
     let size: CGFloat
     var body: some View {
         ZStack{
-            Text(initials)
+            Text(user?.initials ?? "?")
                 .font(.callout)
                 .foregroundColor(.blue)
                 .bold()
@@ -23,11 +23,5 @@ struct AssignedPersonView: View {
                 }
 
         }
-    }
-}
-
-struct AssignedPersonView_Previews: PreviewProvider {
-    static var previews: some View {
-        AssignedPersonView(initials: "PM", size: 40)
     }
 }

@@ -40,7 +40,7 @@ struct IssueOverviewView: View {
                 })
                 Divider()
                 DetailedRowView(title: "Asagniee", content: {
-                    Text(issue.assignee?.firstName ?? "Unknwon")
+                    Text(issue.asignee?.firstName ?? "Unknown")
                 })
                 Divider()
                 DetailedRowView(title: "Logged time", content: {

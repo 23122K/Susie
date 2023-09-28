@@ -13,17 +13,17 @@ class ProjectViewModel: ObservableObject {
     private var client: Client
     
     @Published var projectsDTOs: Array<ProjectDTO> = .init()
-    @Published var projects: Array<Project> = .init()
+    @Published var project: Project? = nil
     
     @Published var name: String = .init()
     @Published var description: String = .init()
     
     func fetch() {
-        Task { try await client.fetchProjects() }
+        Task { self.projectsDTOs = try await client.fetchProjects() }
     }
     
     func fetchDetails(of project: ProjectDTO) {
-        Task { try await client.fetchProject(with: project.id) }
+        Task { self.project = try await client.fetchProject(with: project.id) }
     }
     
     func updateProject(with details: ProjectDTO) {
@@ -39,20 +39,10 @@ class ProjectViewModel: ObservableObject {
     func delete(project: ProjectDTO) {
         Task { try await client.deleteProject(with: project.id)}
         
-        projects.removeAll(where: { $0.id == project.id })
         projectsDTOs.removeAll(where: { $0.id == project.id })
     }
     
     init(container: Container = Container.shared) {
         self.client = container.client()
-        
-        client.$projectsDTOs
-            .receive(on: DispatchQueue.main)
-            .assign(to: &$projectsDTOs)
-        
-        client.$projects
-            .receive(on: DispatchQueue.main)
-            .assign(to: &$projects)
-        
     }
 }

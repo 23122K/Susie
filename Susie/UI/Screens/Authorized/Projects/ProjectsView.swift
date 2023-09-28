@@ -12,30 +12,35 @@ struct ProjectsView: View {
     
     var body: some View {
         NavigationStack {
+            
             List(vm.projectsDTOs) { project in
-                NavigationLink(value: project) {
-                    ProjectRowView(project: project)
-                        .padding(.horizontal)
-                        .padding(.bottom, 5)
-                }
-                .swipeActions {
-                    Button("Delete") {
-                        vm.delete(project: project)
+                ProjectRowView(project: project)
+                    .onTapGesture {
+                        vm.fetchDetails(of: project)
                     }
-                }
+                    .swipeActions {
+                        Button("Delete") {
+                            vm.delete(project: project)
+                        }
+                    }
             }
+            .listStyle(.plain)
             .navigationTitle("Projects")
             .toolbar(.hidden, for: .navigationBar)
-            .navigationDestination(for: ProjectDTO.self) { _ in
-                AuthenticatedUserView()
-            }
             
+//            .navigationDestination(for: ProjectDTO.self) { project in
+//                AuthenticatedUserView(project: project)
+//            }
+
             Button("Create") {
                 let rndm = Int.random(in: 0..<9999)
                 vm.name = "Test_\(rndm)"
                 vm.description = "Test"
                 vm.createProject()
             }
+        }
+        .fullScreenCover(item: $vm.project) { project in
+            AuthenticatedUserView(project: project)
         }
         .onAppear{ vm.fetch() }
     }

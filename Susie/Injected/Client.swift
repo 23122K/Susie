@@ -10,18 +10,20 @@ class Client: ObservableObject {
     private var decoder: JSONDecoder = JSONDecoder()
 
     private(set) var networkStatus: NetworkStatus = .connected
-    private var boards = ["To Do", "In progress", "In review", "Done"]
     
+    @Published private(set) var user: User?
+    @Published private(set) var scope: UserScope = .none
     @Published private(set) var isAuthenticated: Bool = false {
         willSet {
             Task { try await userInfo() }
         }
     }
     
-    @Published private(set) var projectsDTOs: Array<ProjectDTO> = .init()
-    @Published private(set) var projects: Array<Project> = .init()
-    
-    var user: User?
+    func userInfo() async throws {
+        let endpoint = Endpoints.currentUserInfo
+        let user: User = try await network.response(from: endpoint)
+        self.user = user
+    }
     
     //MARK: Authentication/User
     func signOut() async {
@@ -44,54 +46,35 @@ class Client: ObservableObject {
         isAuthenticated = true
     }
     
-    func userInfo() async throws {
-        let endpoint = Endpoints.currentUserInfo
-        let user: User = try await network.response(from: endpoint)
-        self.user = user
-    }
-    
     //MARK: Projects
-    func createProject(with details: ProjectDTO) async throws {
-        print(#function)
+    func createProject(with details: ProjectDTO) async throws -> ProjectDTO {
         let endpoint = Endpoints.createProject(with: details)
-        let project: ProjectDTO = try await network.response(from: endpoint)
-        
-        projectsDTOs.append(project)
+        return try await network.response(from: endpoint)
     }
     
-    func fetchProjects() async throws {
+    func fetchProjects() async throws -> Array<ProjectDTO>{
         let endpoint = Endpoints.fetchProjects
         guard let cache = cache[endpoint], let projects = try? decoder.decode([ProjectDTO].self, from: cache.data) else {
-            projectsDTOs = try await network.response(from: endpoint, policy: CachePolicy(shouldCache: true))
-            print("Projects fetched from server")
-            return
+            return try await network.response(from: endpoint, policy: CachePolicy(shouldCache: true))
         }
 
-        print("Project fetched from cache")
-        projectsDTOs = projects
+        return projects
     }
     
-    func fetchProject(with id: Int32) async throws {
-        //TODO: Fix Ints in project
-        print(#function)
+    func fetchProject(with id: Int32) async throws -> Project {
         let endpoint = Endpoints.fetchProject(id: id)
-        print(endpoint.uid)
-        let project: Project = try await network.response(from: endpoint)
+        return try await network.response(from: endpoint)
         
         //TODO: Don't just append, check if exist, if not
-        projects.removeAll(where: { $0.id == project.id })
-        projects.append(project)
+//        projects.removeAll(where: { $0.id == project.id })
+//        projects.append(project)
     }
     
     func updateProject(with details: ProjectDTO) async throws {
         print(#function)
         let endpoint = Endpoints.updateProject(with: details)
         try await network.request(to: endpoint)
-        
-        projectsDTOs.removeAll(where: { $0.id == details.id })
-        projectsDTOs.append(details)
     }
-    
     
     //TODO: Fix int casting 
     func assignToPoject(user: User, to project: ProjectDTO) async throws {
@@ -103,13 +86,36 @@ class Client: ObservableObject {
     func deleteProject(with id: Int32) async throws {
         let endpoint = Endpoints.deleteProject(id: id)
         try await network.request(to: endpoint)
-        
-        projectsDTOs.removeAll(where: { $0.id == id})
-        projects.removeAll(where: { $0.id == id})
     }
     
-    func getBoardNames() -> Array<String> {
-        return boards
+    func fetchIssueStatusDictionary() async throws -> Array<IssueStatus> {
+        let endpoint = Endpoints.fetchIssueStatusDictionary
+        return try await network.response(from: endpoint)
+    }
+    
+    func fetchIssueTypesDictionary() async throws -> Array<IssueType> {
+        let endpoint = Endpoints.fetchIssueTypeDictionary
+        return try await network.response(from: endpoint)
+    }
+    
+    func fetchIssuePriorityDictionary() async throws -> Array<IssuePriority> {
+        let endpoint = Endpoints.fetchIssuePriorityDictionary
+        return try await network.response(from: endpoint)
+    }
+    
+    func fetchIssues(from project: Project) async throws -> Array<IssueGeneralDTO> {
+        let endpoint = Endpoints.fetchIssues(id: project.id)
+        return try await network.response(from: endpoint)
+    }
+    
+    func fetchIssueDetails(issue: IssueGeneralDTO) async throws -> Issue {
+        let endpoint = Endpoints.fetchIssueDetails(id: issue.id)
+        return try await network.response(from: endpoint)
+    }
+    
+    func createIssue(_ details: IssueDTO) async throws -> IssueGeneralDTO {
+        let endpoint = Endpoints.createIssue(with: details)
+        return try await network.response(from: endpoint)
     }
     
     init(keychainManager: KeychainManager = KeychainManager(),

@@ -54,15 +54,20 @@ enum Endpoints: Endpoint {
     
     //Issue
     ///Fetches issues assigned to project with given id
-    case fetchIssues(id: Int)
+    case fetchIssues(id: Int32)
     case updateIssue(with: IssueDTO)
     case createIssue(with: IssueDTO)
-    case deleteIssue(id: Int)
-    case fetchIssueDetails(id: Int)
+    case deleteIssue(id: Int32)
+    case fetchIssueDetails(id: Int32)
     ///Assigns particular issue specified via id to user who initiated the action
-    case assignIssue(id: Int)
+    case assignIssue(id: Int32)
     ///Deletes assignment of particular issue specified via id to user who initiated the action
-    case deleteIssueAssignment(id: Int)
+    case deleteIssueAssignment(id: Int32)
+    
+    //Issue Dictionaries
+    case fetchIssueStatusDictionary
+    case fetchIssueTypeDictionary
+    case fetchIssuePriorityDictionary
     
     //User
     case currentUserInfo
@@ -71,7 +76,7 @@ enum Endpoints: Endpoint {
         switch self {
         case .signUp, .signIn, .refreshToken ,.createProject, .assignToProject, .createIssue, .assignIssue:
             return .post
-        case .fetchProject, .fetchProjects, .fetchIssues, .fetchIssueDetails, .currentUserInfo:
+        case .fetchProject, .fetchProjects, .fetchIssues, .fetchIssueDetails, .currentUserInfo, .fetchIssueTypeDictionary, .fetchIssueStatusDictionary, .fetchIssuePriorityDictionary:
             return .get
         case .updateProject, .updateIssue, .deleteIssueAssignment:
             return .put
@@ -111,6 +116,12 @@ enum Endpoints: Endpoint {
             return "/issue/\(id)/delete-assignment"
         case .currentUserInfo:
             return "/auth/user-info"
+        case .fetchIssueStatusDictionary:
+            return "/dictionary/status"
+        case .fetchIssueTypeDictionary:
+            return "/dictionary/type"
+        case .fetchIssuePriorityDictionary:
+            return "/dictionary/priority"
         }
     }
     
@@ -139,9 +150,7 @@ enum Endpoints: Endpoint {
             return try? encoder.encode(credentials)
         case .signUp(let credentials):
             return try? encoder.encode(credentials)
-        case .createProject(let details):
-            return try? encoder.encode(details)
-        case .updateProject(let details):
+        case .createProject(let details), .updateProject(let details):
             return try? encoder.encode(details)
         case .createIssue(let details), .updateIssue(let details):
             return try? encoder.encode(details)

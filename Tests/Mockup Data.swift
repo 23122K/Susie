@@ -9,6 +9,72 @@ import Foundation
 @testable import Susie
 
 public struct Mockup {
+    internal enum Project {
+        static let id: Int32 = 0
+        static let name: String = "example_name"
+        static let description: String = "example_description"
+        static let members: Array<User> = []
+//        static let owner: User = User(email: Mockup.User.email, firstName: Mockup.User.firstName, lastName: Mockup.User.lastName)
+        
+        static let data: Data = """
+        {
+            "projectID": \(id),
+            "name": "\(name)",
+            "description": "\(description)",
+            "members": [],
+            "owner": {
+                "uuid": "\(User.uuid)",
+                "firstName": "\(User.firstName)",
+                "lastName": "\(User.lastName)",
+                "email": "\(User.email)"
+            }
+        }
+        """.data(using: .utf8)!
+        
+    }
+    
+    internal enum ProjectDTO {
+        static let name: String = "example_name"
+        static let description: String = "example_description"
+    }
+    
+    internal enum IssueDTO {
+        static let id: Int32 = -1
+        static let name = "example_name"
+        static let description = "example_description"
+        static let estimation: Int32 = 6
+        static let projectID: Int32 = 1
+        static let issueTypeID: Int32 = 2
+        static let issuePriorityID: Int32 = 3
+
+        static let data = """
+        {
+            "issueID": \(id),
+            "name": "\(name)",
+            "description": "\(description)",
+            "estimation": \(estimation),
+            "projectID": \(projectID),
+            "issueTypeID": \(issueTypeID),
+            "issuePriorityID": \(issuePriorityID)
+        }
+        """.data(using: .utf8)!
+    }
+    
+    internal enum IssueGeneralDTO {
+        static let id: Int32 = 1
+        static let name: String = "example_name"
+        static let issueStatusID: Int32 = 1
+        
+        static let data = """
+        {
+            "id": \(id),
+            "name": "\(name)",
+            "issueStatusID": \(issueStatusID)
+        }
+        """.data(using: .utf8)!
+        
+    }
+    
     internal enum Auth {
         static let token: String = "example_token"
     }
@@ -30,8 +96,7 @@ public struct Mockup {
             "uuid": "\(uuid)",
             "firstName": "\(firstName)",
             "lastName": "\(lastName)",
-            "email": "\(email)",
-            "password": "\(password)"
+            "email": "\(email)"
         }
         """.data(using: .utf8)!
     }

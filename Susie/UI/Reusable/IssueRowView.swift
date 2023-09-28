@@ -8,22 +8,19 @@
 import SwiftUI
 
 struct IssueRowView: View {
-    let title: String
-    let tag: String
-    let color: Color
-    let assignetToInitials: String
+    let issue: IssueGeneralDTO
     
     var body: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading) {
-                Text(title)
+                Text(issue.name)
                     .bold()
                     .padding(.bottom, 1)
                 HStack(alignment: .bottom) {
-                    IssueTypeView(content: tag, color: color)
-                    IssuePriorityView(content: tag, color: color)
+//                    IssueTypeView(content: issue., color: color)
+//                    IssuePriorityView(content: tag, color: color)
                     Spacer()
-                    AssignedPersonView(initials: assignetToInitials, size: 30)
+                    AssignedUserView(user: issue.asignee, size: 30)
                         .padding(.trailing, 4)
                         .padding(.bottom, 4)
                 }
@@ -40,8 +37,8 @@ struct IssueRowView: View {
     }
 }
 
-struct IssueRowView_Previews: PreviewProvider {
-    static var previews: some View {
-        IssueRowView(title: "Fix performance issues while fetching data", tag: "Bug", color: .red, assignetToInitials: "KL")
-    }
-}
+//struct IssueRowView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        IssueRowView(title: "Fix performance issues while fetching data", tag: "Bug", color: .red, assignetToInitials: "KL")
+//    }
+//}

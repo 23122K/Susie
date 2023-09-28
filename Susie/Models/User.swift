@@ -19,6 +19,14 @@ struct User: Codable {
     }
 }
 
+extension User {
+    var initials: String {
+        let index = firstName.index(firstName.startIndex, offsetBy: 1)
+        let result = firstName.prefix(upTo: index) + lastName.prefix(upTo: index)
+        return result.uppercased()
+    }
+}
+
 struct UserAssociationDTO: Codable {
     let email: String
     let projectID: Int32
@@ -27,4 +35,12 @@ struct UserAssociationDTO: Codable {
 struct UserRole: Identifiable, Codable {
     let id: String
     let name: String
+}
+
+
+
+enum UserScope: String, CaseIterable {
+    case sm = "sm"
+    case dev = "client_user"
+    case none
 }

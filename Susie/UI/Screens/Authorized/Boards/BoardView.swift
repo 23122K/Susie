@@ -8,13 +8,9 @@
 import SwiftUI
 
 struct BoardView: View {
-    let issues: Array<Issue>
-    let issueCount: Int
-    let boardName: String
-    
-    //State isPresented is used to toggle bettwen sheet and a task
-    @State private var selectedIssue: Issue?
-    @State private var isPresented: Bool = false
+    @StateObject private var vm: BoardViewModel = BoardViewModel()
+    let issues: Array<IssueGeneralDTO>
+    let status: IssueStatus
     
     //Make task view flexible
     let columns = [GridItem(.flexible())]
@@ -22,11 +18,11 @@ struct BoardView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack{
-                Text(boardName)
+                Text(status.description)
                     .padding(.leading, 30)
                     .padding(.vertical, 4)
                     .bold()
-                Text("\(issueCount)")
+                Text("\(issues.count)")
                     .foregroundColor(.gray)
                     .padding(.horizontal,5)
                     .background{
@@ -35,22 +31,27 @@ struct BoardView: View {
                             .opacity(0.1)
                     }
             }
+            
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns) {
                     ForEach(issues) { issue in
-                        IssueRowView(title: issue.name, tag: "TEST", color: Color.red, assignetToInitials: "PM")
+                       IssueRowView(issue: issue)
                             .offset(y: 8)
                             .onTapGesture {
-                                self.selectedIssue = issue
+                                vm.fetchDeatils(for: issue)
                             }
-                            .sheet(item: $selectedIssue){ issue in
-                                IssueDetailedView(issue: issue)
-                                    .presentationDetents([.large])
+                            .sheet(item: $vm.issue){ issue in
+                                IssueOverviewView(issue: issue)
                             }
                     }
                 }
             }
         }
+    }
+    
+    init(issues: Array<IssueGeneralDTO>, status: IssueStatus) {
+        self.status = status
+        self.issues = issues.with(status: status)
     }
 }
 
