@@ -28,7 +28,7 @@ struct IssueOverviewView: View {
                     RoundedRectangle(cornerRadius: 10)
                         .fill(.green.opacity(0.7))
                         .frame(height: 50)
-                    Text("DONE")
+                    Text("\(issue.status)")
                         .bold()
                         .foregroundColor(.white)
                 }
@@ -38,11 +38,9 @@ struct IssueOverviewView: View {
                 DetailedRowView(title: "Estimation", content: {
                     Text(issue.estimation.description)
                 })
-                Divider()
                 DetailedRowView(title: "Asagniee", content: {
-                    Text(issue.asignee?.firstName ?? "Unknown")
+                    Text(issue.asignee?.fullName ?? "Not yet assigned")
                 })
-                Divider()
                 DetailedRowView(title: "Logged time", content: {
                     Text("00:00:00")
                 })
@@ -66,6 +64,7 @@ struct IssueOverviewView: View {
                 }
             })
         }.padding()
+        Spacer()
     }
 }
 

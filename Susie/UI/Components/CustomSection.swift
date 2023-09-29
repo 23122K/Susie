@@ -21,10 +21,11 @@ struct CustomSection<Content: View>: View {
     
     var body: some View {
         Text(title)
-            .bold()
-            .foregroundColor(.blue.opacity(0.7))
+            .fontWeight(.semibold)
+            .foregroundColor(Color.susieBluePriamry)
             .padding(.bottom, 0.5)
             .padding(.leading, 5)
+            .offset(y: 5)
         VStack{
             content
         }
@@ -32,11 +33,7 @@ struct CustomSection<Content: View>: View {
         .background{
             if(hasBorder) {
                 RoundedRectangle(cornerRadius: 10)
-                    .fill(.white)
-                    .shadow(color: Color.gray.opacity(0.4),
-                            radius: 3,
-                            x: 0.1, // Horizontal offset
-                            y: 0.4) // Vertical offset
+                    .fill(Color.susieWhiteSecondary)
             }
         }
     }

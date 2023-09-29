@@ -1,5 +1,5 @@
 //
-//  AssignedUserView.swift
+//  InitialsView.swift
 //  Suzie
 //
 //  Created by Patryk Maciąg on 03/04/2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AssignedUserView: View {
+struct InitialsView: View {
     let user: User?
     let size: CGFloat
     var body: some View {

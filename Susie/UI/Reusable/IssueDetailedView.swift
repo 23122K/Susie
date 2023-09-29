@@ -52,10 +52,6 @@ struct IssueDetailedView: View {
                     .onAppear{
                         isAcitve = false
                     }
-                IssueCommentsView()
-                    .onAppear{
-                        isAcitve = true
-                    }
                 
             })
             Spacer()

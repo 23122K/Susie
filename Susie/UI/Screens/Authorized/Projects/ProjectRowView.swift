@@ -20,7 +20,6 @@ struct ProjectRowView: View {
                 .lineLimit(1)
                 
         }
-        .padding(10)
         .background {
             RoundedRectangle(cornerRadius: 9)
                 .fill(Color.susieWhiteSecondary)

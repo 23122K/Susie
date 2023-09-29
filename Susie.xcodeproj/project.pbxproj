@@ -10,6 +10,10 @@
 		6F291EB72AC594B8004C9A54 /* IssueFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EB62AC594B8004C9A54 /* IssueFormView.swift */; };
 		6F291EB92AC594CB004C9A54 /* IssueFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EB82AC594CB004C9A54 /* IssueFormViewModel.swift */; };
 		6F291EBB2AC5A3F9004C9A54 /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EBA2AC5A3F9004C9A54 /* BoardViewModel.swift */; };
+		6F291EBD2AC6A09F004C9A54 /* BacklogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EBC2AC6A09F004C9A54 /* BacklogViewModel.swift */; };
+		6F291EBF2AC6A841004C9A54 /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EBE2AC6A841004C9A54 /* ProjectView.swift */; };
+		6F291EC12AC6A965004C9A54 /* ProjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EC02AC6A965004C9A54 /* ProjectViewModel.swift */; };
+		6F291EC32AC6BE34004C9A54 /* ScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EC22AC6BE34004C9A54 /* ScreenHeader.swift */; };
 		6F32B7802AC1D23C00D5F4E8 /* NetworkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F32B77F2AC1D23C00D5F4E8 /* NetworkManagerTests.swift */; };
 		6F32B7842AC1D2FE00D5F4E8 /* ModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F32B7832AC1D2FE00D5F4E8 /* ModelsTests.swift */; };
 		6F32B7862AC1D33E00D5F4E8 /* Mockup Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F32B7852AC1D33E00D5F4E8 /* Mockup Data.swift */; };
@@ -50,7 +54,6 @@
 		6F895C2C2A955CCE0026438D /* KeychainError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F895C2B2A955CCE0026438D /* KeychainError.swift */; };
 		6F908B0B2A974CA70012463A /* KeychainManager+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F908B0A2A974CA70012463A /* KeychainManager+Subscript.swift */; };
 		6F908B102A9791D10012463A /* Endpoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F908B0F2A9791D10012463A /* Endpoint+Extension.swift */; };
-		6FD008AC2A015DBE00D3B760 /* IssueCommentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD008AB2A015DBE00D3B760 /* IssueCommentsView.swift */; };
 		6FD008AE2A01672A00D3B760 /* ToggableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD008AD2A01672A00D3B760 /* ToggableSection.swift */; };
 		6FD008B22A0266AE00D3B760 /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD008B12A0266AE00D3B760 /* Checkbox.swift */; };
 		6FD008B82A026E6E00D3B760 /* FormRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD008B72A026E6E00D3B760 /* FormRowView.swift */; };
@@ -61,7 +64,7 @@
 		6FD014FC29DAA6DC009F2A77 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6FD014FB29DAA6DC009F2A77 /* Preview Assets.xcassets */; };
 		6FD0150E29DAAC8E009F2A77 /* IssueRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0150D29DAAC8E009F2A77 /* IssueRowView.swift */; };
 		6FD0151029DAACA0009F2A77 /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0150F29DAACA0009F2A77 /* TagView.swift */; };
-		6FD0151229DAACAF009F2A77 /* AssignedPersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0151129DAACAF009F2A77 /* AssignedPersonView.swift */; };
+		6FD0151229DAACAF009F2A77 /* InitialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0151129DAACAF009F2A77 /* InitialsView.swift */; };
 		6FD0151429DAACC0009F2A77 /* IssueDetailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0151329DAACC0009F2A77 /* IssueDetailedView.swift */; };
 		6FD0151629DAACFA009F2A77 /* PriotiryIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0151529DAACFA009F2A77 /* PriotiryIndicatorView.swift */; };
 		6FD0151829DAADDE009F2A77 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0151729DAADDE009F2A77 /* BoardView.swift */; };
@@ -106,6 +109,10 @@
 		6F291EB62AC594B8004C9A54 /* IssueFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueFormView.swift; sourceTree = "<group>"; };
 		6F291EB82AC594CB004C9A54 /* IssueFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueFormViewModel.swift; sourceTree = "<group>"; };
 		6F291EBA2AC5A3F9004C9A54 /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
+		6F291EBC2AC6A09F004C9A54 /* BacklogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BacklogViewModel.swift; sourceTree = "<group>"; };
+		6F291EBE2AC6A841004C9A54 /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
+		6F291EC02AC6A965004C9A54 /* ProjectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectViewModel.swift; sourceTree = "<group>"; };
+		6F291EC22AC6BE34004C9A54 /* ScreenHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenHeader.swift; sourceTree = "<group>"; };
 		6F32B77F2AC1D23C00D5F4E8 /* NetworkManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerTests.swift; sourceTree = "<group>"; };
 		6F32B7832AC1D2FE00D5F4E8 /* ModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsTests.swift; sourceTree = "<group>"; };
 		6F32B7852AC1D33E00D5F4E8 /* Mockup Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mockup Data.swift"; sourceTree = "<group>"; };
@@ -147,7 +154,6 @@
 		6F908B0A2A974CA70012463A /* KeychainManager+Subscript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeychainManager+Subscript.swift"; sourceTree = "<group>"; };
 		6F908B0F2A9791D10012463A /* Endpoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+Extension.swift"; sourceTree = "<group>"; };
 		6FBF22A42AC0BECB000A4612 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6FD008AB2A015DBE00D3B760 /* IssueCommentsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueCommentsView.swift; sourceTree = "<group>"; };
 		6FD008AD2A01672A00D3B760 /* ToggableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggableSection.swift; sourceTree = "<group>"; };
 		6FD008B12A0266AE00D3B760 /* Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
 		6FD008B72A026E6E00D3B760 /* FormRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormRowView.swift; sourceTree = "<group>"; };
@@ -159,7 +165,7 @@
 		6FD014FB29DAA6DC009F2A77 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		6FD0150D29DAAC8E009F2A77 /* IssueRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueRowView.swift; sourceTree = "<group>"; };
 		6FD0150F29DAACA0009F2A77 /* TagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
-		6FD0151129DAACAF009F2A77 /* AssignedPersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignedPersonView.swift; sourceTree = "<group>"; };
+		6FD0151129DAACAF009F2A77 /* InitialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialsView.swift; sourceTree = "<group>"; };
 		6FD0151329DAACC0009F2A77 /* IssueDetailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueDetailedView.swift; sourceTree = "<group>"; };
 		6FD0151529DAACFA009F2A77 /* PriotiryIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriotiryIndicatorView.swift; sourceTree = "<group>"; };
 		6FD0151729DAADDE009F2A77 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
@@ -317,6 +323,7 @@
 			children = (
 				6F63307C2A71A60600719862 /* SprintDropDelegate.swift */,
 				6FD0153629DAED26009F2A77 /* BacklogsView.swift */,
+				6F291EBC2AC6A09F004C9A54 /* BacklogViewModel.swift */,
 			);
 			path = Backlog;
 			sourceTree = "<group>";
@@ -360,6 +367,8 @@
 				6FE1E0F32AAB6977009136A2 /* ProjectsViewModel.swift */,
 				6FE1E0F52AAB6980009136A2 /* ProjectsView.swift */,
 				6FE1E0F72AAB69AA009136A2 /* ProjectRowView.swift */,
+				6F291EBE2AC6A841004C9A54 /* ProjectView.swift */,
+				6F291EC02AC6A965004C9A54 /* ProjectViewModel.swift */,
 			);
 			path = Projects;
 			sourceTree = "<group>";
@@ -424,13 +433,12 @@
 			children = (
 				6FF149C52AA8DF36005CDBF6 /* Forms */,
 				6F5F5EFA29DDA72800B9BCE6 /* LoggedPersonView.swift */,
-				6FD0151129DAACAF009F2A77 /* AssignedPersonView.swift */,
+				6FD0151129DAACAF009F2A77 /* InitialsView.swift */,
 				6FD0150F29DAACA0009F2A77 /* TagView.swift */,
 				6FD0150D29DAAC8E009F2A77 /* IssueRowView.swift */,
 				6FD0151529DAACFA009F2A77 /* PriotiryIndicatorView.swift */,
 				6FD0151329DAACC0009F2A77 /* IssueDetailedView.swift */,
 				6FD870982A003AA000AA3EB7 /* IssueOverviewView.swift */,
-				6FD008AB2A015DBE00D3B760 /* IssueCommentsView.swift */,
 			);
 			path = Reusable;
 			sourceTree = "<group>";
@@ -447,6 +455,7 @@
 		6FF149B72AA8C53A005CDBF6 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				6F291EC22AC6BE34004C9A54 /* ScreenHeader.swift */,
 				6FD870922A0037CB00AA3EB7 /* CustomSheet.swift */,
 				6F5F5F0E29E07E4800B9BCE6 /* CustomNavigationView.swift */,
 				6F5F5EF529DD82AB00B9BCE6 /* CustomDivider.swift */,
@@ -643,7 +652,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6FD0151229DAACAF009F2A77 /* AssignedPersonView.swift in Sources */,
+				6FD0151229DAACAF009F2A77 /* InitialsView.swift in Sources */,
 				6F5F5F0D29E07A8100B9BCE6 /* PasswordField.swift in Sources */,
 				6FD870992A003AA000AA3EB7 /* IssueOverviewView.swift in Sources */,
 				6FD008C42A02C0D800D3B760 /* DashboardView.swift in Sources */,
@@ -651,11 +660,13 @@
 				6F5F5EF629DD82AB00B9BCE6 /* CustomDivider.swift in Sources */,
 				6F5F9D892A138A6300F51B8E /* SignUpFinalisationView.swift in Sources */,
 				6FE1E0F62AAB6980009136A2 /* ProjectsView.swift in Sources */,
+				6F291EBD2AC6A09F004C9A54 /* BacklogViewModel.swift in Sources */,
 				6F291EB72AC594B8004C9A54 /* IssueFormView.swift in Sources */,
 				6F8496F92A8FAF1200A3F46A /* Project.swift in Sources */,
 				6FD0152E29DAB67F009F2A77 /* TextButton.swift in Sources */,
 				6FE517A22A9A435A001A5EDF /* URL+Extension.swift in Sources */,
 				6F895BFE2A949C110026438D /* Auth.swift in Sources */,
+				6F291EC12AC6A965004C9A54 /* ProjectViewModel.swift in Sources */,
 				6FD0152A29DAB4C6009F2A77 /* PrimaryButtonView.swift in Sources */,
 				6F5F9D8B2A139A7100F51B8E /* TermsOfService.swift in Sources */,
 				6F5F9D5C2A129B0D00F51B8E /* SignInViewModel.swift in Sources */,
@@ -669,6 +680,7 @@
 				6FE1E0EE2AAB5633009136A2 /* Container.swift in Sources */,
 				6F5F5EE929DC472100B9BCE6 /* NetworkManager.swift in Sources */,
 				6F895C202A9501770026438D /* Auth+Extension.swift in Sources */,
+				6F291EC32AC6BE34004C9A54 /* ScreenHeader.swift in Sources */,
 				6FD870952A003A1800AA3EB7 /* DetailedRowView.swift in Sources */,
 				6FD0152C29DAB662009F2A77 /* SecondaryButton.swift in Sources */,
 				6F895C2C2A955CCE0026438D /* KeychainError.swift in Sources */,
@@ -690,7 +702,6 @@
 				6FD008B22A0266AE00D3B760 /* Checkbox.swift in Sources */,
 				6FD0153729DAED26009F2A77 /* BacklogsView.swift in Sources */,
 				6F895C232A9512850026438D /* CacheManager.swift in Sources */,
-				6FD008AC2A015DBE00D3B760 /* IssueCommentsView.swift in Sources */,
 				6FD0152129DAB0D0009F2A77 /* SignUpView.swift in Sources */,
 				6F908B0B2A974CA70012463A /* KeychainManager+Subscript.swift in Sources */,
 				6FF149C22AA8CB07005CDBF6 /* Colors+Extension.swift in Sources */,
@@ -708,6 +719,7 @@
 				6F8496FC2A8FAF1200A3F46A /* Backlog.swift in Sources */,
 				6F895C2A2A955C800026438D /* AuthError.swift in Sources */,
 				6FE816382A69603B005D6817 /* HomeView.swift in Sources */,
+				6F291EBF2AC6A841004C9A54 /* ProjectView.swift in Sources */,
 				6F908B102A9791D10012463A /* Endpoint+Extension.swift in Sources */,
 				6F8496FA2A8FAF1200A3F46A /* Comment.swift in Sources */,
 				6FD870932A0037CB00AA3EB7 /* CustomSheet.swift in Sources */,

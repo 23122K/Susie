@@ -20,7 +20,7 @@ struct IssueRowView: View {
 //                    IssueTypeView(content: issue., color: color)
 //                    IssuePriorityView(content: tag, color: color)
                     Spacer()
-                    AssignedUserView(user: issue.asignee, size: 30)
+                    InitialsView(user: issue.asignee, size: 30)
                         .padding(.trailing, 4)
                         .padding(.bottom, 4)
                 }

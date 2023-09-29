@@ -51,7 +51,7 @@ actor NetworkManager {
         let task = Task { () throws -> Auth in
             defer { refreshTask = nil }
             
-            let endpoint = Endpoints.refreshToken(token: refreshAuth.token)
+            let endpoint = Endpoints.AuthEndpoint.refresh(token: refreshAuth.token)
             return try await response(from: endpoint)
         }
         

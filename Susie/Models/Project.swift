@@ -40,7 +40,7 @@ struct ProjectDTO: Identifiable, Codable, Hashable {
         case description
     }
     
-    init(id: Int32 = -1, name: String, description: String) { //In some cases project id is not necessary
+    init(id: Int32 = -1, name: String, description: String) {
         self.id = id
         self.name = name
         self.description = description

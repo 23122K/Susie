@@ -21,9 +21,13 @@ struct User: Codable {
 
 extension User {
     var initials: String {
-        let index = firstName.index(firstName.startIndex, offsetBy: 1)
+        let index = String().index(String().startIndex, offsetBy: 1)
         let result = firstName.prefix(upTo: index) + lastName.prefix(upTo: index)
         return result.uppercased()
+    }
+    
+    var fullName: String {
+        return "\(firstName) \(lastName)"
     }
 }
 

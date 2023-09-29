@@ -9,37 +9,26 @@ import SwiftUI
 import Factory
 
 @MainActor
-class ProjectViewModel: ObservableObject {
+class ProjectsViewModel: ObservableObject {
     private var client: Client
     
-    @Published var projectsDTOs: Array<ProjectDTO> = .init()
+    @Published var projects: Array<ProjectDTO> = .init()
     @Published var project: Project? = nil
     
     @Published var name: String = .init()
     @Published var description: String = .init()
     
     func fetch() {
-        Task { self.projectsDTOs = try await client.fetchProjects() }
+        Task { self.projects = try await client.fetchProjects() }
     }
     
     func fetchDetails(of project: ProjectDTO) {
-        Task { self.project = try await client.fetchProject(with: project.id) }
-    }
-    
-    func updateProject(with details: ProjectDTO) {
-        let details = ProjectDTO(name: name, description: description)
-        Task { try await client.updateProject(with: details) }
-    }
-    
-    func createProject() {
-        let details = ProjectDTO(name: name, description: description)
-        Task { try await client.createProject(with: details) }
+        Task { self.project = try await client.fetchProject(project: project) }
     }
     
     func delete(project: ProjectDTO) {
-        Task { try await client.deleteProject(with: project.id)}
-        
-        projectsDTOs.removeAll(where: { $0.id == project.id })
+        Task { try await client.delete(project: project) }
+        projects.removeAll(where: { $0.id == project.id })
     }
     
     init(container: Container = Container.shared) {
