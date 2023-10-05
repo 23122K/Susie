@@ -43,7 +43,7 @@ class SignUpViewModel: ObservableObject {
                 let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password, isScrumMaster: true)
                 try await client.signUp(with: credentials)
             case false:
-                let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password)
+                let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password, isScrumMaster: true)
                 try await client.signUp(with: credentials)
             }
             

@@ -19,11 +19,11 @@ class ProjectsViewModel: ObservableObject {
     @Published var description: String = .init()
     
     func fetch() {
-        Task { self.projects = try await client.fetchProjects() }
+        Task { self.projects = try await client.projects() }
     }
     
     func fetchDetails(of project: ProjectDTO) {
-        Task { self.project = try await client.fetchProject(project: project) }
+        Task { self.project = try await client.details(project: project) }
     }
     
     func delete(project: ProjectDTO) {

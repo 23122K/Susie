@@ -12,20 +12,21 @@ class Client: ObservableObject {
     private(set) var networkStatus: NetworkStatus = .connected
     
     @Published private(set) var user: User?
+    
     @Published private(set) var scope: UserScope = .none
     @Published private(set) var isAuthenticated: Bool = false {
         willSet {
-            Task { try await userInfo() }
+            Task { try await info() }
         }
     }
     
-    func userInfo() async throws {
+    //MARK: Auth
+    ///Fetches information about currently loged user
+    func info() async throws {
         let endpoint = Endpoints.AuthEndpoint.info
-        let user: User = try await network.response(from: endpoint)
-        self.user = user
+        self.user = try await network.response(from: endpoint)
     }
     
-    //MARK: Authentication/User
     func signOut() async {
         await cache.flush()
         isAuthenticated = false
@@ -37,12 +38,8 @@ class Client: ObservableObject {
     }
     
     func signIn(with credentials: SignInRequest) async throws {
-        print(credentials)
         let endpoint = Endpoints.AuthEndpoint.signIn(request: credentials)
-        print(endpoint.url.absoluteString)
-        print(String(data: endpoint.request.httpBody!, encoding: .utf8))
         let response: SignInResponse = try await network.response(from: endpoint, authorize: false, retry: false)
-        print("XDD")
         
         keychain[.accessAuth] = Auth(token: response.accessToken, expiresIn: response.expiresIn)
         keychain[.refreshAuth] = Auth(token: response.refreshToken, expiresIn: response.refreshExpiresIn)
@@ -50,13 +47,13 @@ class Client: ObservableObject {
         isAuthenticated = true
     }
     
-    //MARK: Projects
-    func createProject(with details: ProjectDTO) async throws -> ProjectDTO {
-        let endpoint = Endpoints.ProjectEndpoint.create(project: details)
+    //MARK: Project
+    func create(project: ProjectDTO) async throws -> ProjectDTO {
+        let endpoint = Endpoints.ProjectEndpoint.create(project: project)
         return try await network.response(from: endpoint)
     }
     
-    func fetchProjects() async throws -> Array<ProjectDTO>{
+    func projects() async throws -> Array<ProjectDTO>{
         let endpoint = Endpoints.ProjectEndpoint.fetch
         guard let cache = cache[endpoint], let projects = try? decoder.decode([ProjectDTO].self, from: cache.data) else {
             return try await network.response(from: endpoint, policy: CachePolicy(shouldCache: true))
@@ -65,20 +62,17 @@ class Client: ObservableObject {
         return projects
     }
     
-    func fetchProject(project: ProjectDTO) async throws -> Project {
+    func details(project: ProjectDTO) async throws -> Project {
         let endpoint = Endpoints.ProjectEndpoint.details(project: project)
         return try await network.response(from: endpoint)
     }
     
-    func updateProject(with details: ProjectDTO) async throws -> ProjectDTO {
-        print(#function)
-        let endpoint = Endpoints.ProjectEndpoint.details(project: details)
+    func update(project: ProjectDTO) async throws -> ProjectDTO {
+        let endpoint = Endpoints.ProjectEndpoint.details(project: project)
         return try await network.response(from: endpoint)
     }
     
-    //TODO: Fix int casting 
-    func assignToPoject(user: User, to project: ProjectDTO) async throws {
-        //TODO: It does not return anything (not couting status)
+    func invite(user: User, to project: ProjectDTO) async throws {
         let request = UserAssociationDTO(email: user.email, projectID: project.id)
         let endpoint = Endpoints.ProjectEndpoint.invite(request: request)
         let _ :SignInResponse = try await network.response(from: endpoint)
@@ -89,33 +83,96 @@ class Client: ObservableObject {
         try await network.request(to: endpoint)
     }
     
-    func fetchIssueStatusDictionary() async throws -> Array<IssueStatus> {
+    //MARK: Dictionaries
+    func statuses() async throws -> Array<IssueStatus> {
         let endpoint = Endpoints.DictionaryEndpoint.status
         return try await network.response(from: endpoint)
     }
     
-    func fetchIssueTypesDictionary() async throws -> Array<IssueType> {
+    func types() async throws -> Array<IssueType> {
         let endpoint = Endpoints.DictionaryEndpoint.type
         return try await network.response(from: endpoint)
     }
     
-    func fetchIssuePriorityDictionary() async throws -> Array<IssuePriority> {
+    func priorities() async throws -> Array<IssuePriority> {
         let endpoint = Endpoints.DictionaryEndpoint.priority
         return try await network.response(from: endpoint)
     }
     
-    func fetchIssues(from project: Project) async throws -> Array<IssueGeneralDTO> {
+    //MARK: Issue
+    func issues(project: Project) async throws -> Array<IssueGeneralDTO> {
         let endpoint = Endpoints.IssueEndpoint.fetch(project: project.toDTO())
         return try await network.response(from: endpoint)
     }
     
-    func fetchIssueDetails(issue: IssueGeneralDTO) async throws -> Issue {
+    func details(issue: IssueGeneralDTO) async throws -> Issue {
         let endpoint = Endpoints.IssueEndpoint.details(issue: issue)
         return try await network.response(from: endpoint)
     }
     
-    func createIssue(_ details: IssueDTO) async throws -> IssueGeneralDTO {
-        let endpoint = Endpoints.IssueEndpoint.create(issue: details)
+    func create(issue: IssueDTO) async throws -> IssueGeneralDTO {
+        let endpoint = Endpoints.IssueEndpoint.create(issue: issue)
+        return try await network.response(from: endpoint)
+    }
+    
+    func update(issue: IssueDTO) async throws -> IssueGeneralDTO {
+        let endpoint = Endpoints.IssueEndpoint.update(issue: issue)
+        return try await network.response(from: endpoint)
+    }
+    
+    func delete(issue: IssueGeneralDTO) async throws {
+        let endpoint = Endpoints.IssueEndpoint.delete(issue: issue)
+        try await network.request(to: endpoint)
+    }
+    
+    func assign(to issue: IssueDTO) async throws {
+        let endpoint = Endpoints.IssueEndpoint.assignTo(issue: issue)
+        try await network.request(to: endpoint)
+    }
+    
+    func unassign(from issue: IssueDTO) async throws {
+        let endpoint = Endpoints.IssueEndpoint.unassignFrom(issue: issue)
+        try await network.request(to: endpoint)
+    }
+    
+    func status(of issue: IssueDTO, to status: IssueStatus) async throws {
+        let endpoint = Endpoints.IssueEndpoint.change(status: status, of: issue)
+        try await network.request(to: endpoint)
+    }
+    
+    func issues(sprint: Sprint) async throws -> Array<IssueGeneralDTO> {
+        let endpoint = Endpoints.IssueEndpoint.assignedTo(sprint: sprint)
+        return try await network.response(from: endpoint)
+    }
+    
+    //MARK: Sprint
+    func create(sprint: Sprint) async throws -> Sprint {
+        let endpoint = Endpoints.SprintEndpoint.create(sprint: sprint)
+        return try await network.response(from: endpoint)
+    }
+    
+    func assign(issue: IssueGeneralDTO, to sprint: Sprint) async throws {
+        let endpoint = Endpoints.SprintEndpoint.assign(issue: issue, to: sprint)
+        try await network.request(to: endpoint)
+    }
+    
+    func start(sprint: Sprint) async throws {
+        let endpoint = Endpoints.SprintEndpoint.start(sprint: sprint)
+        try await network.request(to: endpoint)
+    }
+    
+    func stop(sprint: Sprint) async throws {
+        let endpoint = Endpoints.SprintEndpoint.stop(sprint: sprint)
+        try await network.request(to: endpoint)
+    }
+    
+    func active() async throws -> Sprint {
+        let endpoint = Endpoints.SprintEndpoint.ongoing
+        return try await network.response(from: endpoint)
+    }
+    
+    func sprints() async throws -> Array<Sprint> {
+        let endpoint = Endpoints.SprintEndpoint.unbegun
         return try await network.response(from: endpoint)
     }
     
@@ -126,12 +183,11 @@ class Client: ObservableObject {
         self.cache = cacheManager
         self.monitor = networkMonitor
         self.network = NetworkManager(keychainManager: keychain, cacheManager: cacheManager)
-        
+
         monitor.delegate = self
         monitor.start()
     }
 }
-
 
 extension Client: NetworkStatusDelegate {
     func networkStatusDidChange(to status: NetworkStatus) {

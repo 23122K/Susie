@@ -7,41 +7,32 @@
 
 import SwiftUI
 
+enum DropStatus {
+    case entered
+    case exited
+    case dropped
+}
+
 struct SprintDropDelegate: DropDelegate {
-    @Binding var issue: Issue?
-    @Binding var source: Array<Issue>
-    @Binding var destination: Sprint
-    @Binding var isInDropArea: Bool
+    @ObservedObject var backlog: BacklogViewModel
+    @Binding var dropStatus: DropStatus
+    let sprint: Sprint
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
         return DropProposal(operation: .move)
     }
     
     func performDrop(info: DropInfo) -> Bool {
-        guard let issue = issue else {
-            dropFinalise()
-            return false
-        }
-        
-//        destination.issues.append(issue)
-//        source.removeAll(where: { $0.id == issue.id})
-        dropFinalise()
+        backlog.assign(to: sprint)
         return true
     }
     
     
     func dropEntered(info: DropInfo) {
-        print("Sprint drop area entered ")
-        isInDropArea = true
+        dropStatus = .entered
     }
     
     func dropExited(info: DropInfo) {
-        print("Sprint drop area exited ")
-        isInDropArea = false
-    }
-    
-    func dropFinalise() {
-        isInDropArea = false
-        issue = nil
+        dropStatus = .exited
     }
 }

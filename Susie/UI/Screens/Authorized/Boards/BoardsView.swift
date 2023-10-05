@@ -25,8 +25,21 @@ struct BoardsView: View {
                 isPresented.toggle()
             }
         }
+        .onAppear {
+            print("Appered boardsView")
+            vm.fetchStatuses()
+            vm.fetchIssues()
+        }
+        .refreshable {
+            vm.fetchStatuses()
+            vm.fetchIssues()
+        }
         .sheet(isPresented: $isPresented) {
             IssueFormView(project: vm.project)
+                .onDisappear {
+                    vm.fetchStatuses()
+                    vm.fetchIssues()
+                }
         }
     }
     

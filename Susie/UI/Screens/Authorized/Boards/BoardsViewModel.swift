@@ -19,7 +19,7 @@ class BoardsViewModel: ObservableObject {
     func fetchIssues() {
         Task {
             do {
-                self.issues = try await client.fetchIssues(from: project)
+                self.issues = try await client.issues(project: project)
             } catch {
                 print(error)
             }
@@ -29,7 +29,7 @@ class BoardsViewModel: ObservableObject {
     func fetchStatuses() {
         Task {
             do {
-                self.statuses = try await client.fetchIssueStatusDictionary()
+                self.statuses = try await client.statuses()
                 print(statuses)
             } catch {
                 print("FAILS")

@@ -16,15 +16,12 @@ enum HTTPMethod: String {
 }
 
 protocol Endpoint {
-//    var baseUrl: URL { get }
     var path: String { get }
     var method: HTTPMethod { get }
     var queries: [String: String]? { get }
     var headers: [String: String] { get }
     var body: Data? { get }
     
-//    var encoder: JSONEncoder { get }
-
     var schema: String { get }
     var host: String { get }
     var port: Int { get }
@@ -105,9 +102,10 @@ enum Endpoints {
     internal enum IssueEndpoint: Endpoint {
         case create(issue: IssueDTO)
         case update(issue: IssueDTO)
-        case delete(issue: IssueDTO)
+        case delete(issue: IssueGeneralDTO)
         case fetch(project: ProjectDTO)
         case details(issue: IssueGeneralDTO)
+        case backlog(project: ProjectDTO)
         case assignTo(issue: IssueDTO)
         case unassignFrom(issue: IssueDTO)
         case assignedTo(sprint: Sprint)
@@ -129,8 +127,10 @@ enum Endpoints {
             switch self {
             case .create, .update, .fetch :
                 return "issue"
+            case .backlog:
+                return "issue/product-backlog"
             case .details(let issue):
-                return "issue/\(issue.id)"
+                return "issue/details/\(issue.id)"
             case .delete(let issue):
                 return "issue/\(issue.id)"
             case .assignTo(issue: let issue):
@@ -152,7 +152,7 @@ enum Endpoints {
                 return .put
             case .delete:
                 return .delete
-            case .fetch, .details, .assignedTo:
+            case .fetch, .details, .assignedTo, .backlog:
                 return .get
             case .change:
                 return .patch
@@ -161,7 +161,7 @@ enum Endpoints {
         
         var queries: [String : String]? {
             switch self {
-            case .fetch(let project):
+            case .fetch(let project), .backlog(let project):
                 return ["projectID":"\(project.id)"]
             default:
                 return nil
@@ -180,7 +180,7 @@ enum Endpoints {
     internal enum SprintEndpoint: Endpoint {
         case create(sprint: Sprint)
         //        case delete(sprint: Sprint)
-        case assign(issue: IssueDTO, to: Sprint)
+        case assign(issue: IssueGeneralDTO, to: Sprint)
         case start(sprint: Sprint)
         case stop(sprint: Sprint)
         case ongoing
@@ -210,9 +210,9 @@ enum Endpoints {
             case .stop(let sprint):
                 return "sprint/stop/\(sprint.id)"
             case .ongoing:
-                return "sprint/non-activated"
-            case .unbegun:
                 return "sprint/active"
+            case .unbegun:
+                return "sprint/non-activated"
             }
         }
         
@@ -333,131 +333,3 @@ enum Endpoints {
         var body: Data? { return nil }
     }
 }
-
-//enum Endpoints: Endpoint {
-//    var encoder: JSONEncoder {
-//        return JSONEncoder()
-//    }
-//
-//    //MARK: Endpoints
-//    //Authentication
-//    case signIn(with: SignInRequest)
-//    case signUp(with: SignUpRequest)
-//    case refreshToken(token: String)
-//
-//    //Project
-//    case fetchProject(id: Int32)
-//    case fetchProjects
-//    case updateProject(with: ProjectDTO)
-//    case createProject(with: ProjectDTO)
-//    case deleteProject(id: Int32)
-//    case assignToProject(email: String, projectID: Int32)
-//
-//    //Issue
-//    ///Fetches issues assigned to project with given id
-//    case fetchIssues(id: Int32)
-//    case updateIssue(with: IssueDTO)
-//    case createIssue(with: IssueDTO)
-//    case deleteIssue(id: Int32)
-//    case fetchIssueDetails(id: Int32)
-//    ///Assigns particular issue specified via id to user who initiated the action
-//    case assignIssue(id: Int32)
-//    ///Deletes assignment of particular issue specified via id to user who initiated the action
-//    case deleteIssueAssignment(id: Int32)
-//
-//    //Issue Dictionaries
-//    case fetchIssueStatusDictionary
-//    case fetchIssueTypeDictionary
-//    case fetchIssuePriorityDictionary
-//
-//    case create(sprint: Sprint)
-//    case delete(sprint: Sprint)
-//    case assign(issue: IssueDTO, to: Sprint)
-//    case start(sprint: Sprint)
-//    case stop(sprint: Sprint)
-//    case ongoing
-//    case unbegun
-//
-//    //User
-//    case currentUserInfo
-//
-//    var httpMethod: HTTPMethod {
-//        switch self {
-//        case .signUp, .signIn, .refreshToken ,.createProject, .assignToProject, .createIssue, .assignIssue, .create:
-//            return .post
-//        case .fetchProject, .fetchProjects, .fetchIssues, .fetchIssueDetails, .currentUserInfo, .fetchIssueTypeDictionary, .fetchIssueStatusDictionary, .fetchIssuePriorityDictionary:
-//            return .get
-//        case .updateProject, .updateIssue, .deleteIssueAssignment:
-//            return .put
-//        case .deleteProject, .deleteIssue:
-//            return .delete
-//        }
-//    }
-//
-//    var schema: String { "http" }
-//    var host: String { "127.0.0.1" }
-//    var port: Int { 8081 }
-//    var version: String { "/api" }
-//
-//    var path: String {
-//        switch self {
-//        case .signIn:
-//            return "/auth/sign-in"
-//        case .signUp:
-//            return "/auth/register"
-//        case .refreshToken:
-//            return "/auth/refresh"
-//        case .fetchProject(let id), .deleteProject(let id):
-//            return "/scrum-project/\(id)"
-//        case .fetchProjects, .updateProject, .createProject:
-//            return "/scrum-project"
-//        case .assignToProject:
-//            return "/scrum-project/user-association"
-//        case .fetchIssues, .updateIssue, .createIssue:
-//            return "/issue"
-//        case .fetchIssueDetails(let id):
-//            return "/issue/details/\(id)"
-//        case .deleteIssue(let id):
-//            return "/issue/\(id)"
-//        case .assignIssue(let id):
-//            return "/issue/\(id)/assign"
-//        case .deleteIssueAssignment(let id):
-//            return "/issue/\(id)/delete-assignment"
-//        case .currentUserInfo:
-//            return "/auth/user-info"
-//        case .fetchIssueStatusDictionary:
-//            return "/dictionary/status"
-//        case .fetchIssueTypeDictionary:
-//            return "/dictionary/type"
-//        case .fetchIssuePriorityDictionary:
-//            return "/dictionary/priority"
-//        }
-//    }
-//
-//    var queries: [String:String]? {
-//        switch self {
-//        case .refreshToken(let token):
-//            return ["refreshToken":"\(token)"]
-//        case .fetchIssues(let id):
-//            return ["projectID":"\(id)"]
-//        default:
-//            return nil
-//        }
-//
-//    }
-//
-//    var body: Data? {
-//        switch self {
-//        case .signIn(let credentials):
-//            return try? encoder.encode(credentials)
-//        case .signUp(let credentials):
-//            return try? encoder.encode(credentials)
-//        case .createProject(let details), .updateProject(let details):
-//            return try? encoder.encode(details)
-//        case .createIssue(let details), .updateIssue(let details):
-//            return try? encoder.encode(details)
-//        default:
-//            return nil
-//        }
-//    }
-//}

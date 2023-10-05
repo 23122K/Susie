@@ -15,7 +15,7 @@ class IssueFormViewModel: ObservableObject {
     
     @Published var name: String = .init()
     @Published var description: String = .init()
-    @Published var estimation: Int32 = 1
+    @Published var estimation: Int32 = 0
     @Published var type: IssueType?
     @Published var priority: IssuePriority?
     
@@ -25,9 +25,16 @@ class IssueFormViewModel: ObservableObject {
     private func fetchConfiguration() {
         Task {
             do {
-                types = try await client.fetchIssueTypesDictionary()
+                types = try await client.types()
+                priorities = try await client.priorities()
                 
-                priorities = try await client.fetchIssuePriorityDictionary()
+                guard let type = types.first, let priority = priorities.first else {
+                    throw AuthError.couldNotRefreshAuthObject
+                }
+                
+                self.type = type
+                self.priority = priority
+                
             } catch {
                 print(#function)
                 print("error")
@@ -39,9 +46,8 @@ class IssueFormViewModel: ObservableObject {
         Task {
             do {
                 if let type, let priority {
-                    let details: IssueDTO = IssueDTO(name: name, description: description, estimation: estimation, project: project, issueType: type, issuePriority: priority)
-                    print(details)
-                    let _ = try await client.createIssue(details)
+                    let details: IssueDTO = IssueDTO(name: name, description: description, estimation: estimation, project: project, issueType: type,  issuePriority: priority)
+                    let _ = try await client.create(issue: details)
                 }
             } catch {
                 print(#function)

@@ -59,7 +59,7 @@ final class ModelsTests: XCTestCase {
         XCTAssertEqual(projectDTO.description, Mockup.ProjectDTO.description)
     }
     
-    func testIssueGeneralDTODecoder() throws {
+    func testIssueGeneralDTODecoder() thros {
         let decoder: JSONDecoder = JSONDecoder()
         let issueGeneralDTO = try decoder.decode(IssueGeneralDTO.self, from: Mockup.IssueGeneralDTO.data)
         

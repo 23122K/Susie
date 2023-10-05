@@ -16,7 +16,7 @@ class BoardViewModel: ObservableObject {
     func fetchDeatils(for issue: IssueGeneralDTO) {
         Task {
             do {
-                self.issue = try await client.fetchIssueDetails(issue: issue)
+                self.issue = try await client.details(issue: issue)
                 print(issue)
             } catch {
                 print(error)

@@ -14,19 +14,27 @@ struct IssueFormView: View {
             TextField("Name", text: $vm.name)
             TextField("Description", text: $vm.description)
             Picker("Estimation", selection: $vm.estimation) {
-                ForEach(0..<7, id: \.self) { number in
+                ForEach(0...10, id: \.self) { number in
                     Text("\(number)").tag(Int32(number))
                 }
             }
             
             Picker("Issue type", selection: $vm.type) {
-                ForEach(vm.types, id: \.id) { type in
+                if vm.priority == nil {
+                    Text("Type").tag(nil as IssueType?)
+                }
+                
+                ForEach(vm.types) { type in
                     Text(type.description).tag(type as IssueType?)
                 }
             }
             
             Picker("Issue priority", selection: $vm.priority) {
-                ForEach(vm.priorities, id: \.id) { priority in
+                if vm.priority == nil {
+                    Text("Priority").tag(nil as IssuePriority?)
+                }
+                
+                ForEach(vm.priorities) { priority in
                     Text(priority.description).tag(priority as IssuePriority?)
                 }
             }
@@ -41,9 +49,3 @@ struct IssueFormView: View {
         _vm = StateObject(wrappedValue: IssueFormViewModel(project: project))
     }
 }
-
-//struct IssueFormView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        IssueFormView()
-//    }
-//}

@@ -27,12 +27,12 @@ class ProjectViewModel: ObservableObject {
     
     private func create() {
         let project = ProjectDTO(name: name, description: description)
-        Task { let _ = try await client.createProject(with: project) }
+        Task { let _ = try await client.create(project: project) }
     }
     
     private func update() {
         let project = ProjectDTO(id: project.id, name: name, description: description)
-        Task { let _ = try await client.updateProject(with: project) }
+        Task { let _ = try await client.update(project: project) }
     }
     
     private func delete() {

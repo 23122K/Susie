@@ -1,8 +1,8 @@
 import Foundation
 
 actor NetworkManager {
-    let cache: CacheManager
-    let keychain: KeychainManager
+    private let cache: CacheManager
+    private let keychain: KeychainManager
     
     private var refreshTask: Task<Auth, Error>?
     
@@ -71,13 +71,22 @@ actor NetworkManager {
         }
         
         let request = authorize ? try await self.authorize(request: endpoint.request) : endpoint.request
+        
+        print("Absolute string")
+        print(request.url?.absoluteString)
+        
+        print("Body")
+        if let body = request.httpBody {
+            print(String(data: body, encoding: .utf8))
+        }
+        
         let task = Task<Data, Error> {
             guard let (data, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
                 cache.status[endpoint] = .completed
                 throw NetworkError.invalidHTTPResponse
             }
             
-            guard (200...299).contains( response.statusCode ) else {
+            guard (200...299).contains(response.statusCode) else {
                 cache.status[endpoint] = .completed
                 throw NetworkError.failure(statusCode: response.statusCode)
             }
@@ -85,16 +94,19 @@ actor NetworkManager {
             return data
         }
         
+        
+        print("Ongoing")
         cache.status[endpoint] = .ongoing(task)
-        print("1")
         let data = try await task.value
         cache.status[endpoint] = .completed
+        print("Completed")
         
         //TODO: Do not cache if data is not valid
         if policy.shouldCache { cache[endpoint] = Cache(data: data, for: policy.shouldExpireIn)
             print("Here")
         }
         
+        print(String(data: data, encoding: .utf8))
         return try decoder.decode(T.self, from: data)
     }
     

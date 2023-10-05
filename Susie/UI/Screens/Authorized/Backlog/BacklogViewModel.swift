@@ -8,27 +8,34 @@
 import SwiftUI
 import Factory
 
+@MainActor
 class BacklogViewModel: ObservableObject {
-    private var project: ProjectDTO
+    private var project: Project
     private var client: Client
     
-    internal enum Entity {
-        case sprint
-        case issue
+    @Published var issues: Array<IssueGeneralDTO> = []
+    @Published var issue: IssueGeneralDTO?
+    
+    func fetch() {
+        Task { self.issues = try await client.issues(project: project) }
     }
     
-    @Published var sprints: Array<Sprint> = []
-    @Published var issues: Array<Issue> = []
+    func assign(to sprint: Sprint) {
+        guard let issue else {
+            return
+        }
+        
+        Task { try await client.assign(issue: issue, to: sprint) }
+    }
     
-//    func get(_ entity: Entity) {
-//        switch entity {
-//        case .issue: Task { self.issues = try await client.fetchIssues(from: project)}
-//        case .sprint: Task { self.sprints = try await client.fet}
-//        }
-//    }
-//
-    init(project: ProjectDTO, container: Container = Container.shared) {
+    func delete(issue: IssueGeneralDTO) {
+        Task { try await client.delete(issue: issue) }
+    }
+    
+    init(project: Project, container: Container = Container.shared) {
         self.client = container.client()
         self.project = project
+        
+        fetch()
     }
 }

@@ -13,7 +13,6 @@ struct Issue: Identifiable, Codable {
     let estimation: Int32
     let reporter: User
     let asignee: User?
-    let projectID: Int32?
     let type: Int32
     let priority: Int32
     let status: Int32
@@ -25,7 +24,6 @@ struct Issue: Identifiable, Codable {
         case estimation
         case reporter
         case asignee
-        case projectID
         case type = "issueTypeID"
         case priority = "issuePriorityID"
         case status = "issueStatusID"
@@ -69,6 +67,12 @@ struct IssueDTO: Identifiable, Codable {
         self.issuePriorityID = issuePriority.id
     }
 }
+
+//extension Issue {
+//    func toDTO() -> IssueDTO {
+//        return IssueDTO(name: self.name, description: self.description, estimation: self.estimation, issueType: , issuePriority: <#T##IssuePriority#>)
+//    }
+//}
 
 struct IssueGeneralDTO: Identifiable, Codable {
     let id: Int32

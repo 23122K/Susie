@@ -11,7 +11,7 @@ struct AuthenticatedUserView: View {
                     Text("Board")
                 }
 
-            BacklogsView()
+            BacklogView(project: project)
                 .tabItem{
                     Image(systemName: "list.dash")
                     Text("Backlog")
