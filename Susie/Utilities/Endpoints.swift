@@ -30,7 +30,12 @@ protocol Endpoint {
 }
 
 enum Endpoints {
-    private(set) static var encoder: JSONEncoder = JSONEncoder()
+    private static var encoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .customISO8601
+        
+        return encoder
+    }()
 
     internal enum AuthEndpoint: Endpoint {
         case signIn(request: SignInRequest)
@@ -85,13 +90,7 @@ enum Endpoints {
         var body: Data? {
             switch self {
             case .signIn(let request):
-                do {
-                   return try encoder.encode(request)
-                } catch {
-                    print(error)
-                    return Data()
-                }
-//                return try? encoder.encode(request)
+                return try? encoder.encode(request)
             case .signUp(let request):
                 return try? encoder.encode(request)
             case .refresh, .info:
@@ -138,7 +137,7 @@ enum Endpoints {
             case .unassignFrom(issue: let issue):
                 return "issue/\(issue.id)/delete-assignment"
             case .assignedTo(let sprint):
-                return "issue/sprint/\(sprint.id)}"
+                return "issue/sprint/\(sprint.id)"
             case .change(let status, let issue):
                 return "/api/issue/\(issue.id)/status/\(status.id)"
             }
@@ -179,7 +178,6 @@ enum Endpoints {
     }
     internal enum SprintEndpoint: Endpoint {
         case create(sprint: Sprint)
-        //        case delete(sprint: Sprint)
         case assign(issue: IssueGeneralDTO, to: Sprint)
         case start(sprint: Sprint)
         case stop(sprint: Sprint)

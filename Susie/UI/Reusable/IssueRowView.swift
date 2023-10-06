@@ -26,19 +26,12 @@ struct IssueRowView: View {
                 }
                 .padding(.horizontal, 1)
             }
-            .padding(10)
         }
-        .padding(.horizontal, 5)
+        .padding(.horizontal)
         .background{
             RoundedRectangle(cornerRadius: 10)
             .fill(Color.susieWhiteSecondary)
-            .padding(.horizontal, 10)
         }
     }
 }
 
-//struct IssueRowView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        IssueRowView(title: "Fix performance issues while fetching data", tag: "Bug", color: .red, assignetToInitials: "KL")
-//    }
-//}

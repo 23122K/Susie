@@ -14,6 +14,7 @@ struct Carousel<T: Any, Content: View>: View {
     }
     
     @State private var currentTab: Int
+    private let height: CGFloat
     private let type: CarouselType
     private let data: Array<T>
     private let content: (T) -> Content
@@ -23,6 +24,7 @@ struct Carousel<T: Any, Content: View>: View {
             TabView(selection: $currentTab) {
                 ForEach(Array(zip(data.indices, data)), id: \..0) { index, item in
                     content(item)
+                        .frame(height: height)
                         .tag(index)
                 }
             }
@@ -71,8 +73,9 @@ struct Carousel<T: Any, Content: View>: View {
 //        }
     }
     
-    public init(_ data: [T], type: CarouselType = .bounded, @ViewBuilder _ content: @escaping (T) -> Content) {
+    public init(_ data: [T], type: CarouselType = .bounded, height: CGFloat = 200, @ViewBuilder _ content: @escaping (T) -> Content) {
         self.content = content
+        self.height = height
         self.type = type
         
         switch type {

@@ -10,18 +10,20 @@ import Factory
 
 @MainActor
 class BacklogViewModel: ObservableObject {
-    private var project: Project
+    private(set) var project: Project
+    private(set) var user: User?
     private var client: Client
     
     @Published var issues: Array<IssueGeneralDTO> = []
     @Published var issue: IssueGeneralDTO?
     
     func fetch() {
-        Task { self.issues = try await client.issues(project: project) }
+        Task { self.issues = try await client.issues(backlog: project.toDTO()) }
     }
     
     func assign(to sprint: Sprint) {
         guard let issue else {
+            print("Failed to assing")
             return
         }
         
@@ -34,6 +36,7 @@ class BacklogViewModel: ObservableObject {
     
     init(project: Project, container: Container = Container.shared) {
         self.client = container.client()
+        self.user = client.user
         self.project = project
         
         fetch()

@@ -12,14 +12,17 @@ struct ProjectRowView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            HStack { Spacer(minLength: 1) } //Makes view take all the space
+            HStack(alignment: .top) { Spacer(minLength: 1) } //Makes view take all the space
             Text(project.name)
                 .font(.headline)
             Text(project.description)
                 .font(.callout)
                 .lineLimit(1)
+                .padding(.bottom, 5)
                 
         }
+        .padding(.vertical, 5)
+        .padding(.horizontal)
         .background {
             RoundedRectangle(cornerRadius: 9)
                 .fill(Color.susieWhiteSecondary)

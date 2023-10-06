@@ -6,7 +6,12 @@ actor NetworkManager {
     
     private var refreshTask: Task<Auth, Error>?
     
-    private var decoder: JSONDecoder = JSONDecoder()
+    private lazy var decoder: JSONDecoder = {
+        let decoder: JSONDecoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        
+        return decoder
+    }()
     
     //MARK: Authorization
     private var auth: Auth {
@@ -107,7 +112,12 @@ actor NetworkManager {
         }
         
         print(String(data: data, encoding: .utf8))
-        return try decoder.decode(T.self, from: data)
+        do {
+            return try decoder.decode(T.self, from: data)
+        } catch {
+            print(error)
+            throw(error)
+        }
     }
     
     //TODO: Add -> Some sort of resposne, Kacper did not implemented it yet

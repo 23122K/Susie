@@ -95,6 +95,11 @@
 		6FEC168A2AC83E20006C7604 /* SprintsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEC16892AC83E20006C7604 /* SprintsViewModel.swift */; };
 		6FEC168E2AC86BD8006C7604 /* SprintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEC168D2AC86BD8006C7604 /* SprintView.swift */; };
 		6FEC16902AC86DFA006C7604 /* SprintViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEC168F2AC86DFA006C7604 /* SprintViewModel.swift */; };
+		6FEDB9AB2ACFFF5600D44B49 /* SprintFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEDB9AA2ACFFF5600D44B49 /* SprintFormView.swift */; };
+		6FEDB9AD2AD000C900D44B49 /* SprintFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEDB9AC2AD000C900D44B49 /* SprintFormViewModel.swift */; };
+		6FEDB9AF2AD0225700D44B49 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEDB9AE2AD0225700D44B49 /* Date+Extension.swift */; };
+		6FEDB9B22AD06D7900D44B49 /* SwipeActions in Frameworks */ = {isa = PBXBuildFile; productRef = 6FEDB9B12AD06D7900D44B49 /* SwipeActions */; };
+		6FEDB9B42AD06F6200D44B49 /* SideMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FEDB9B32AD06F6200D44B49 /* SideMenu.swift */; };
 		6FF149C22AA8CB07005CDBF6 /* Colors+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF149C12AA8CB07005CDBF6 /* Colors+Extension.swift */; };
 		6FF149C82AA8E220005CDBF6 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF149C72AA8E220005CDBF6 /* ButtonStyles.swift */; };
 		6FF702302AC4891A002A03B5 /* NetworkMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF7022F2AC4891A002A03B5 /* NetworkMonitorTests.swift */; };
@@ -201,6 +206,10 @@
 		6FEC16892AC83E20006C7604 /* SprintsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintsViewModel.swift; sourceTree = "<group>"; };
 		6FEC168D2AC86BD8006C7604 /* SprintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintView.swift; sourceTree = "<group>"; };
 		6FEC168F2AC86DFA006C7604 /* SprintViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintViewModel.swift; sourceTree = "<group>"; };
+		6FEDB9AA2ACFFF5600D44B49 /* SprintFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintFormView.swift; sourceTree = "<group>"; };
+		6FEDB9AC2AD000C900D44B49 /* SprintFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintFormViewModel.swift; sourceTree = "<group>"; };
+		6FEDB9AE2AD0225700D44B49 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		6FEDB9B32AD06F6200D44B49 /* SideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
 		6FF149C12AA8CB07005CDBF6 /* Colors+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Colors+Extension.swift"; sourceTree = "<group>"; };
 		6FF149C72AA8E220005CDBF6 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		6FF7022F2AC4891A002A03B5 /* NetworkMonitorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorTests.swift; sourceTree = "<group>"; };
@@ -220,6 +229,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6FE1E0EC2AAB5505009136A2 /* Factory in Frameworks */,
+				6FEDB9B22AD06D7900D44B49 /* SwipeActions in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,8 +347,6 @@
 				6FD0153629DAED26009F2A77 /* BacklogView.swift */,
 				6F291EBC2AC6A09F004C9A54 /* BacklogViewModel.swift */,
 				6FEC16892AC83E20006C7604 /* SprintsViewModel.swift */,
-				6FEC168F2AC86DFA006C7604 /* SprintViewModel.swift */,
-				6FEC168D2AC86BD8006C7604 /* SprintView.swift */,
 				6F0EFE232ACB331D00578330 /* SprintRowView.swift */,
 			);
 			path = Backlog;
@@ -400,6 +408,7 @@
 				6FE5179F2A9A42D4001A5EDF /* CacheManager+Subscript.swift */,
 				6F434EF02A9B814100D13BB6 /* NSCache+Subscript.swift */,
 				6FF149C12AA8CB07005CDBF6 /* Colors+Extension.swift */,
+				6FEDB9AE2AD0225700D44B49 /* Date+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -410,6 +419,17 @@
 				6FE816372A69603B005D6817 /* HomeView.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		6FEDB9A52ACFF36800D44B49 /* Sprint */ = {
+			isa = PBXGroup;
+			children = (
+				6FEC168F2AC86DFA006C7604 /* SprintViewModel.swift */,
+				6FEC168D2AC86BD8006C7604 /* SprintView.swift */,
+				6FEDB9AA2ACFFF5600D44B49 /* SprintFormView.swift */,
+				6FEDB9AC2AD000C900D44B49 /* SprintFormViewModel.swift */,
+			);
+			path = Sprint;
 			sourceTree = "<group>";
 		};
 		6FEFB2DC29F8225D00DA5668 /* Utilities */ = {
@@ -485,6 +505,7 @@
 				6FD008B12A0266AE00D3B760 /* Checkbox.swift */,
 				6FF149C72AA8E220005CDBF6 /* ButtonStyles.swift */,
 				6F0EFE482ACEC2F400578330 /* Carousel.swift */,
+				6FEDB9B32AD06F6200D44B49 /* SideMenu.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -492,6 +513,7 @@
 		6FF149B82AA8C5AA005CDBF6 /* Authorized */ = {
 			isa = PBXGroup;
 			children = (
+				6FEDB9A52ACFF36800D44B49 /* Sprint */,
 				6F5F5EEA29DC88BB00B9BCE6 /* AuthenticatedUserView.swift */,
 				6F291EB52AC59484004C9A54 /* Issue form */,
 				6FE1E0F12AAB692C009136A2 /* Projects */,
@@ -585,6 +607,7 @@
 			name = Susie;
 			packageProductDependencies = (
 				6FE1E0EB2AAB5505009136A2 /* Factory */,
+				6FEDB9B12AD06D7900D44B49 /* SwipeActions */,
 			);
 			productName = Suzie;
 			productReference = 6FD014F129DAA6DC009F2A77 /* Susie.app */;
@@ -620,6 +643,7 @@
 			mainGroup = 6FD014E829DAA6DB009F2A77;
 			packageReferences = (
 				6FE1E0EA2AAB5505009136A2 /* XCRemoteSwiftPackageReference "Factory" */,
+				6FEDB9B02AD06D7900D44B49 /* XCRemoteSwiftPackageReference "SwipeActions" */,
 			);
 			productRefGroup = 6FD014F229DAA6DC009F2A77 /* Products */;
 			projectDirPath = "";
@@ -696,7 +720,9 @@
 				6FEC168A2AC83E20006C7604 /* SprintsViewModel.swift in Sources */,
 				6FE1E0F42AAB6977009136A2 /* ProjectsViewModel.swift in Sources */,
 				6F59AEE22AAC8C570020977E /* Client.swift in Sources */,
+				6FEDB9AB2ACFFF5600D44B49 /* SprintFormView.swift in Sources */,
 				6FD008BA2A02705C00D3B760 /* FormTitleView.swift in Sources */,
+				6FEDB9AD2AD000C900D44B49 /* SprintFormViewModel.swift in Sources */,
 				6F8497032A8FAF1200A3F46A /* SignUp.swift in Sources */,
 				6F8497052A8FAF1200A3F46A /* SignIn.swift in Sources */,
 				6FE1E0EE2AAB5633009136A2 /* Container.swift in Sources */,
@@ -710,6 +736,7 @@
 				6FF702332AC559EF002A03B5 /* BoardsViewModel.swift in Sources */,
 				6F5F5EFB29DDA72800B9BCE6 /* LoggedPersonView.swift in Sources */,
 				6FE1E0F82AAB69AA009136A2 /* ProjectRowView.swift in Sources */,
+				6FEDB9B42AD06F6200D44B49 /* SideMenu.swift in Sources */,
 				6FE517A02A9A42D4001A5EDF /* CacheManager+Subscript.swift in Sources */,
 				6F63307D2A71A60600719862 /* SprintDropDelegate.swift in Sources */,
 				6FD0151429DAACC0009F2A77 /* IssueDetailedView.swift in Sources */,
@@ -721,6 +748,7 @@
 				6FD0151829DAADDE009F2A77 /* BoardView.swift in Sources */,
 				6F8497042A8FAF1200A3F46A /* Sprint.swift in Sources */,
 				6FD0152329DAB0D9009F2A77 /* SignInView.swift in Sources */,
+				6FEDB9AF2AD0225700D44B49 /* Date+Extension.swift in Sources */,
 				6F0EFE492ACEC2F400578330 /* Carousel.swift in Sources */,
 				6FD008B22A0266AE00D3B760 /* Checkbox.swift in Sources */,
 				6FD0153729DAED26009F2A77 /* BacklogView.swift in Sources */,
@@ -1030,6 +1058,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		6FEDB9B02AD06D7900D44B49 /* XCRemoteSwiftPackageReference "SwipeActions" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/aheze/SwipeActions";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1037,6 +1073,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6FE1E0EA2AAB5505009136A2 /* XCRemoteSwiftPackageReference "Factory" */;
 			productName = Factory;
+		};
+		6FEDB9B12AD06D7900D44B49 /* SwipeActions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6FEDB9B02AD06D7900D44B49 /* XCRemoteSwiftPackageReference "SwipeActions" */;
+			productName = SwipeActions;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

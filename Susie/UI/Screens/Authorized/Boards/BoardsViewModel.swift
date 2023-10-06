@@ -10,20 +10,36 @@ import Factory
 
 @MainActor
 class BoardsViewModel: ObservableObject {
-    var project: Project
+    private(set) var project: Project
+    private(set) var user: User?
     private var client: Client
+    private var sprint: Sprint?
     
     @Published var issues: Array<IssueGeneralDTO> = []
     @Published var statuses: Array<IssueStatus> = []
     
-    func fetchIssues() {
+    public func refresh() {
+        fetchSprint()
+        fetchStatuses()
+        fetchIssue()
+    }
+    
+    func fetchIssue() {
+        guard let sprint else {
+            return
+        }
+        
         Task {
             do {
-                self.issues = try await client.issues(project: project)
+                self.issues = try await client.issues(sprint: sprint)
             } catch {
                 print(error)
             }
         }
+    }
+    
+    func fetchSprint() {
+        Task { self.sprint = try await client.active() }
     }
     
     func fetchStatuses() {
@@ -40,9 +56,7 @@ class BoardsViewModel: ObservableObject {
     
     init(container: Container = Container.shared, project: Project) {
         self.client = container.client()
+        self.user = client.user
         self.project = project
-        
-        fetchStatuses()
-        fetchIssues()
     }
 }

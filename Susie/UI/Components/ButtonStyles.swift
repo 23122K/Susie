@@ -20,7 +20,6 @@ struct PrimaryButtonStyle: ButtonStyle {
                 .frame(maxWidth: .infinity)
                 .background(!isEnabled ? Color.susieBlueSecondary : (configuration.isPressed ? Color.susieBlueSecondary : Color.susieBluePriamry))
                 .cornerRadius(25)
-//                .shadow(color: Color.gray.opacity(0.3), radius: 16)
         }
         .padding(.horizontal, 20)
     }
@@ -38,8 +37,26 @@ struct SecondaryButtonStyle: ButtonStyle {
                 .frame(maxWidth: .infinity)
                 .background(isEnabled ? (configuration.isPressed ? Color.susieBlueSecondary : Color.susieBluePriamry) : Color.susieBlueTertiary )
                 .cornerRadius(25)
-//                .shadow(color: Color.gray.opacity(0.3), radius: 16)
         }
         .padding(.horizontal, 50)
+    }
+}
+
+
+struct CreateIssueButtonStyle: ButtonStyle {
+    @Environment (\.isEnabled) private var isEnabled: Bool
+    
+    func makeBody(configuration: Configuration) -> some View {
+        ZStack {
+            configuration.label
+                .bold()
+                .padding()
+                .frame(maxWidth: .infinity)
+                .foregroundColor(Color.gray)
+                .background(Color.susieWhiteSecondary)
+//                .background(isEnabled ? (configuration.isPressed ? Color.susieBlueSecondary : Color.susieBluePriamry) : Color.susieBlueTertiary )
+                .cornerRadius(9)
+        }
+        .padding()
     }
 }

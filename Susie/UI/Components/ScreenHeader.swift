@@ -7,25 +7,27 @@
 
 import SwiftUI
 
-struct ScreenHeader: View {
-    let date: String
-    let title: String
+struct ScreenHeader<Content: View>: View {
+    let user: User?
+    let screenTitle: String
+    let content: Content?
+    
     var body: some View {
         HStack(alignment: .lastTextBaseline) {
-            VStack(alignment: .leading) {
-                Text(date)
-                    .font(.footnote)
-                    .foregroundColor(.gray)
-                    .fontWeight(.semibold)
-                Text(title)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-            }
+            InitialsView(user: user, size: 30)
             Spacer()
+            Text(screenTitle)
+                .fontWeight(.semibold)
+            Spacer()
+            content
         }
-        .padding(.top)
-        .navigationTitle(title)
-        .toolbar(.hidden, for: .navigationBar)
+        .padding(.horizontal)
+    }
+    
+    init(user: User?, screenTitle: String, @ViewBuilder content: @escaping () -> Content?) {
+        self.user = user
+        self.screenTitle = screenTitle
+        self.content = content()
     }
 }
 

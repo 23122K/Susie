@@ -26,3 +26,9 @@ extension ButtonStyle where Self == SecondaryButtonStyle {
         return .init()
     }
 }
+
+extension ButtonStyle where Self == CreateIssueButtonStyle {
+    static var issueCreation: Self {
+        return .init()
+    }
+}

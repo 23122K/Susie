@@ -8,6 +8,15 @@
         "revision" : "061b3afe0358a0da7ce568f8272c847910be3dd7",
         "version" : "2.2.0"
       }
+    },
+    {
+      "identity" : "swipeactions",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/aheze/SwipeActions",
+      "state" : {
+        "revision" : "41e6f6dce02d8cfa164f8c5461a41340850ca3ab",
+        "version" : "1.1.0"
+      }
     }
   ],
   "version" : 2

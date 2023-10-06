@@ -9,18 +9,19 @@ import SwiftUI
 
 struct ProjectsView: View {
     @StateObject private var vm = ProjectsViewModel()
+    @State private var isShown = false
     
     var body: some View {
         NavigationStack {
             HStack(alignment: .lastTextBaseline) {
-                ScreenHeader(date: "29.09.2023", title: "Projects")
-                Spacer()
-                NavigationLink(destination: {
-                    ProjectView()
-                }, label: {
-                    Text("Add project")
-                        .fontWeight(.semibold)
+                ScreenHeader(user: vm.user, screenTitle: "Projects", content: {
+                    NavigationLink("+", destination: {
+                        ProjectView()
+                    })
                 })
+                .onTapGesture {
+                    isShown.toggle()
+                }
             }
             .padding(.horizontal)
             
@@ -33,7 +34,7 @@ struct ProjectsView: View {
                         Button("Delete") {
                             vm.delete(project: project)
                         }
-                        .tint(.red.opacity(0.6))
+                        .tint(.red.opacity(0.25))
                     }
                     .swipeActions(edge: .leading, allowsFullSwipe: true) {
                         NavigationLink(destination: {
@@ -47,26 +48,26 @@ struct ProjectsView: View {
             }
             .listStyle(.plain)
         }
+        .sideMenu(isPresented: $isShown, menuContent: {
+            VStack(alignment: .leading) {
+                HStack {
+                    Text(vm.user?.fullName ?? "User full name")
+                }
+                
+                Text("Settings")
+                Spacer()
+            }
+            .padding()
+            .frame(maxWidth: .infinity, alignment: .leading)
+        })
         .refreshable {
+            vm.fetch()
+        }
+        .onAppear {
             vm.fetch()
         }
         .fullScreenCover(item: $vm.project) { project in
             AuthenticatedUserView(project: project)
-        }
-        .toolbar(.visible, for: .navigationBar)
-        .toolbar {
-            Button("XD") {
-                
-            }
-            NavigationLink(destination: {
-                ProjectView()
-            }, label: {
-                Text("Add")
-            })
-        }
-        .onAppear{
-            print("fetch")
-            vm.fetch()
         }
     }
 }

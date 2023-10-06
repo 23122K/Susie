@@ -16,7 +16,7 @@ class SignUpViewModel: ObservableObject {
     @Published var emial = String()
     @Published var password = String()
     @Published var confirmPassword = String()
-    @Published var isScrumMaster = false
+    @Published var isScrumMaster = true
     
     //TODO: Chage to real validation
     var areCrendentailsValid: Bool {
@@ -35,7 +35,7 @@ class SignUpViewModel: ObservableObject {
     }
     
     func signUp() {
-        defer { clean() }
+//        defer { clean() }
         
         Task {
             switch isScrumMaster {
@@ -43,7 +43,7 @@ class SignUpViewModel: ObservableObject {
                 let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password, isScrumMaster: true)
                 try await client.signUp(with: credentials)
             case false:
-                let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password, isScrumMaster: true)
+                let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password, isScrumMaster: false)
                 try await client.signUp(with: credentials)
             }
             

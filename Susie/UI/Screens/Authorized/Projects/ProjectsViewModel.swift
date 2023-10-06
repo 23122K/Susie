@@ -14,6 +14,7 @@ class ProjectsViewModel: ObservableObject {
     
     @Published var projects: Array<ProjectDTO> = .init()
     @Published var project: Project? = nil
+    @Published var user: User?
     
     @Published var name: String = .init()
     @Published var description: String = .init()
@@ -33,5 +34,6 @@ class ProjectsViewModel: ObservableObject {
     
     init(container: Container = Container.shared) {
         self.client = container.client()
+        self.user = client.user
     }
 }

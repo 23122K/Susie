@@ -19,22 +19,14 @@ class SprintsViewModel: ObservableObject {
     @Published var sprint: Sprint?
     
     func fetch() {
-        Task { self.sprints = try await client.sprints() }
-        print(sprints.count)
-    }
-    
-    func create() {
-        let sprint = Sprint(name: "Sprint #\(UInt8.random(in: 0..<128))", projectID: project.id, startTime: "123")
         Task {
-            let sprint = try await client.create(sprint: sprint)
-            self.sprints.append(sprint)
+//            self.sprints = try await client.sprints()
+            print("SPRINT COUnt \(sprints.count)")
         }
     }
     
     init(project: Project, container: Container = Container.shared) {
         self.client = container.client()
         self.project = project
-        
-        fetch()
     }
 }

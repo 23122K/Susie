@@ -145,6 +145,11 @@ class Client: ObservableObject {
         return try await network.response(from: endpoint)
     }
     
+    func issues(backlog project: ProjectDTO) async throws -> Array<IssueGeneralDTO> {
+        let endpoint = Endpoints.IssueEndpoint.backlog(project: project)
+        return try await network.response(from: endpoint)
+    }
+    
     //MARK: Sprint
     func create(sprint: Sprint) async throws -> Sprint {
         let endpoint = Endpoints.SprintEndpoint.create(sprint: sprint)

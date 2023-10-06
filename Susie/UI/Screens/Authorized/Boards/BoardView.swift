@@ -19,18 +19,19 @@ struct BoardView: View {
         VStack(alignment: .leading) {
             HStack{
                 Text(status.description)
-                    .padding(.leading, 30)
+                    .padding(.leading)
                     .padding(.vertical, 4)
                     .bold()
                 Text("\(issues.count)")
+                    .fontWeight(.bold)
                     .foregroundColor(.gray)
                     .padding(.horizontal,5)
                     .background{
                         RoundedRectangle(cornerRadius: 5)
-                            .fill(.black)
-                            .opacity(0.1)
+                            .fill(Color.susieWhiteSecondary)
                     }
             }
+            .offset(y: 10)
             
             ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns) {

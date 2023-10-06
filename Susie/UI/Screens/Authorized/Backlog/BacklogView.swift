@@ -7,47 +7,84 @@ struct BacklogView: View {
     @State private var dropStatus: DropStatus = .exited
     
     var body: some View {
-        VStack {
-            Button("Add sprint") {
-                sprints.create()
-            }
-            
-            Carousel(sprints.sprints, type: .unbounded) { sprint in
-                ZStack{
-                    switch dropStatus {
-                    case .entered:
-                        Color.red.opacity(0.7)
-                    case .exited:
-                        Color.susieBluePriamry
-                    case .dropped:
-                        Color.green.opacity(0.7)
+        GeometryReader { reader in
+            NavigationStack {
+                HStack(alignment: .lastTextBaseline) {
+                    ScreenHeader(user: backlog.user, screenTitle: "Projects", content: {
+                        NavigationLink("+", destination: {
+                            ProjectView()
+                        })
+                    })
+                    .onTapGesture {
+//                        isShown.toggle()
                     }
-                    Text(sprint.name)
                 }
-                .cornerRadius(9)
-                .padding()
-                    .onDrop(of: [.text], delegate: SprintDropDelegate(backlog: backlog, dropStatus: $dropStatus, sprint: sprint))
-            }
-            
-            List(backlog.issues) { issue in
-                Text(issue.name)
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        Button("Delete") {
-                            backlog.delete(issue: issue)
+                .padding(.horizontal)
+                
+                if sprints.sprints.isEmpty {
+                    NavigationLink(destination: {
+                        SprintFormView()
+                    }, label: {
+                        ZStack {
+                            Color.susieWhiteSecondary
+                            Text("Add sprint")
+                                .fontWeight(.semibold)
                         }
-                        .tint(.red)
+                        .cornerRadius(9)
+                        .padding()
+                        .frame(width: reader.size.width, height: 200)
+                    })
+                } else {
+                    Carousel(sprints.sprints, type: .unbounded) { sprint in
+                        ZStack{
+                            switch dropStatus {
+                            case .entered:
+                                Color.red.opacity(0.7)
+                            case .exited:
+                                Color.susieBluePriamry
+                            }
+                            Text(sprint.name)
+                        }
+                        .cornerRadius(9)
+                        .padding()
+                        .onTapGesture { sprints.sprint = sprint }
+                        .onDrop(of: [.text], delegate: SprintDropDelegate(backlog: backlog, dropStatus: $dropStatus, sprint: sprint))
                     }
-                    .onDrag {
-                        backlog.issue = issue
-                        return NSItemProvider()
+                }
+                
+                ScrollView(showsIndicators: false) {
+                    ForEach(backlog.issues) { issue in
+                        IssueRowView(issue: issue)
+                            .padding(.horizontal)
+                            .onDrag {
+                                backlog.issue = issue
+                                return NSItemProvider()
+                            }
                     }
+                    
+                    
+                    
+                    NavigationLink("Create issue", destination: {
+                        IssueFormView(project: backlog.project)
+                    })
+                    .buttonStyle(.issueCreation)
+                    .offset(y: -15)
+                }
+                
+                Spacer()
             }
-        }
-        .fullScreenCover(item: $sprints.sprint) { sprint in
-            SprintView(sprint: sprint)
-        }
-        .onAppear {
-            print("BACKLOG VIEW APPEARED")
+            .navigationTitle("Backlog")
+            .refreshable {
+                backlog.fetch()
+                sprints.fetch()
+            }
+            .onAppear {
+                backlog.fetch()
+                sprints.fetch()
+            }
+            .fullScreenCover(item: $sprints.sprint) { sprint in
+                SprintView(sprints: sprints)
+            }
         }
     }
     

@@ -9,42 +9,48 @@ import SwiftUI
 
 struct BoardsView: View {
     @State var isPresented: Bool = false
-    @StateObject var vm: BoardsViewModel
+    @StateObject var boards: BoardsViewModel
+    
     var body: some View {
-        VStack(alignment: .trailing){
+        VStack(alignment: .trailing, spacing: 0){
+            HStack(alignment: .lastTextBaseline) {
+                ScreenHeader(user: boards.user, screenTitle: "Projects", content: {
+                    NavigationLink("+", destination: {
+                        ProjectView()
+                    })
+                })
+                .onTapGesture {
+//                    isShown.toggle()
+                }
+            }
+            .padding(.horizontal)
+            
             TabView {
-                ForEach(vm.statuses) { status in
+                ForEach(boards.statuses) { status in
                     GeometryReader { g in
-                        BoardView(issues: vm.issues, status: status)
+                        BoardView(issues: boards.issues, status: status)
                     }
                     .frame(width: 380, height: 650)
                 }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
+            
             Button("Create issue") {
                 isPresented.toggle()
             }
         }
-        .onAppear {
-            print("Appered boardsView")
-            vm.fetchStatuses()
-            vm.fetchIssues()
-        }
-        .refreshable {
-            vm.fetchStatuses()
-            vm.fetchIssues()
-        }
+        .onAppear { boards.refresh() }
+        .refreshable { boards.refresh() }
         .sheet(isPresented: $isPresented) {
-            IssueFormView(project: vm.project)
+            IssueFormView(project: boards.project)
                 .onDisappear {
-                    vm.fetchStatuses()
-                    vm.fetchIssues()
+                    boards.refresh()
                 }
         }
     }
     
     init(project: Project) {
-        _vm = StateObject(wrappedValue: BoardsViewModel(project: project))
+        _boards = StateObject(wrappedValue: BoardsViewModel(project: project))
     }
     
     
