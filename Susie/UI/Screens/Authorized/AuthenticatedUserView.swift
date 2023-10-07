@@ -5,6 +5,12 @@ struct AuthenticatedUserView: View {
     
     var body: some View {
         TabView{
+            HomeView(project: project)
+                .tabItem{
+                    Image(systemName: "house")
+                    Text("Home")
+                }
+            
             BoardsView(project: project)
                 .tabItem{
                     Image(systemName: "house")
@@ -17,7 +23,7 @@ struct AuthenticatedUserView: View {
                     Text("Backlog")
                 }
 
-            DashboardView()
+            DashboardView(project: project)
                 .tabItem{
                     Image("dashboard")
                     Text("Dashboard")

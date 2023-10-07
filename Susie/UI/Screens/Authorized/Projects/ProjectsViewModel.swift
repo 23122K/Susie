@@ -13,7 +13,7 @@ class ProjectsViewModel: ObservableObject {
     private var client: Client
     
     @Published var projects: Array<ProjectDTO> = .init()
-    @Published var project: Project? = nil
+    @Published var project: Project?
     @Published var user: User?
     
     @Published var name: String = .init()
@@ -23,7 +23,7 @@ class ProjectsViewModel: ObservableObject {
         Task { self.projects = try await client.projects() }
     }
     
-    func fetchDetails(of project: ProjectDTO) {
+    func details(of project: ProjectDTO) {
         Task { self.project = try await client.details(project: project) }
     }
     
@@ -32,8 +32,12 @@ class ProjectsViewModel: ObservableObject {
         projects.removeAll(where: { $0.id == project.id })
     }
     
+    func info() {
+        Task { self.user = try await client.info() }
+    }
+    
     init(container: Container = Container.shared) {
         self.client = container.client()
-        self.user = client.user
+        info() //TODO: Make Client class await for some data after it triggers IsAuthenticated
     }
 }

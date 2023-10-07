@@ -8,21 +8,23 @@
 import SwiftUI
 
 struct BoardsView: View {
-    @State var isPresented: Bool = false
-    @StateObject var boards: BoardsViewModel
+    @StateObject private var boards: BoardsViewModel
+    @State private var isPresented: Bool = false
     
     var body: some View {
-        VStack(alignment: .trailing, spacing: 0){
-            HStack(alignment: .lastTextBaseline) {
-                ScreenHeader(user: boards.user, screenTitle: "Projects", content: {
-                    NavigationLink("+", destination: {
-                        ProjectView()
-                    })
+        NavigationStack{
+            ScreenHeader(user: boards.user, screenTitle: "Backlog", action: {
+                isPresented.toggle()
+            }, content: {
+                Menu(content: {
+                    Button("Create sprint") {}
+                    Button("Create issue") {}
+                }, label: {
+                    Image(systemName: "ellipsis")
+                        .scaleEffect(1.1)
                 })
-                .onTapGesture {
-//                    isShown.toggle()
-                }
-            }
+            })
+            .padding(.top)
             .padding(.horizontal)
             
             TabView {
@@ -34,19 +36,9 @@ struct BoardsView: View {
                 }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
-            
-            Button("Create issue") {
-                isPresented.toggle()
-            }
         }
         .onAppear { boards.refresh() }
         .refreshable { boards.refresh() }
-        .sheet(isPresented: $isPresented) {
-            IssueFormView(project: boards.project)
-                .onDisappear {
-                    boards.refresh()
-                }
-        }
     }
     
     init(project: Project) {

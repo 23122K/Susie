@@ -20,8 +20,7 @@ class SprintsViewModel: ObservableObject {
     
     func fetch() {
         Task {
-//            self.sprints = try await client.sprints()
-            print("SPRINT COUnt \(sprints.count)")
+            self.sprints = try await client.sprints()
         }
     }
     

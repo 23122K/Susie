@@ -16,15 +16,15 @@ class Client: ObservableObject {
     @Published private(set) var scope: UserScope = .none
     @Published private(set) var isAuthenticated: Bool = false {
         willSet {
-            Task { try await info() }
+            Task { self.user = try await info() }
         }
     }
     
     //MARK: Auth
     ///Fetches information about currently loged user
-    func info() async throws {
+    func info() async throws -> User {
         let endpoint = Endpoints.AuthEndpoint.info
-        self.user = try await network.response(from: endpoint)
+        return try await network.response(from: endpoint)
     }
     
     func signOut() async {

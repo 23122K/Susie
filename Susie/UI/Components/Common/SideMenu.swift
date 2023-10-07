@@ -29,6 +29,7 @@ public struct SideMenu<MenuContent: View>: ViewModifier {
             GeometryReader { reader in
                 ZStack(alignment: .leading) {
                     content
+                        .blur(radius: isPresented ? 0.5 : 0)
                         .overlay(isPresented ? Color.black.opacity(0.15) : Color.black.opacity(0), ignoresSafeAreaEdges: .all)
                         .disabled(isPresented)
                         .frame(width: reader.size.width, height: reader.size.height)

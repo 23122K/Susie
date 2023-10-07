@@ -14,39 +14,28 @@ struct ProjectsView: View {
     var body: some View {
         NavigationStack {
             HStack(alignment: .lastTextBaseline) {
-                ScreenHeader(user: vm.user, screenTitle: "Projects", content: {
-                    NavigationLink("+", destination: {
+                ScreenHeader(user: vm.user, screenTitle: "Projects", action: {
+                    isShown.toggle()
+                }, content: {
+                    NavigationLink(destination: {
                         ProjectView()
+                    }, label: {
+                        Image(systemName: "plus")
+                            .scaleEffect(1.1)
                     })
                 })
-                .onTapGesture {
-                    isShown.toggle()
+            }
+            .padding()
+            
+            ScrollView {
+                ForEach(vm.projects) { project in
+                    ProjectRowView(project: project)
+                        .onTapGesture {
+                            vm.details(of: project)
+                        }
+                        .padding(.horizontal)
                 }
             }
-            .padding(.horizontal)
-            
-            List(vm.projects) { project in
-                ProjectRowView(project: project)
-                    .onTapGesture {
-                        vm.fetchDetails(of: project)
-                    }
-                    .swipeActions {
-                        Button("Delete") {
-                            vm.delete(project: project)
-                        }
-                        .tint(.red.opacity(0.25))
-                    }
-                    .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                        NavigationLink(destination: {
-                            ProjectView(project: project)
-                        }, label: {
-                            Text("Edit")
-                        })
-                        .tint(Color.susieBluePriamry)
-                    }
-                    .listRowSeparator(.hidden)
-            }
-            .listStyle(.plain)
         }
         .sideMenu(isPresented: $isShown, menuContent: {
             VStack(alignment: .leading) {

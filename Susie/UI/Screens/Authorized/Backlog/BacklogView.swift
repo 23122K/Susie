@@ -4,21 +4,25 @@ import SwiftUI
 struct BacklogView: View {
     @StateObject private var backlog: BacklogViewModel
     @StateObject private var sprints: SprintsViewModel
+    
+    @State private var isPresented: Bool = false
     @State private var dropStatus: DropStatus = .exited
     
     var body: some View {
         GeometryReader { reader in
             NavigationStack {
-                HStack(alignment: .lastTextBaseline) {
-                    ScreenHeader(user: backlog.user, screenTitle: "Projects", content: {
-                        NavigationLink("+", destination: {
-                            ProjectView()
-                        })
+                ScreenHeader(user: backlog.user, screenTitle: "Backlog", action: {
+                    isPresented.toggle()
+                }, content: {
+                    Menu(content: {
+                        Button("Create sprint") {}
+                        Button("Create issue") {}
+                    }, label: {
+                        Image(systemName: "ellipsis")
+                            .scaleEffect(1.1)
                     })
-                    .onTapGesture {
-//                        isShown.toggle()
-                    }
-                }
+                })
+                .padding(.top)
                 .padding(.horizontal)
                 
                 if sprints.sprints.isEmpty {

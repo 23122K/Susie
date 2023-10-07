@@ -76,22 +76,21 @@ actor NetworkManager {
         }
         
         let request = authorize ? try await self.authorize(request: endpoint.request) : endpoint.request
-        
-        print("Absolute string")
-        print(request.url?.absoluteString)
-        
-        print("Body")
-        if let body = request.httpBody {
-            print(String(data: body, encoding: .utf8))
-        }
-        
+    
         let task = Task<Data, Error> {
             guard let (data, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
+                #if DEBUG
+                    print("Print response is invalid")
+                #endif
+                
                 cache.status[endpoint] = .completed
                 throw NetworkError.invalidHTTPResponse
             }
             
             guard (200...299).contains(response.statusCode) else {
+                #if DEBUG
+                    print("Status code is valid")
+                #endif
                 cache.status[endpoint] = .completed
                 throw NetworkError.failure(statusCode: response.statusCode)
             }
@@ -99,25 +98,16 @@ actor NetworkManager {
             return data
         }
         
-        
-        print("Ongoing")
         cache.status[endpoint] = .ongoing(task)
         let data = try await task.value
         cache.status[endpoint] = .completed
-        print("Completed")
         
         //TODO: Do not cache if data is not valid
         if policy.shouldCache { cache[endpoint] = Cache(data: data, for: policy.shouldExpireIn)
             print("Here")
         }
         
-        print(String(data: data, encoding: .utf8))
-        do {
-            return try decoder.decode(T.self, from: data)
-        } catch {
-            print(error)
-            throw(error)
-        }
+        return try decoder.decode(T.self, from: data)
     }
     
     //TODO: Add -> Some sort of resposne, Kacper did not implemented it yet

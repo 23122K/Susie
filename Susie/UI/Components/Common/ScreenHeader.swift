@@ -12,9 +12,12 @@ struct ScreenHeader<Content: View>: View {
     let screenTitle: String
     let content: Content?
     
+    let action: (() -> Void)?
+    
     var body: some View {
         HStack(alignment: .lastTextBaseline) {
             InitialsView(user: user, size: 30)
+                .onTapGesture { action?() }
             Spacer()
             Text(screenTitle)
                 .fontWeight(.semibold)
@@ -24,15 +27,11 @@ struct ScreenHeader<Content: View>: View {
         .padding(.horizontal)
     }
     
-    init(user: User?, screenTitle: String, @ViewBuilder content: @escaping () -> Content?) {
+    init(user: User?, screenTitle: String, action: (() -> Void)? = nil,  @ViewBuilder content: @escaping () -> Content?) {
         self.user = user
         self.screenTitle = screenTitle
+        
+        self.action = action
         self.content = content()
     }
 }
-
-//struct ScreenHeader_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ScreenHeader()
-//    }
-//}

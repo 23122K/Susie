@@ -16,7 +16,7 @@ struct SignUpView: View {
             FormRowView(title: "Email address", text: $vm.emial, divider: false, content: {
                 Image(systemName: "envelope")
             })
-            
+        
         }
         .padding()
         
@@ -28,7 +28,13 @@ struct SignUpView: View {
         
         Spacer()
         
-        //TODO: Add some sort of checkbox so user can register as a Scrum Master
+        HStack(alignment: .lastTextBaseline) {
+            Checkbox(isSelected: $vm.isScrumMaster)
+            Text("Register as a Scrum Master")
+                .font(.callout)
+            Spacer()
+        }
+        .padding()
     }
 }
 

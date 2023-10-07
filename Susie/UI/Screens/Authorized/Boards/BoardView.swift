@@ -42,7 +42,7 @@ struct BoardView: View {
                                 vm.fetchDeatils(for: issue)
                             }
                             .sheet(item: $vm.issue){ issue in
-                                IssueOverviewView(issue: issue)
+//                                IssueOverviewView(issue: issue)
                             }
                     }
                 }
