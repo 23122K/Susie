@@ -15,19 +15,14 @@ class BacklogViewModel: ObservableObject {
     private var client: Client
     
     @Published var issues: Array<IssueGeneralDTO> = []
-    @Published var issue: IssueGeneralDTO?
+    @Published var issue: Issue?
+    
+    func details(of issue: IssueGeneralDTO) {
+        Task { self.issue = try await client.details(issue: issue) }
+    }
     
     func fetch() {
         Task { self.issues = try await client.issues(backlog: project.toDTO()) }
-    }
-    
-    func assign(to sprint: Sprint) {
-        guard let issue else {
-            print("Failed to assing")
-            return
-        }
-        
-        Task { try await client.assign(issue: issue, to: sprint) }
     }
     
     func delete(issue: IssueGeneralDTO) {

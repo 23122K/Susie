@@ -28,7 +28,7 @@ struct BoardsView: View {
             .padding(.horizontal)
             
             TabView {
-                ForEach(boards.statuses) { status in
+                ForEach(IssueStatus.allCases, id: \.rawValue) { status in
                     GeometryReader { g in
                         BoardView(issues: boards.issues, status: status)
                     }

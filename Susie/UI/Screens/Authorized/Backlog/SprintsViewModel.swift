@@ -18,9 +18,24 @@ class SprintsViewModel: ObservableObject {
     @Published var sprints: Array<Sprint> = []
     @Published var sprint: Sprint?
     
+    @Published var issue: IssueGeneralDTO?
+    
+    func assign(to sprint: Sprint) {
+        guard let issue else {
+            print("Failed to assing")
+            return
+        }
+            
+        Task { try await client.assign(issue: issue, to: sprint) }
+        
+        self.issue = nil
+    }
+    
     func fetch() {
+        print("Fetching sprints")
         Task {
-            self.sprints = try await client.sprints()
+            self.sprints = try await client.sprints(project: project.toDTO())
+            print("Sprint count is \(self.sprints.count)")
         }
     }
     

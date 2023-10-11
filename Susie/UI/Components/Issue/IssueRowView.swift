@@ -21,12 +21,11 @@ struct IssueRowView: View {
 //                    IssuePriorityView(content: tag, color: color)
                     Spacer()
                     InitialsView(user: issue.asignee, size: 30)
-                        .padding(.trailing, 4)
-                        .padding(.bottom, 4)
                 }
-                .padding(.horizontal, 1)
+                .padding(.all, 5)
             }
         }
+        .padding(.vertical, 5)
         .padding(.horizontal)
         .background{
             RoundedRectangle(cornerRadius: 10)

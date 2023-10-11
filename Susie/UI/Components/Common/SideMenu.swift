@@ -30,7 +30,7 @@ public struct SideMenu<MenuContent: View>: ViewModifier {
                 ZStack(alignment: .leading) {
                     content
                         .blur(radius: isPresented ? 0.5 : 0)
-                        .overlay(isPresented ? Color.black.opacity(0.15) : Color.black.opacity(0), ignoresSafeAreaEdges: .all)
+                        .overlay(isPresented ? Color.black.opacity(0.05) : Color.black.opacity(0), ignoresSafeAreaEdges: .all)
                         .disabled(isPresented)
                         .frame(width: reader.size.width, height: reader.size.height)
                         .offset(x: isPresented ? reader.size.width / 2 : 0)

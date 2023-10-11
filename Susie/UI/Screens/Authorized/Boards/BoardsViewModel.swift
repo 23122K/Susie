@@ -16,22 +16,17 @@ class BoardsViewModel: ObservableObject {
     private var sprint: Sprint?
     
     @Published var issues: Array<IssueGeneralDTO> = []
-    @Published var statuses: Array<IssueStatus> = []
+    @Published var statuses: IssueStatus = .toDo
     
     public func refresh() {
-        fetchSprint()
-        fetchStatuses()
+//        fetchSprint()()
         fetchIssue()
     }
     
     func fetchIssue() {
-        guard let sprint else {
-            return
-        }
-        
         Task {
             do {
-                self.issues = try await client.issues(sprint: sprint)
+                self.issues = try await client.issues(backlog: project.toDTO())
             } catch {
                 print(error)
             }
@@ -39,20 +34,20 @@ class BoardsViewModel: ObservableObject {
     }
     
     func fetchSprint() {
-        Task { self.sprint = try await client.active() }
+        Task { self.sprint = try await client.active(project: project.toDTO()) }
     }
     
-    func fetchStatuses() {
-        Task {
-            do {
-                self.statuses = try await client.statuses()
-                print(statuses)
-            } catch {
-                print("FAILS")
-                print(error)
-            }
-        }
-    }
+//    func fetchStatuses() {
+//        Task {
+//            do {
+//                self.statuses = try await client.statuses()
+//                print(statuses)
+//            } catch {
+//                print("FAILS")
+//                print(error)
+//            }
+//        }
+//    }
     
     init(container: Container = Container.shared, project: Project) {
         self.client = container.client()

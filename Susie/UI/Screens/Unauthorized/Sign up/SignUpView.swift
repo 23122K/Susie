@@ -2,39 +2,55 @@ import SwiftUI
 
 struct SignUpView: View {
     @StateObject private var vm = SignUpViewModel()
-
+    @FocusState private var focusedField: FocusedField?
+    @State private var isPresented: Bool = false
+    
+    private let personImage = Image(systemName: "person")
+    private let envelopeImage = Image(systemName: "envelope")
+    
+    private enum FocusedField: Hashable {
+        case fistName
+        case lastName
+        case email
+    }
+    
     var body: some View {
-        VStack(alignment: .leading){
-            FormTitleView(title: "Create your", highlighted: "accout")
+        NavigationStack {
+            VStack(alignment: .leading){
+                FormTitleView(title: "Create your", highlighted: "accout")
+                
+                CustomTextField(title: "First name", text: $vm.firstName, keyboard: .default, focusedField: $focusedField, equals: .fistName) { personImage }
+                    .onSubmit { focusedField = .lastName }
+                
+                Divider()
+
+                CustomTextField(title: "Last name", text: $vm.lastName, keyboard: .default, focusedField: $focusedField, equals: .lastName) { personImage }
+                    .onSubmit { focusedField = .email }
+                
+                Divider()
+                
+                CustomTextField(title: "Email address", text: $vm.emial, keyboard: .emailAddress, focusedField: $focusedField, equals: .email) { envelopeImage }
+                    .onSubmit { if !vm.areCrendentailsValid { isPresented.toggle() } }
+                
+            }
+            .padding()
             
-            FormRowView(title: "First name", text: $vm.firstName, content: {
-                Image(systemName: "person")
-            })
-            FormRowView(title: "Last name", text: $vm.lastName, content: {
-                Image(systemName: "person")
-            })
-            FormRowView(title: "Email address", text: $vm.emial, divider: false, content: {
-                Image(systemName: "envelope")
-            })
-        
-        }
-        .padding()
-        
-        NavigationLink("Next") {
-            SignUpFinalisationView(vm: vm).custom(title: "Back")
-        }
-        .buttonStyle(.secondary)
-        .disabled(vm.areCrendentailsValid)
-        
-        Spacer()
-        
-        HStack(alignment: .lastTextBaseline) {
-            Checkbox(isSelected: $vm.isScrumMaster)
-            Text("Register as a Scrum Master")
-                .font(.callout)
+            Button("Next") { isPresented.toggle() }
+                .buttonStyle(.secondary)
+                .disabled(vm.areCrendentailsValid)
+
             Spacer()
+            
+            Checkbox(title: "Register as a scrum master", isSelected: $vm.isScrumMaster)
+                .padding()
         }
-        .padding()
+        .navigationDestination(isPresented: $isPresented) {
+            SignUpFinalisationView(vm: vm)
+                .custom(title: "Back")
+        }
+        .onAppear {
+            focusedField = .fistName
+        }
     }
 }
 

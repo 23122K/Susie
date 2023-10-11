@@ -16,19 +16,18 @@ class IssueFormViewModel: ObservableObject {
     @Published var name: String = .init()
     @Published var description: String = .init()
     @Published var estimation: Int32 = 0
-    @Published var type: IssueType?
-    @Published var priority: IssuePriority?
+
+    @Published var type: IssueType = .bug
+    @Published var priority: IssuePriority = .low
     
-    @Published var types: Array<IssueType> = .init()
     @Published var priorities: Array<IssuePriority> = .init()
     
     private func fetchConfiguration() {
         Task {
             do {
-                types = try await client.types()
                 priorities = try await client.priorities()
                 
-                guard let type = types.first, let priority = priorities.first else {
+                guard let priority = priorities.first else {
                     throw AuthError.couldNotRefreshAuthObject
                 }
                 
@@ -45,10 +44,8 @@ class IssueFormViewModel: ObservableObject {
     func create() {
         Task {
             do {
-                if let type, let priority {
-                    let details: IssueDTO = IssueDTO(name: name, description: description, estimation: estimation, project: project, issueType: type,  issuePriority: priority)
-                    let _ = try await client.create(issue: details)
-                }
+                let details: IssueDTO = IssueDTO(name: name, description: description, estimation: estimation, project: project, type: type,  priority: priority)
+                let _ = try await client.create(issue: details)
             } catch {
                 print(#function)
             }

@@ -13,7 +13,7 @@ enum DropStatus {
 }
 
 struct SprintDropDelegate: DropDelegate {
-    @ObservedObject var backlog: BacklogViewModel
+    @ObservedObject var sprints: SprintsViewModel
     @Binding var dropStatus: DropStatus
     let sprint: Sprint
     
@@ -22,10 +22,9 @@ struct SprintDropDelegate: DropDelegate {
     }
     
     func performDrop(info: DropInfo) -> Bool {
-        backlog.assign(to: sprint)
+        sprints.assign(to: sprint)
         dropStatus = .exited
         
-        backlog.fetch()
         return true
     }
     

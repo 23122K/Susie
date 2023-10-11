@@ -26,6 +26,7 @@ struct Carousel<T: Any, Content: View>: View {
                     content(item)
                         .frame(height: height)
                         .tag(index)
+                        .padding(.bottom)
                 }
             }
             .frame(height: 200)
@@ -73,7 +74,7 @@ struct Carousel<T: Any, Content: View>: View {
 //        }
     }
     
-    public init(_ data: [T], type: CarouselType = .bounded, height: CGFloat = 200, @ViewBuilder _ content: @escaping (T) -> Content) {
+    public init(_ data: [T], type: CarouselType = .bounded, height: CGFloat = 215, @ViewBuilder _ content: @escaping (T) -> Content) {
         self.content = content
         self.height = height
         self.type = type

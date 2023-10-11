@@ -1,4 +1,5 @@
 import SwiftUI
+import SwipeActions
 
 @MainActor
 struct BacklogView: View {
@@ -29,44 +30,66 @@ struct BacklogView: View {
                     NavigationLink(destination: {
                         SprintFormView()
                     }, label: {
-                        ZStack {
-                            Color.susieWhiteSecondary
-                            Text("Add sprint")
-                                .fontWeight(.semibold)
-                        }
-                        .cornerRadius(9)
-                        .padding()
-                        .frame(width: reader.size.width, height: 200)
+                        CreateSprintView()
+                            .padding(.top)
                     })
                 } else {
                     Carousel(sprints.sprints, type: .unbounded) { sprint in
-                        ZStack{
-                            switch dropStatus {
-                            case .entered:
-                                Color.red.opacity(0.7)
-                            case .exited:
-                                Color.susieBluePriamry
-                            }
-                            Text(sprint.name)
-                        }
-                        .cornerRadius(9)
-                        .padding()
-                        .onTapGesture { sprints.sprint = sprint }
-                        .onDrop(of: [.text], delegate: SprintDropDelegate(backlog: backlog, dropStatus: $dropStatus, sprint: sprint))
+                        SprintRowView(sprint: sprint)
+                            .onTapGesture { sprints.sprint = sprint }
+                            .onDrop(of: [.text], delegate: SprintDropDelegate(sprints: sprints, dropStatus: $dropStatus, sprint: sprint))
                     }
+                    .padding(.vertical)
                 }
                 
                 ScrollView(showsIndicators: false) {
                     ForEach(backlog.issues) { issue in
-                        IssueRowView(issue: issue)
-                            .padding(.horizontal)
-                            .onDrag {
-                                backlog.issue = issue
-                                return NSItemProvider()
-                            }
+                        SwipeView(label: {
+                            IssueRowView(issue: issue)
+                                .onDrag {
+                                    sprints.issue = issue
+                                    return NSItemProvider()
+                                }
+                                .onTapGesture {
+                                    backlog.details(of: issue)
+                                }
+                        }, leadingActions: { _ in
+                            SwipeAction(action: {
+                                print("Deleted")
+                            }, label: { _ in
+                                HStack {
+                                    Text("Delete")
+                                        .fontWeight(.semibold)
+                                    Image(systemName: "trash.fill")
+                                }
+                                .foregroundColor(Color.susieWhitePrimary)
+                            }, background: { _ in
+                                Color.red.opacity(0.95)
+                            })
+                            .allowSwipeToTrigger()
+                            
+                        }, trailingActions: { _ in
+                            SwipeAction(action: {
+                                print("Edited")
+                            }, label: { _ in
+                                HStack {
+                                    Text("Edit")
+                                    Image(systemName: "pencil")
+                                }
+                                .fontWeight(.semibold)
+                                .foregroundColor(Color.susieWhitePrimary)
+                            }, background: { _ in
+                                Color.susieBluePriamry
+                            })
+                            .allowSwipeToTrigger()
+                        })
+                        .swipeSpacing(10)
+                        .swipeMinimumDistance(5)
+                        .swipeActionsStyle(.cascade)
+                        .swipeActionsMaskCornerRadius(9)
+                        .swipeActionCornerRadius(9)
+                        .padding(.horizontal)
                     }
-                    
-                    
                     
                     NavigationLink("Create issue", destination: {
                         IssueFormView(project: backlog.project)
@@ -76,6 +99,9 @@ struct BacklogView: View {
                 }
                 
                 Spacer()
+            }
+            .sheet(item: $backlog.issue) { issue in
+                IssueDetailedView(issue: issue)
             }
             .navigationTitle("Backlog")
             .refreshable {

@@ -16,7 +16,7 @@ class SignUpViewModel: ObservableObject {
     @Published var emial = String()
     @Published var password = String()
     @Published var confirmPassword = String()
-    @Published var isScrumMaster = true
+    @Published var isScrumMaster = Bool()
     
     //TODO: Chage to real validation
     var areCrendentailsValid: Bool {
@@ -57,7 +57,7 @@ class SignUpViewModel: ObservableObject {
         emial = .init()
         password = .init()
         confirmPassword = .init()
-        isScrumMaster = false
+        isScrumMaster = .init()
     }
     
     init(container: Container = Container.shared) {

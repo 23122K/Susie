@@ -14,6 +14,11 @@ struct SprintFormView: View {
             TextField("Name", text: $sprint.name)
             DatePicker("Start date", selection: $sprint.date)
             
+            Button("Save") {
+                sprint.save()
+            }
+            .buttonStyle(.primary)
+            
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(sprint.name.isEmpty ? "New sprint" : sprint.name)

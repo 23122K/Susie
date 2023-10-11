@@ -1,9 +1,13 @@
 import SwiftUI
 
-struct PasswordField: View{
-    let title: String
-    @Binding var text: String
+struct PasswordField<T: Hashable>: View{
+    @Binding private var text: String
     @State private var isHidden = true
+    
+    private var focusedField: FocusState<T>.Binding
+    private var field: T
+    
+    private let title: String
     
     var body: some View {
         HStack{
@@ -19,10 +23,14 @@ struct PasswordField: View{
                 switch(isHidden){
                 case true:
                     SecureField(title, text: $text)
+                        .focused(focusedField, equals: field)
+                        .animation(.easeInOut(duration: 0.2), value: isHidden)
                 case false:
                     TextField(title, text: $text)
+                        .keyboardType(.default)
                         .autocorrectionDisabled(true)
                         .textInputAutocapitalization(.never)
+                        .animation(.easeInOut(duration: 0.2), value: isHidden)
                 }
                 
                 Button {
@@ -30,14 +38,16 @@ struct PasswordField: View{
                 } label: {
                     Image(systemName: isHidden ? "eye.slash" : "eye")
                         .foregroundColor(.blue.opacity(0.7))
+                        .animation(.easeInOut(duration: 0.2), value: isHidden)
                 }
             }
         }.frame(height: 50)
     }
-}
-
-struct PasswordField_Previews: PreviewProvider {
-    static var previews: some View{
-        PasswordField(title: "Password", text: .constant(""))
+    
+    init(title: String, text: Binding<String>, focusedField: FocusState<T>.Binding, equals field: T) {
+        _text = text
+        self.focusedField = focusedField
+        self.field = field
+        self.title = title
     }
 }

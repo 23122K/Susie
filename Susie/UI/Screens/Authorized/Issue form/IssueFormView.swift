@@ -19,23 +19,15 @@ struct IssueFormView: View {
                 }
             }
             
-            Picker("Issue type", selection: $vm.type) {
-                if vm.priority == nil {
-                    Text("Type").tag(nil as IssueType?)
+            Picker("Issue type", selection: $vm.type, content: {
+                ForEach(IssueType.allCases, id: \.rawValue) { type in
+                    Text("\(type.description)").tag(type)
                 }
-                
-                ForEach(vm.types) { type in
-                    Text(type.description).tag(type as IssueType?)
-                }
-            }
+            })
             
             Picker("Issue priority", selection: $vm.priority) {
-                if vm.priority == nil {
-                    Text("Priority").tag(nil as IssuePriority?)
-                }
-                
-                ForEach(vm.priorities) { priority in
-                    Text(priority.description).tag(priority as IssuePriority?)
+                ForEach(IssuePriority.allCases, id: \.rawValue) { priority in
+                    Text(priority.description).tag(priority)
                 }
             }
             

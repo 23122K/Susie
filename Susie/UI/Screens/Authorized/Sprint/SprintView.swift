@@ -9,35 +9,68 @@ import SwiftUI
 
 struct SprintView: View {
     @Environment (\.dismiss) var dismiss
+    @State private var appeared: Bool = false
     
     @StateObject private var sprint: SprintViewModel
     @ObservedObject private var sprints: SprintsViewModel
     
     var body: some View {
-        ScrollView {
-            HStack {
-                Text(sprint.name)
-                    .font(.title)
-                    .fontWeight(.semibold)
-                Button("Close") {
-                    dismiss()
+        NavigationStack {
+            ScrollView(showsIndicators: false) {
+                ForEach(sprint.issues) { issue in
+                    IssueRowView(issue: issue)
+                        .animation(.spring, value: appeared)
                 }
             }
-            
-            ForEach(sprint.issues) { issue in
-                IssueRowView(issue: issue)
+            .padding()
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(sprint.name)
+            .refreshable {
+                sprint.fetch()
             }
-            
-            Menu("Options", content: {
-                Button("Start") {
-                    sprint.start()
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Close") {
+                        dismiss()
+                    }
                 }
-            })
-            
-            Spacer()
+                
+                ToolbarItem(placement: .confirmationAction) {
+                    Menu(content: {
+                        Button(action: {
+                            
+                        }, label: {
+                            Text(sprint.isAcitve ? "Complete" : "Start")
+                            Image(systemName: sprint.isAcitve ? "pause.fill" : "play.fill")
+                        })
+                        
+                        Button(action: {
+                            
+                        }, label: {
+                            Text("Edit")
+                            Image(systemName: "pencil")
+                        })
+                        
+                        Section {
+                            Button(role: .destructive, action: {
+                                
+                            }, label: {
+                                Text("Delete")
+                                    .foregroundColor(.red)
+                                Image(systemName: "trash.fill")
+                                    .foregroundStyle(.red)
+                            })
+                        }
+                    }, label: {
+                        Image(systemName: "ellipsis")
+                    })
+                }
+            }
         }
-        .padding()
-        .onAppear{ sprint.fetch() }
+        .onAppear{
+            appeared.toggle()
+            sprint.fetch()
+        }
         
     }
     

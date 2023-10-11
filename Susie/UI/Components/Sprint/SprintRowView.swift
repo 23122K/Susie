@@ -9,32 +9,25 @@ import SwiftUI
 
 struct SprintRowView: View {
     let sprint: Sprint
+    
     var body: some View {
-        VStack(alignment: .listRowSeparatorLeading) {
+        GeometryReader { reader in
             HStack {
-                Text(sprint.name)
-                    .foregroundColor(.susieWhitePrimary)
-                    .font(.title)
-                    .fontWeight(.semibold)
+                VStack(alignment: .leading) {
+                    Text(sprint.name)
+                        .font(.title)
+                    
+                }
+                .padding()
                 Spacer()
             }
-            .padding(.bottom, 5)
-            
-            HStack {
-                Text("Issues - 123")
-            }
-            .padding(.bottom, 2)
-            
-            HStack {
-                Text("Issues - 123")
-            }
-            
+            .frame(width: reader.size.width, height: 200)
+            .fontWeight(.semibold)
+            .foregroundColor(Color.susieWhitePrimary)
+            .background(Color.susieBluePriamry)
+            .cornerRadius(9)
         }
         .padding()
-        .background {
-            RoundedRectangle(cornerRadius: 10)
-                .foregroundColor(Color.susieBluePriamry)
-        }
     }
     
 }

@@ -13,7 +13,8 @@ struct TermsOfService: View {
             Text("By signing up, you agree to our")
             +
             Text(" Terms of Service")
-                .foregroundColor(.susieBluePriamry)
+                .foregroundColor(.susieBluePriamry
+                )
             +
             Text(",")
             +

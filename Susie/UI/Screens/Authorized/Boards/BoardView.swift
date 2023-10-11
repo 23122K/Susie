@@ -37,12 +37,10 @@ struct BoardView: View {
                 LazyVGrid(columns: columns) {
                     ForEach(issues) { issue in
                        IssueRowView(issue: issue)
+                            .padding(.horizontal)
                             .offset(y: 8)
                             .onTapGesture {
-                                vm.fetchDeatils(for: issue)
-                            }
-                            .sheet(item: $vm.issue){ issue in
-//                                IssueOverviewView(issue: issue)
+                                vm.issue = issue
                             }
                     }
                 }
