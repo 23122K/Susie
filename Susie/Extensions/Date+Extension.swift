@@ -15,6 +15,21 @@ extension Formatter {
     }()
 }
 
+extension JSONDecoder.DateDecodingStrategy {
+    static var customISO8601 = custom { decoder in
+        let formatter = Formatter.customISO8601DateFormatter
+        
+        let container = try decoder.singleValueContainer()
+        let dateString = try container.decode(String.self)
+        
+        guard let date = formatter.date(from: dateString) else {
+            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Cannot decode date string \(dateString)")
+        }
+        
+        return date
+    }
+}
+
 extension JSONEncoder.DateEncodingStrategy {
     static var customISO8601 = custom { date, encoder in
         let formatter = Formatter.customISO8601DateFormatter

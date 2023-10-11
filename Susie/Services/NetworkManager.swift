@@ -8,7 +8,7 @@ actor NetworkManager {
     
     private lazy var decoder: JSONDecoder = {
         let decoder: JSONDecoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
+        decoder.dateDecodingStrategy = .customISO8601
         
         return decoder
     }()
@@ -98,16 +98,27 @@ actor NetworkManager {
             return data
         }
         
+        #if DEBUG
+                print("Request status: ongoing")
+        #endif
         cache.status[endpoint] = .ongoing(task)
         let data = try await task.value
         cache.status[endpoint] = .completed
+        #if DEBUG
+                print("Request status: completed")
+        #endif
         
         //TODO: Do not cache if data is not valid
         if policy.shouldCache { cache[endpoint] = Cache(data: data, for: policy.shouldExpireIn)
             print("Here")
         }
         
-        return try decoder.decode(T.self, from: data)
+        do {
+            return try decoder.decode(T.self, from: data)
+        } catch {
+            print(error)
+            throw NetworkError.invalidHTTPResponse
+        }
     }
     
     //TODO: Add -> Some sort of resposne, Kacper did not implemented it yet

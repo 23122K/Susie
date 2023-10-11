@@ -5,7 +5,6 @@
 //  Created by Patryk Maciąg on 22/08/2023.
 //
 
-
 struct Issue: Identifiable, Codable {
     let id: Int32
     let name: String
@@ -13,9 +12,9 @@ struct Issue: Identifiable, Codable {
     let estimation: Int32
     let reporter: User
     let asignee: User?
-    let type: Int32
-    let priority: Int32
-    let status: Int32
+    let priority: IssuePriority
+    let status: IssueStatus
+    let type: IssueType
     
     enum CodingKeys: String, CodingKey {
         case id = "issueID"
@@ -30,10 +29,16 @@ struct Issue: Identifiable, Codable {
     }
 }
 
+extension Issue {
+    func toGeneralDTO() -> IssueGeneralDTO {
+        IssueGeneralDTO(id: self.id, name: self.name, asignee: self.asignee, status: self.status)
+    }
+}
+
 extension Array where Element == IssueGeneralDTO {
     func with(status: IssueStatus) -> Array<IssueGeneralDTO> {
-        self.filter{ issue in
-            issue.issueStatusID == status.id
+        self.filter { issue in
+            issue.status == status
         }
     }
 }
@@ -44,8 +49,8 @@ struct IssueDTO: Identifiable, Codable {
     let description: String
     let estimation: Int32
     let projectID: Int32
-    let issueTypeID: Int32
-    let issuePriorityID: Int32
+    let type: IssueType
+    let priority: IssuePriority
     
     enum CodingKeys: String, CodingKey {
         case id = "issueID"
@@ -53,61 +58,98 @@ struct IssueDTO: Identifiable, Codable {
         case description
         case estimation
         case projectID
-        case issueTypeID
-        case issuePriorityID
+        case type = "issueTypeID"
+        case priority = "issuePriorityID"
     }
     
-    init(id: Int32 = -1, name: String, description: String, estimation: Int32, project: Project, issueType: IssueType, issuePriority: IssuePriority) {
+    init(id: Int32 = -1, name: String, description: String, estimation: Int32, project: Project, type: IssueType, priority: IssuePriority) {
         self.id = id
         self.name = name
         self.description = description
         self.estimation = estimation
         self.projectID = project.id
-        self.issueTypeID = issueType.id
-        self.issuePriorityID = issuePriority.id
+        self.type = type
+        self.priority = priority
     }
 }
 
-//extension Issue {
-//    func toDTO() -> IssueDTO {
-//        return IssueDTO(name: self.name, description: self.description, estimation: self.estimation, issueType: , issuePriority: <#T##IssuePriority#>)
-//    }
-//}
-
 struct IssueGeneralDTO: Identifiable, Codable {
+    
     let id: Int32
     let name: String
     let asignee: User?
-    let issueStatusID: Int32
-}
-
-struct IssueType: Identifiable, Codable, Hashable {
-    let id: Int32
-    let description: String
+    let status: IssueStatus
     
     enum CodingKeys: String, CodingKey {
         case id
-        case description = "type"
+        case name
+        case asignee
+        case status = "issueStatusID"
     }
 }
 
-struct IssueStatus: Identifiable, Codable, Hashable {
-    let id: Int32
-    let description: String
+enum IssueStatus: Int32, RawRepresentable, CaseIterable, Codable {
+    case toDo = 1
+    case inProgress = 2
+    case inReview = 3
+    case inTests = 4
+    case done = 5
     
-    enum CodingKeys: String, CodingKey {
-        case id
-        case description = "statusName"
+    var description: String {
+        switch self {
+        case .toDo:
+            return "To do"
+        case .inProgress:
+            return "In progress"
+        case .inReview:
+            return "Code review"
+        case .inTests:
+            return "In tests"
+        case .done:
+            return "Done"
+        }
     }
 }
 
-struct IssuePriority: Identifiable, Codable, Hashable {
-    let id: Int32
-    let description: String
+enum IssueType: Int32, RawRepresentable, CaseIterable, Codable {
+    case userStory = 1
+    case bug = 2
+    case toDo = 3
+    case aoa = 4
     
-    enum CodingKeys: String, CodingKey {
-        case id
-        case description = "priority"
+    var description: String {
+        switch self {
+        case .bug: 
+            return "Bug"
+        case .userStory:
+            return "User story"
+        case .toDo:
+            return "To Do"
+        case .aoa:
+            return "Agile assignment"
+        }
     }
 }
 
+enum IssuePriority: Int32, RawRepresentable, CaseIterable, Codable {
+    case critical = 1
+    case high = 2
+    case medium = 3
+    case low = 4
+    case trivial = 5
+    
+    var description: String {
+        switch self {
+        case .critical:
+            return "Critical"
+        case .high:
+            return "High"
+        case .medium:
+            return "Medium"
+        case .low:
+            return "Low"
+        case .trivial:
+            return "Trivial"
+        }
+    }
+}

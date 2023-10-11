@@ -171,14 +171,24 @@ class Client: ObservableObject {
         try await network.request(to: endpoint)
     }
     
-    func active() async throws -> Sprint {
-        let endpoint = Endpoints.SprintEndpoint.ongoing
+    func active(project: ProjectDTO) async throws -> Sprint {
+        let endpoint = Endpoints.SprintEndpoint.ongoing(project: project)
         return try await network.response(from: endpoint)
     }
     
-    func sprints() async throws -> Array<Sprint> {
-        let endpoint = Endpoints.SprintEndpoint.unbegun
+    func sprints(project: ProjectDTO) async throws -> Array<Sprint> {
+        let endpoint = Endpoints.SprintEndpoint.unbegun(project: project)
         return try await network.response(from: endpoint)
+    }
+    
+    func delete(sprint: Sprint) async throws {
+        let endpoint = Endpoints.SprintEndpoint.delete(sprint: sprint)
+        return try await network.request(to: endpoint)
+    }
+    
+    func unassign(issue: IssueGeneralDTO, from sprint: Sprint) async throws {
+        let endpoint = Endpoints.SprintEndpoint.unassign(issue: issue, from: sprint)
+        return try await network.request(to: endpoint)
     }
     
     init(keychainManager: KeychainManager = KeychainManager(),

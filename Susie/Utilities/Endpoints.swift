@@ -109,6 +109,7 @@ enum Endpoints {
         case unassignFrom(issue: IssueDTO)
         case assignedTo(sprint: Sprint)
         case change(status: IssueStatus, of: IssueDTO)
+        case userAssigned
         
         var schema: String { "http" }
         var host: String { "127.0.0.1" }
@@ -139,7 +140,9 @@ enum Endpoints {
             case .assignedTo(let sprint):
                 return "issue/sprint/\(sprint.id)"
             case .change(let status, let issue):
-                return "/api/issue/\(issue.id)/status/\(status.id)"
+                return "issue/\(issue.id)/status/\(status.rawValue)"
+            case .userAssigned:
+                return "issue/user-assigned"
             }
         }
         
@@ -151,7 +154,7 @@ enum Endpoints {
                 return .put
             case .delete:
                 return .delete
-            case .fetch, .details, .assignedTo, .backlog:
+            case .fetch, .details, .assignedTo, .backlog, .userAssigned:
                 return .get
             case .change:
                 return .patch
@@ -176,13 +179,16 @@ enum Endpoints {
             }
         }
     }
+    
     internal enum SprintEndpoint: Endpoint {
         case create(sprint: Sprint)
+        case delete(sprint: Sprint)
         case assign(issue: IssueGeneralDTO, to: Sprint)
+        case unassign(issue: IssueGeneralDTO, from: Sprint)
         case start(sprint: Sprint)
         case stop(sprint: Sprint)
-        case ongoing
-        case unbegun
+        case ongoing(project: ProjectDTO)
+        case unbegun(project: ProjectDTO)
         
         var schema: String { "http" }
         var host: String { "127.0.0.1" }
@@ -200,17 +206,20 @@ enum Endpoints {
             switch self {
             case .create:
                 return "sprint"
-                //            case .delete(sprint: let sprint):
+            case .delete(let sprint):
+                return "sprint/\(sprint.id)"
             case .assign(let issue, let sprint):
                 return "sprint/\(sprint.id)/issue/\(issue.id)"
+            case .unassign(let issue, let sprint):
+                return "sprint/\(sprint.id)/issue/delete/\(issue.id)"
             case .start(let sprint):
                 return "sprint/start/\(sprint.id)"
             case .stop(let sprint):
                 return "sprint/stop/\(sprint.id)"
-            case .ongoing:
-                return "sprint/active"
-            case .unbegun:
-                return "sprint/non-activated"
+            case .ongoing(let project):
+                return "sprint/active/\(project.id)"
+            case .unbegun(let project):
+                return "sprint/non-activated/\(project.id)"
             }
         }
         
@@ -222,6 +231,8 @@ enum Endpoints {
                 return .patch
             case .ongoing, .unbegun:
                 return .get
+            case .delete, .unassign:
+                return .delete
             }
         }
         
@@ -244,6 +255,7 @@ enum Endpoints {
         case fetch
         case details(project: ProjectDTO)
         case invite(request: UserAssociationDTO)
+        case remove(request: UserRemovalDTO)
         
         var schema: String { "http" }
         var host: String { "127.0.0.1" }
@@ -265,6 +277,8 @@ enum Endpoints {
                 return "scrum-project/\(project.id)"
             case .invite:
                 return "scrum-project/user-association"
+            case .remove:
+                return "/api/scrum-project/delete-user"
             }
         }
         
@@ -274,7 +288,7 @@ enum Endpoints {
                 return .post
             case .update:
                 return .put
-            case .delete:
+            case .delete, .remove:
                 return .delete
             case .fetch, .details:
                 return .get
@@ -290,6 +304,8 @@ enum Endpoints {
             case .create(let project), .update(let project):
                 return try? encoder.encode(project)
             case .invite(let request):
+                return try? encoder.encode(request)
+            case .remove(let request):
                 return try? encoder.encode(request)
             default:
                 return nil
@@ -330,4 +346,38 @@ enum Endpoints {
         
         var body: Data? { return nil }
     }
+    
+//    internal enum CommentEndpoint: Endpoint {
+//        case add
+//        case update
+//        case delete
+//        
+//        var schema: String { "http" }
+//        var host: String { "127.0.0.1" }
+//        var port: Int { 8081 }
+//        var version: String { "/api" }
+//        
+//        var headers: [String: String] {
+//            [
+//                "Content-Type": "application/json",
+//                "Accept": "application/json",
+//            ]
+//        }
+//        
+//        var path: String {
+//            switch self {
+//            case .add, .update:
+//                return "comment"
+//            case .delete
+//            }
+//        }
+//        
+//        var method: HTTPMethod { return .get }
+//        
+//        var queries: [String : String]? { return nil }
+//        
+//        var body: Data? { return nil }
+//        
+//        
+//    }
 }

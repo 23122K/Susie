@@ -36,12 +36,20 @@ struct UserAssociationDTO: Codable {
     let projectID: Int32
 }
 
+struct UserRemovalDTO: Codable {
+    let userUUID: String
+    let projectID: Int32
+    
+    init(user: User, project: ProjectDTO) {
+        self.userUUID = user.uuid
+        self.projectID = project.id
+    }
+}
+
 struct UserRole: Identifiable, Codable {
     let id: String
     let name: String
 }
-
-
 
 enum UserScope: String, CaseIterable {
     case sm = "sm"
