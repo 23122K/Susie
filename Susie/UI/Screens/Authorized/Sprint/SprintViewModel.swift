@@ -23,6 +23,10 @@ class SprintViewModel: ObservableObject {
         Task { try await client.start(sprint: sprint) }
     }
     
+    func delete() {
+        Task { try await client.delete(sprint: sprint) }
+    }
+    
     @Published var name: String = String()
     @Published var isAcitve: Bool = Bool()
     @Published var date: Date = Date()

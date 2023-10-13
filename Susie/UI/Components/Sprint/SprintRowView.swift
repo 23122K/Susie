@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SprintRowView: View {
     let sprint: Sprint
+    @Binding var status: DropStatus
     
     var body: some View {
         GeometryReader { reader in
@@ -24,7 +25,7 @@ struct SprintRowView: View {
             .frame(width: reader.size.width, height: 200)
             .fontWeight(.semibold)
             .foregroundColor(Color.susieWhitePrimary)
-            .background(Color.susieBluePriamry)
+            .background(status == .entered ? Color.susieBluePriamry:  Color.susieBlueSecondary)
             .cornerRadius(9)
         }
         .padding()
@@ -32,8 +33,8 @@ struct SprintRowView: View {
     
 }
 
-struct SprintRowView_Previews: PreviewProvider {
-    static var previews: some View {
-        SprintRowView(sprint: Sprint(name: "Test", projectID: 2))
-    }
-}
+//struct SprintRowView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SprintRowView(sprint: Sprint(name: "Test", projectID: 2))
+//    }
+//}

@@ -8,24 +8,46 @@
 import SwiftUI
 
 struct SprintFormView: View {
+    @Environment (\.dismiss) private var dismiss
     @StateObject private var sprint: SprintFromViewModel
+    @FocusState private var focusedField: FocusedField?
+    
+    private enum FocusedField: Hashable {
+        case name
+    }
+    
     var body: some View {
-        VStack {
-            TextField("Name", text: $sprint.name)
-            DatePicker("Start date", selection: $sprint.date)
+        ScrollView(showsIndicators: false) {
+            TextField("Sprint name", text: $sprint.name)
+                .padding(.horizontal)
+                .focused($focusedField, equals: .name)
+                .textFieldStyle(.susiePrimaryTextField)
             
+            Toggle("Start date", isOn: $sprint.shouldHaveStartDate)
+                .padding(.horizontal)
+                .tint(.susieBluePriamry)
+            
+            DatePicker("Start date", selection: $sprint.date)
+                .padding(.horizontal)
+                .disabled(!sprint.shouldHaveStartDate)
+                .opacity(sprint.shouldHaveStartDate ? 1 : 0)
+                .datePickerStyle(.graphical)
+                .animation(.spring, value: sprint.shouldHaveStartDate)
+        }
+        .toolbar {
             Button("Save") {
                 sprint.save()
+                dismiss()
             }
-            .buttonStyle(.primary)
-            
         }
+        .padding(.vertical)
+        .onAppear{ focusedField = .name }
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(sprint.name.isEmpty ? "New sprint" : sprint.name)
     }
     
-    init(sprint: Sprint? = nil) {
-        _sprint = StateObject(wrappedValue: SprintFromViewModel(sprint: sprint))
+    init(project: Project, sprint: Sprint? = nil) {
+        _sprint = StateObject(wrappedValue: SprintFromViewModel(project: project, sprint: sprint))
     }
 }
 

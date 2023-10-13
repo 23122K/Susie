@@ -13,8 +13,8 @@
 		6F291EB92AC594CB004C9A54 /* IssueFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EB82AC594CB004C9A54 /* IssueFormViewModel.swift */; };
 		6F291EBB2AC5A3F9004C9A54 /* BoardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EBA2AC5A3F9004C9A54 /* BoardViewModel.swift */; };
 		6F291EBD2AC6A09F004C9A54 /* BacklogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EBC2AC6A09F004C9A54 /* BacklogViewModel.swift */; };
-		6F291EBF2AC6A841004C9A54 /* ProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EBE2AC6A841004C9A54 /* ProjectView.swift */; };
-		6F291EC12AC6A965004C9A54 /* ProjectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EC02AC6A965004C9A54 /* ProjectViewModel.swift */; };
+		6F291EBF2AC6A841004C9A54 /* ProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EBE2AC6A841004C9A54 /* ProjectFormView.swift */; };
+		6F291EC12AC6A965004C9A54 /* ProjectFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EC02AC6A965004C9A54 /* ProjectFormViewModel.swift */; };
 		6F291EC32AC6BE34004C9A54 /* ScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EC22AC6BE34004C9A54 /* ScreenHeader.swift */; };
 		6F32B7802AC1D23C00D5F4E8 /* NetworkManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F32B77F2AC1D23C00D5F4E8 /* NetworkManagerTests.swift */; };
 		6F32B7842AC1D2FE00D5F4E8 /* ModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F32B7832AC1D2FE00D5F4E8 /* ModelsTests.swift */; };
@@ -96,6 +96,7 @@
 		6FF149C82AA8E220005CDBF6 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF149C72AA8E220005CDBF6 /* ButtonStyles.swift */; };
 		6FF702302AC4891A002A03B5 /* NetworkMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF7022F2AC4891A002A03B5 /* NetworkMonitorTests.swift */; };
 		6FF702332AC559EF002A03B5 /* BoardsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF702322AC559EF002A03B5 /* BoardsViewModel.swift */; };
+		6FFF798A2AD9AEAE00630013 /* TextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79892AD9AEAE00630013 /* TextFieldModifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,8 +116,8 @@
 		6F291EB82AC594CB004C9A54 /* IssueFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueFormViewModel.swift; sourceTree = "<group>"; };
 		6F291EBA2AC5A3F9004C9A54 /* BoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardViewModel.swift; sourceTree = "<group>"; };
 		6F291EBC2AC6A09F004C9A54 /* BacklogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BacklogViewModel.swift; sourceTree = "<group>"; };
-		6F291EBE2AC6A841004C9A54 /* ProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectView.swift; sourceTree = "<group>"; };
-		6F291EC02AC6A965004C9A54 /* ProjectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectViewModel.swift; sourceTree = "<group>"; };
+		6F291EBE2AC6A841004C9A54 /* ProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFormView.swift; sourceTree = "<group>"; };
+		6F291EC02AC6A965004C9A54 /* ProjectFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFormViewModel.swift; sourceTree = "<group>"; };
 		6F291EC22AC6BE34004C9A54 /* ScreenHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenHeader.swift; sourceTree = "<group>"; };
 		6F32B77F2AC1D23C00D5F4E8 /* NetworkManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerTests.swift; sourceTree = "<group>"; };
 		6F32B7832AC1D2FE00D5F4E8 /* ModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsTests.swift; sourceTree = "<group>"; };
@@ -198,6 +199,7 @@
 		6FF149C72AA8E220005CDBF6 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		6FF7022F2AC4891A002A03B5 /* NetworkMonitorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitorTests.swift; sourceTree = "<group>"; };
 		6FF702322AC559EF002A03B5 /* BoardsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardsViewModel.swift; sourceTree = "<group>"; };
+		6FFF79892AD9AEAE00630013 /* TextFieldModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldModifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -365,8 +367,8 @@
 			children = (
 				6FE1E0F32AAB6977009136A2 /* ProjectsViewModel.swift */,
 				6FE1E0F52AAB6980009136A2 /* ProjectsView.swift */,
-				6F291EBE2AC6A841004C9A54 /* ProjectView.swift */,
-				6F291EC02AC6A965004C9A54 /* ProjectViewModel.swift */,
+				6F291EBE2AC6A841004C9A54 /* ProjectFormView.swift */,
+				6F291EC02AC6A965004C9A54 /* ProjectFormViewModel.swift */,
 			);
 			path = Projects;
 			sourceTree = "<group>";
@@ -542,6 +544,7 @@
 				6F5F5F0C29E07A8100B9BCE6 /* PasswordField.swift */,
 				6FD008B92A02705C00D3B760 /* FormTitleView.swift */,
 				6FD008B72A026E6E00D3B760 /* FormRowView.swift */,
+				6FFF79892AD9AEAE00630013 /* TextFieldModifier.swift */,
 			);
 			path = Forms;
 			sourceTree = "<group>";
@@ -701,7 +704,7 @@
 				6FD0152E29DAB67F009F2A77 /* TextButton.swift in Sources */,
 				6FE517A22A9A435A001A5EDF /* URL+Extension.swift in Sources */,
 				6F895BFE2A949C110026438D /* Auth.swift in Sources */,
-				6F291EC12AC6A965004C9A54 /* ProjectViewModel.swift in Sources */,
+				6F291EC12AC6A965004C9A54 /* ProjectFormViewModel.swift in Sources */,
 				6F5F9D8B2A139A7100F51B8E /* TermsOfService.swift in Sources */,
 				6F5F9D5C2A129B0D00F51B8E /* SignInViewModel.swift in Sources */,
 				6F895BFC2A949BCC0026438D /* KeychainManager.swift in Sources */,
@@ -755,9 +758,10 @@
 				6FF149C82AA8E220005CDBF6 /* ButtonStyles.swift in Sources */,
 				6F8496FC2A8FAF1200A3F46A /* Backlog.swift in Sources */,
 				6FE816382A69603B005D6817 /* HomeView.swift in Sources */,
-				6F291EBF2AC6A841004C9A54 /* ProjectView.swift in Sources */,
+				6F291EBF2AC6A841004C9A54 /* ProjectFormView.swift in Sources */,
 				6F908B102A9791D10012463A /* Endpoint+Extension.swift in Sources */,
 				6F8496FA2A8FAF1200A3F46A /* Comment.swift in Sources */,
+				6FFF798A2AD9AEAE00630013 /* TextFieldModifier.swift in Sources */,
 				6FEDB9C42AD1C7B800D44B49 /* HomeViewModel.swift in Sources */,
 				6F5F5F0F29E07E4800B9BCE6 /* CustomNavigationView.swift in Sources */,
 				6FD0151029DAACA0009F2A77 /* TagView.swift in Sources */,

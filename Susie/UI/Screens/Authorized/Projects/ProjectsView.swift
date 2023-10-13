@@ -18,7 +18,14 @@ struct ProjectsView: View {
                     isShown.toggle()
                 }, content: {
                     NavigationLink(destination: {
-                        ProjectView()
+                        ProjectFormView()
+                            .onAppear{
+                                print("Appeared")
+                            }
+                            .onDisappear {
+                                print("Should fetch")
+                                vm.fetch()
+                            }
                     }, label: {
                         Image(systemName: "plus")
                             .scaleEffect(1.1)
@@ -36,6 +43,9 @@ struct ProjectsView: View {
                         .padding(.horizontal)
                 }
             }
+            .refreshable {
+                vm.fetch()
+            }
         }
         .sideMenu(isPresented: $isShown, menuContent: {
             VStack(alignment: .leading) {
@@ -49,9 +59,6 @@ struct ProjectsView: View {
             .padding()
             .frame(maxWidth: .infinity, alignment: .leading)
         })
-        .refreshable {
-            vm.fetch()
-        }
         .onAppear {
             vm.fetch()
         }

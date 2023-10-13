@@ -11,7 +11,7 @@ import Factory
 @MainActor
 class SprintsViewModel: ObservableObject {
     private var client: Client
-    private var project: Project
+    private(set) var project: Project
     
     @Published var name: String = String()
     @Published var date: Date = Date()

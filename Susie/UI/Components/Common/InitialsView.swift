@@ -11,17 +11,16 @@ struct InitialsView: View {
     let user: User?
     let size: CGFloat
     var body: some View {
-        ZStack{
+        ZStack {
+            Circle()
+                .fill(.blue.opacity(0.2))
+                .frame(width: size, height: size)
             Text(user?.initials ?? "?")
                 .font(.callout)
                 .foregroundColor(.blue)
                 .bold()
-                .background{
-                    Circle()
-                        .fill(.blue.opacity(0.2))
-                        .frame(width: size, height: size)
-                }
-
+            
         }
+        .frame(width: size, height: size)
     }
 }

@@ -7,20 +7,24 @@
 
 import SwiftUI
 
-struct IssuePriorityView: View {
-    let content: String
-    let color: Color
-    
+struct TagView: View {
+    private let image: Image?
+    private let text: String
+    private var color: Color
+
     var body: some View {
         HStack{
-            Image(systemName: "flag.fill")
-                .font(.caption)
-                .bold()
-                .foregroundColor(.white)
-            Text(content)
+            if let image {
+                image
+                    .font(.caption)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+            }
+            
+            Text(text)
                 .brightness(0.1)
                 .foregroundColor(.white)
-                .bold()
+                .fontWeight(.bold)
                 .font(.caption)
         }
         .padding(.horizontal, 7)
@@ -30,12 +34,15 @@ struct IssuePriorityView: View {
                 .fill(color)
                 .opacity(0.6)
         }
-        
+    }
+    
+    init(image: Image? = nil, text: String, color: Color) {
+        self.image = image
+        self.text = text
+        self.color = color
     }
 }
 
-struct IssuePriorityView_Previews: PreviewProvider {
-    static var previews: some View {
-        IssuePriorityView(content: "LOW", color: .gray)
-    }
+#Preview {
+    TagView(image: Image(systemName: "flag"), text: "Bug", color: .red)
 }

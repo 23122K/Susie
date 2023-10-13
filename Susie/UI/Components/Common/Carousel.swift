@@ -14,7 +14,6 @@ struct Carousel<T: Any, Content: View>: View {
     }
     
     @State private var currentTab: Int
-    private let height: CGFloat
     private let type: CarouselType
     private let data: Array<T>
     private let content: (T) -> Content
@@ -24,12 +23,13 @@ struct Carousel<T: Any, Content: View>: View {
             TabView(selection: $currentTab) {
                 ForEach(Array(zip(data.indices, data)), id: \..0) { index, item in
                     content(item)
-                        .frame(height: height)
+                        .frame(height: 215)
                         .tag(index)
                         .padding(.bottom)
                 }
             }
             .frame(height: 200)
+            .padding(.bottom, 5)
             .tabViewStyle(.page(indexDisplayMode: .never))
             .onChange(of: currentTab) { newTab in
                 switch type {
@@ -46,42 +46,30 @@ struct Carousel<T: Any, Content: View>: View {
                 }
                 
             }
+            
+            if data.count > 1 {
+                HStack(spacing: 2) {
+                    ForEach((1..<data.count-1), id: \.self) { index in
+                        Circle()
+                            .fill(index == self.currentTab ? Color.gray : Color.gray.opacity(0.5))
+                            .frame(width: 7, height: 7)
+                            .padding(.horizontal, 1)
+                        
+                    }
+                }
+            }
         }
+        .frame(height: 210)
         
-//        switch type {
-//        case .bounded:
-//            HStack(spacing: 2) {
-//                ForEach((0..<data.count), id: \.self) { index in
-//                    Circle()
-//                        .fill(index == self.currentTab ? Color.gray : Color.gray.opacity(0.5))
-//                        .frame(width: 7, height: 7)
-//                        .padding(.horizontal, 1)
-//
-//                }
-//            }
-//            .offset(y: -10)
-//        case .unbounded:
-//            HStack(spacing: 2) {
-//                ForEach((1..<data.count-1), id: \.self) { index in
-//                    Circle()
-//                        .fill(index == self.currentTab ? Color.gray : Color.gray.opacity(0.5))
-//                        .frame(width: 7, height: 7)
-//                        .padding(.horizontal, 1)
-//
-//                }
-//            }
-//            .offset(y: -10)
-//        }
     }
     
-    public init(_ data: [T], type: CarouselType = .bounded, height: CGFloat = 215, @ViewBuilder _ content: @escaping (T) -> Content) {
+    public init(_ data: [T], type: CarouselType = .unbounded, @ViewBuilder _ content: @escaping (T) -> Content) {
         self.content = content
-        self.height = height
         self.type = type
         
         switch type {
         case .unbounded:
-            guard let firstElement = data.first, let lastElement = data.last else { fallthrough }
+            guard let firstElement = data.first, let lastElement = data.last, data.count > 1 else { fallthrough }
             
             var _data = data
             _data.append(firstElement)

@@ -1,6 +1,10 @@
 import SwiftUI
 import SwipeActions
 
+extension MutableCollection {
+    mutating func move(fromOffsets source: IndexSet,toOffset destination: Int) {}
+}
+
 @MainActor
 struct BacklogView: View {
     @StateObject private var backlog: BacklogViewModel
@@ -9,112 +13,118 @@ struct BacklogView: View {
     @State private var isPresented: Bool = false
     @State private var dropStatus: DropStatus = .exited
     
+    private func refresh() {
+        sprints.fetch()
+        backlog.fetch()
+    }
+    
     var body: some View {
-        GeometryReader { reader in
-            NavigationStack {
-                ScreenHeader(user: backlog.user, screenTitle: "Backlog", action: {
-                    isPresented.toggle()
-                }, content: {
-                    Menu(content: {
-                        Button("Create sprint") {}
-                        Button("Create issue") {}
-                    }, label: {
-                        Image(systemName: "ellipsis")
-                            .scaleEffect(1.1)
-                    })
-                })
-                .padding(.top)
-                .padding(.horizontal)
-                
-                if sprints.sprints.isEmpty {
-                    NavigationLink(destination: {
-                        SprintFormView()
-                    }, label: {
-                        CreateSprintView()
-                            .padding(.top)
-                    })
-                } else {
-                    Carousel(sprints.sprints, type: .unbounded) { sprint in
-                        SprintRowView(sprint: sprint)
-                            .onTapGesture { sprints.sprint = sprint }
-                            .onDrop(of: [.text], delegate: SprintDropDelegate(sprints: sprints, dropStatus: $dropStatus, sprint: sprint))
-                    }
-                    .padding(.vertical)
-                }
-                
-                ScrollView(showsIndicators: false) {
-                    ForEach(backlog.issues) { issue in
-                        SwipeView(label: {
-                            IssueRowView(issue: issue)
-                                .onDrag {
-                                    sprints.issue = issue
-                                    return NSItemProvider()
-                                }
-                                .onTapGesture {
-                                    backlog.details(of: issue)
-                                }
-                        }, leadingActions: { _ in
-                            SwipeAction(action: {
-                                print("Deleted")
-                            }, label: { _ in
-                                HStack {
-                                    Text("Delete")
-                                        .fontWeight(.semibold)
-                                    Image(systemName: "trash.fill")
-                                }
-                                .foregroundColor(Color.susieWhitePrimary)
-                            }, background: { _ in
-                                Color.red.opacity(0.95)
-                            })
-                            .allowSwipeToTrigger()
-                            
-                        }, trailingActions: { _ in
-                            SwipeAction(action: {
-                                print("Edited")
-                            }, label: { _ in
-                                HStack {
-                                    Text("Edit")
-                                    Image(systemName: "pencil")
-                                }
-                                .fontWeight(.semibold)
-                                .foregroundColor(Color.susieWhitePrimary)
-                            }, background: { _ in
-                                Color.susieBluePriamry
-                            })
-                            .allowSwipeToTrigger()
-                        })
-                        .swipeSpacing(10)
-                        .swipeMinimumDistance(5)
-                        .swipeActionsStyle(.cascade)
-                        .swipeActionsMaskCornerRadius(9)
-                        .swipeActionCornerRadius(9)
-                        .padding(.horizontal)
+        NavigationStack {
+            ScreenHeader(user: backlog.user, screenTitle: "Backlog", action: {
+                isPresented.toggle()
+            }, content: {
+                Menu(content: {
+                    NavigationLink("Crate sprint") {
+                        SprintFormView(project: backlog.project)
+                            .onDisappear{ refresh() }
                     }
                     
-                    NavigationLink("Create issue", destination: {
+                    NavigationLink("Create issue") {
                         IssueFormView(project: backlog.project)
+                            .onDisappear { backlog.fetch() }
+                    }
+                }, label: {
+                    Image(systemName: "ellipsis")
+                        .fontWeight(.bold)
+                })
+            })
+            
+            if sprints.sprints.isEmpty {
+                NavigationLink(destination: {
+                    SprintFormView(project: backlog.project)
+                }, label: {
+                    CreateSprintView()
+                        .padding(.top)
+                })
+            } else {
+                Carousel(sprints.sprints, type: .unbounded) { sprint in
+                    SprintRowView(sprint: sprint, status: $dropStatus)
+                        .onTapGesture { sprints.sprint = sprint }
+                        .onDrop(of: [.text], delegate: SprintDropDelegate(sprints: sprints, dropStatus: $dropStatus, sprint: sprint))
+                }
+            }
+            
+            ScrollView(showsIndicators: false) {
+                ForEach(backlog.issues) { issue in
+                    SwipeView(label: {
+                        IssueRowView(issue: issue)
+                            .onDrag {
+                                sprints.issue = issue
+                                return NSItemProvider()
+                            }
+                            .onTapGesture {
+                                backlog.details(of: issue)
+                            }
+                    }, leadingActions: { _ in
+                        SwipeAction(action: {
+                            print("Deleted")
+                        }, label: { _ in
+                            HStack {
+                                Text("Delete")
+                                    .fontWeight(.semibold)
+                                Image(systemName: "trash.fill")
+                            }
+                            .foregroundColor(Color.susieWhitePrimary)
+                        }, background: { _ in
+                            Color.red.opacity(0.95)
+                        })
+                        .allowSwipeToTrigger()
+                        
+                    }, trailingActions: { _ in
+                        SwipeAction(action: {
+                            print("Edited")
+                        }, label: { _ in
+                            HStack {
+                                Text("Edit")
+                                Image(systemName: "pencil")
+                            }
+                            .fontWeight(.semibold)
+                            .foregroundColor(Color.susieWhitePrimary)
+                        }, background: { _ in
+                            Color.susieBluePriamry
+                        })
+                        .allowSwipeToTrigger()
                     })
-                    .buttonStyle(.issueCreation)
-                    .offset(y: -15)
+                    .swipeSpacing(10)
+                    .swipeMinimumDistance(10)
+                    .swipeActionsStyle(.cascade)
+                    .swipeActionsMaskCornerRadius(9)
+                    .swipeActionCornerRadius(9)
+                    .padding(.horizontal)
                 }
                 
-                Spacer()
-            }
-            .sheet(item: $backlog.issue) { issue in
-                IssueDetailedView(issue: issue)
-            }
-            .navigationTitle("Backlog")
-            .refreshable {
-                backlog.fetch()
-                sprints.fetch()
+                NavigationLink("Create issue", destination: {
+                    IssueFormView(project: backlog.project)
+                })
+                .buttonStyle(.issueCreation)
+                .offset(y: -15)
             }
             .onAppear {
                 backlog.fetch()
                 sprints.fetch()
             }
-            .fullScreenCover(item: $sprints.sprint) { sprint in
-                SprintView(sprints: sprints)
+            .refreshable {
+                backlog.fetch()
+                sprints.fetch()
             }
+            
+        }
+        .sheet(item: $backlog.issue) { issue in
+            IssueDetailedView(issue: issue)
+        }
+        .navigationTitle("Backlog")
+        .fullScreenCover(item: $sprints.sprint) { sprint in
+            SprintView(sprints: sprints)
         }
     }
     

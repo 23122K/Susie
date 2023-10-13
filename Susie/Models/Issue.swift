@@ -5,6 +5,11 @@
 //  Created by Patryk Maciąg on 22/08/2023.
 //
 
+protocol IssueEntity {
+    var id: Int32 { get set }
+    
+}
+
 struct Issue: Identifiable, Codable {
     let id: Int32
     let name: String
@@ -73,6 +78,8 @@ struct IssueDTO: Identifiable, Codable {
     }
 }
 
+
+//TODO: Add project id to issueGeneralDTO
 struct IssueGeneralDTO: Identifiable, Codable {
     
     let id: Int32
@@ -86,6 +93,12 @@ struct IssueGeneralDTO: Identifiable, Codable {
         case asignee
         case status = "issueStatusID"
     }
+}
+
+extension IssueGeneralDTO {
+    var type: IssueType { return IssueType.bug }
+    var priority: IssuePriority { return IssuePriority.high }
+    
 }
 
 enum IssueStatus: Int32, RawRepresentable, CaseIterable, Codable {

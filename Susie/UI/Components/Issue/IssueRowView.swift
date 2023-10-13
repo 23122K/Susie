@@ -8,25 +8,28 @@
 import SwiftUI
 
 struct IssueRowView: View {
+    let flagImage: Image =  Image(systemName: "flag")
     let issue: IssueGeneralDTO
     
     var body: some View {
-        HStack(alignment: .top) {
+        HStack(alignment: .top, spacing: 0) {
             VStack(alignment: .leading) {
                 Text(issue.name)
-                    .bold()
+                    .fontWeight(.semibold)
                     .padding(.bottom, 1)
-                HStack(alignment: .bottom) {
-//                    IssueTypeView(content: issue., color: color)
-//                    IssuePriorityView(content: tag, color: color)
+                    .offset(y: 3)
+                
+                HStack(alignment: .center) {
+                    TagView(text: issue.status.description, color: .green)
+                    TagView(image: flagImage, text: issue.priority.description, color: .red)
                     Spacer()
                     InitialsView(user: issue.asignee, size: 30)
                 }
-                .padding(.all, 5)
+                .offset(y: -3)
             }
+            .padding(.horizontal, 5)
         }
-        .padding(.vertical, 5)
-        .padding(.horizontal)
+        .padding(.all, 5)
         .background{
             RoundedRectangle(cornerRadius: 10)
             .fill(Color.susieWhiteSecondary)
@@ -34,3 +37,6 @@ struct IssueRowView: View {
     }
 }
 
+#Preview {
+    IssueRowView(issue: IssueGeneralDTO(id: 1, name: "Test", asignee: User(email: "asd", firstName: "Jna", lastName: "Kowaslki"), status: .inProgress))
+}

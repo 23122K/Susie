@@ -110,6 +110,8 @@ actor NetworkManager {
         
         //TODO: Do not cache if data is not valid
         if policy.shouldCache { cache[endpoint] = Cache(data: data, for: policy.shouldExpireIn)
+            print(endpoint.request.url?.absoluteString)
+            print(endpoint.request.httpMethod)
             print("Here")
         }
         

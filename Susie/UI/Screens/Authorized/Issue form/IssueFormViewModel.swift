@@ -20,27 +20,6 @@ class IssueFormViewModel: ObservableObject {
     @Published var type: IssueType = .bug
     @Published var priority: IssuePriority = .low
     
-    @Published var priorities: Array<IssuePriority> = .init()
-    
-    private func fetchConfiguration() {
-        Task {
-            do {
-                priorities = try await client.priorities()
-                
-                guard let priority = priorities.first else {
-                    throw AuthError.couldNotRefreshAuthObject
-                }
-                
-                self.type = type
-                self.priority = priority
-                
-            } catch {
-                print(#function)
-                print("error")
-            }
-        }
-    }
-    
     func create() {
         Task {
             do {
@@ -56,6 +35,5 @@ class IssueFormViewModel: ObservableObject {
         self.client = container.client()
         self.project = project
         
-        fetchConfiguration()
     }
 }

@@ -38,14 +38,14 @@ struct SprintView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Menu(content: {
                         Button(action: {
-                            
+                            sprint.start()
                         }, label: {
                             Text(sprint.isAcitve ? "Complete" : "Start")
                             Image(systemName: sprint.isAcitve ? "pause.fill" : "play.fill")
                         })
                         
-                        Button(action: {
-                            
+                        NavigationLink(destination: {
+                            SprintFormView(project: sprints.project, sprint: sprints.sprint)
                         }, label: {
                             Text("Edit")
                             Image(systemName: "pencil")
@@ -53,7 +53,8 @@ struct SprintView: View {
                         
                         Section {
                             Button(role: .destructive, action: {
-                                
+                                sprint.delete()
+                                dismiss()
                             }, label: {
                                 Text("Delete")
                                     .foregroundColor(.red)
