@@ -14,6 +14,7 @@ class SprintViewModel: ObservableObject {
     private var sprint: Sprint
     
     @Published var issues: Array<IssueGeneralDTO> = []
+    @Published var issue: IssueGeneralDTO?
     
     func fetch() {
         Task { issues = try await client.issues(sprint: sprint) }
@@ -21,6 +22,10 @@ class SprintViewModel: ObservableObject {
     
     func start() {
         Task { try await client.start(sprint: sprint) }
+    }
+    
+    func stop() {
+        Task { try await client.stop(sprint: sprint) }
     }
     
     func delete() {

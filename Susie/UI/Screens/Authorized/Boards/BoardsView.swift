@@ -24,21 +24,20 @@ struct BoardsView: View {
                         .scaleEffect(1.1)
                 })
             })
-            .padding(.top)
-            .padding(.horizontal)
             
-            TabView {
-                ForEach(IssueStatus.allCases, id: \.rawValue) { status in
-                    GeometryReader { g in
-                        BoardView(issues: boards.issues, status: status)
+            AsyncContentView(source: boards) { issues in
+                TabView {
+                    ForEach(IssueStatus.allCases, id: \.rawValue) { status in
+                        GeometryReader { g in
+                            BoardView(issues: issues, status: status)
+                        }
+                        .frame(width: 380, height: 650)
                     }
-                    .frame(width: 380, height: 650)
                 }
+                .tabViewStyle(.page(indexDisplayMode: .never))
             }
-            .tabViewStyle(.page(indexDisplayMode: .never))
         }
-        .onAppear { boards.refresh() }
-        .refreshable { boards.refresh() }
+        .refreshable { boards.fetch() }
     }
     
     init(project: Project) {

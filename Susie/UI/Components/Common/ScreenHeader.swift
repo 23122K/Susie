@@ -25,7 +25,6 @@ struct ScreenHeader<Content: View>: View {
             content
         }
         .padding(.horizontal)
-        .padding(.bottom)
     }
     
     init(user: User?, screenTitle: String, action: (() -> Void)? = nil,  @ViewBuilder content: @escaping () -> Content?) {

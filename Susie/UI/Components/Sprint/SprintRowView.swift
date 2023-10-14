@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SprintRowView: View {
     let sprint: Sprint
+    
     @Binding var status: DropStatus
     
     var body: some View {
@@ -17,7 +18,6 @@ struct SprintRowView: View {
                 VStack(alignment: .leading) {
                     Text(sprint.name)
                         .font(.title)
-                    
                 }
                 .padding()
                 Spacer()

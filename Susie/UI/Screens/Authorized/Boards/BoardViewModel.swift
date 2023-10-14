@@ -13,17 +13,6 @@ class BoardViewModel: ObservableObject {
     private var client: Client
     @Published var issue: IssueGeneralDTO?
     
-//    func fetchDeatils(for issue: IssueGeneralDTO) {
-//        Task {
-//            do {
-//                self.issue = try await client.details(issue: issue)
-//                print(issue)
-//            } catch {
-//                print(error)
-//            }
-//        }
-//    }
-    
     init(container: Container = Container.shared) {
         self.client = container.client()
     }

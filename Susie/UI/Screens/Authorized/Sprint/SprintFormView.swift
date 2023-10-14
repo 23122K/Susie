@@ -46,8 +46,8 @@ struct SprintFormView: View {
         .navigationTitle(sprint.name.isEmpty ? "New sprint" : sprint.name)
     }
     
-    init(project: Project, sprint: Sprint? = nil) {
-        _sprint = StateObject(wrappedValue: SprintFromViewModel(project: project, sprint: sprint))
+    init(sprint: Sprint? = nil) {
+        _sprint = StateObject(wrappedValue: SprintFromViewModel(sprint: sprint))
     }
 }
 

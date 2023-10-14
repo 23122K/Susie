@@ -11,7 +11,6 @@ import Factory
 class SprintFromViewModel: ObservableObject {
     private var client: Client
     private var sprint: Sprint
-    private var project: Project
     private var doesExist: Bool = false
     
     @Published var name: String = String()
@@ -22,7 +21,7 @@ class SprintFromViewModel: ObservableObject {
     @Published var shouldHaveStartDate: Bool = Bool()
     
     func save() {
-        let sprint = Sprint(name: name, projectID: project.id, startTime: shouldHaveStartDate ? date : nil, active: false)
+        let sprint = Sprint(name: name, projectID: 1, startTime: shouldHaveStartDate ? date : nil, active: false)
         switch doesExist {
         case true:
             print("Sprint should be updated") //TODO: Endpoint for sprint data updating is missing
@@ -31,9 +30,8 @@ class SprintFromViewModel: ObservableObject {
         }
     }
     
-    init(project: Project, sprint: Sprint?, container: Container = Container.shared) {
+    init(sprint: Sprint?, container: Container = Container.shared) {
         self.client = container.client()
-        self.project = project
         
         if let sprint {
             self.doesExist = true

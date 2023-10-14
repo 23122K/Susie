@@ -9,34 +9,31 @@ import SwiftUI
 import Factory
 
 @MainActor
-class BoardsViewModel: ObservableObject {
+class BoardsViewModel: ObservableObject, AsyncDataProvider {
+    
     private(set) var project: Project
     private(set) var user: User?
     private var client: Client
-    private var sprint: Sprint?
     
-    @Published var issues: Array<IssueGeneralDTO> = []
     @Published var statuses: IssueStatus = .toDo
+    @Published var state: LoadingState<[IssueGeneralDTO]> = .idle
     
-    public func refresh() {
-        fetchSprint()
-        fetchIssue()
-    }
-    
-    func fetchIssue() {
-        if let sprint {
-            Task {
-                do {
-                    self.issues = try await client.issues(sprint: sprint)
-                } catch {
-                    print(error)
+    func fetch() {
+        self.state = .idle
+        Task(priority: .high) {
+            do {
+                state = .loading
+                if let sprint: Sprint = try? await client.active(project: project.toDTO()) {
+                    let issues = try await client.issues(sprint: sprint)
+                    state = .loaded(issues)
+                } else {
+                    //In case of no active sprint empty array is returned
+                    state = .loaded([])
                 }
+            } catch {
+                state = .failed(error)
             }
         }
-    }
-    
-    func fetchSprint() {
-        Task { self.sprint = try await client.active(project: project.toDTO()) }
     }
     
     init(container: Container = Container.shared, project: Project) {

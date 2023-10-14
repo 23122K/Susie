@@ -9,24 +9,22 @@ import SwiftUI
 
 struct SprintView: View {
     @Environment (\.dismiss) var dismiss
-    @State private var appeared: Bool = false
-    
-    @StateObject private var sprint: SprintViewModel
-    @ObservedObject private var sprints: SprintsViewModel
+    @StateObject private var sprintViewModel: SprintViewModel
+    private var sprint: Sprint //TODO: Remove it and take value from sprintViewModel
     
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
-                ForEach(sprint.issues) { issue in
+                ForEach(sprintViewModel.issues) { issue in
                     IssueRowView(issue: issue)
-                        .animation(.spring, value: appeared)
+                        .onTapGesture { sprintViewModel.issue = issue }
                 }
             }
             .padding()
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(sprint.name)
+            .navigationTitle(sprintViewModel.name)
             .refreshable {
-                sprint.fetch()
+                sprintViewModel.fetch()
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -38,14 +36,19 @@ struct SprintView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Menu(content: {
                         Button(action: {
-                            sprint.start()
+                            switch sprintViewModel.isAcitve {
+                            case true:
+                                sprintViewModel.stop()
+                            case false:
+                                sprintViewModel.start()
+                            }
                         }, label: {
-                            Text(sprint.isAcitve ? "Complete" : "Start")
-                            Image(systemName: sprint.isAcitve ? "pause.fill" : "play.fill")
+                            Text(sprintViewModel.isAcitve ? "Complete" : "Start")
+                            Image(systemName: sprintViewModel.isAcitve ? "pause.fill" : "play.fill")
                         })
                         
                         NavigationLink(destination: {
-                            SprintFormView(project: sprints.project, sprint: sprints.sprint)
+                            SprintFormView(sprint: sprint)
                         }, label: {
                             Text("Edit")
                             Image(systemName: "pencil")
@@ -53,7 +56,7 @@ struct SprintView: View {
                         
                         Section {
                             Button(role: .destructive, action: {
-                                sprint.delete()
+                                sprintViewModel.delete()
                                 dismiss()
                             }, label: {
                                 Text("Delete")
@@ -68,16 +71,18 @@ struct SprintView: View {
                 }
             }
         }
+        .sheet(item: $sprintViewModel.issue) { issue in
+            IssueDetailsView(issue: issue)
+        }
         .onAppear{
-            appeared.toggle()
-            sprint.fetch()
+            sprintViewModel.fetch()
         }
         
     }
     
-    init(sprints: SprintsViewModel) {
-        self.sprints = sprints
-        _sprint = StateObject(wrappedValue: SprintViewModel(sprint: sprints.sprint))
+    init(sprint: Sprint) {
+        self.sprint = sprint
+        _sprintViewModel = StateObject(wrappedValue: SprintViewModel(sprint: sprint))
     }
 }
 

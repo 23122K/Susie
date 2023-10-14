@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct IssueFormView: View {
+    @Environment (\.dismiss) var dismiss
+    
     @StateObject private var vm: IssueFormViewModel
     @FocusState private var focusedField: FocusedField?
     
@@ -58,6 +60,7 @@ struct IssueFormView: View {
         .toolbar{
             Button("Save") {
                 vm.create()
+                dismiss()
             }
         }
         .onAppear{ focusedField = .title }

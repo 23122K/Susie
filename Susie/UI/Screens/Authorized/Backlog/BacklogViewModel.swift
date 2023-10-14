@@ -9,31 +9,42 @@ import SwiftUI
 import Factory
 
 @MainActor
-class BacklogViewModel: ObservableObject {
+class BacklogViewModel: ObservableObject, AsyncDataProvider {
+    private var client: Client
     private(set) var project: Project
     private(set) var user: User?
-    private var client: Client
     
-    @Published var issues: Array<IssueGeneralDTO> = []
-    @Published var issue: Issue?
+    @Published var issue: IssueGeneralDTO?
+    @Published var draggedIssue: IssueGeneralDTO?
     
-    func details(of issue: IssueGeneralDTO) {
-        Task { self.issue = try await client.details(issue: issue) }
-    }
+    @Published var state: LoadingState<[IssueGeneralDTO]> = .idle
     
     func fetch() {
-        Task { self.issues = try await client.issues(backlog: project.toDTO()) }
+        state = .idle
+        
+        Task(priority: .high) {
+            do {
+                state = .loading
+                let issues = try await client.issues(backlog: project.toDTO())
+                state = .loaded(issues)
+            } catch {
+                state = .failed(error)
+            }
+        }
     }
     
     func delete(issue: IssueGeneralDTO) {
+        print("Deleted")
         Task { try await client.delete(issue: issue) }
+    }
+    
+    func edit(issue: IssueGeneralDTO) {
+        print("Edited")
     }
     
     init(project: Project, container: Container = Container.shared) {
         self.client = container.client()
         self.user = client.user
         self.project = project
-        
-        fetch()
     }
 }

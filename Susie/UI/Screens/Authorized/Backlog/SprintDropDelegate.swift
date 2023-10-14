@@ -10,12 +10,12 @@ import SwiftUI
 enum DropStatus {
     case entered
     case exited
-    case dropped
 }
 
 struct SprintDropDelegate: DropDelegate {
     @ObservedObject var sprints: SprintsViewModel
     @Binding var dropStatus: DropStatus
+    
     let sprint: Sprint
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
@@ -23,13 +23,8 @@ struct SprintDropDelegate: DropDelegate {
     }
     
     func performDrop(info: DropInfo) -> Bool {
-        sprints.assign(to: sprint)
-        dropStatus = .dropped
-        dropStatus = .exited
-        
-        return true
+        sprints.assign(to: sprint) ? true : false
     }
-    
     
     func dropEntered(info: DropInfo) {
         dropStatus = .entered
