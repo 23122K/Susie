@@ -15,9 +15,6 @@ class SprintsViewModel: ObservableObject, AsyncDataProvider {
     private(set) var project: Project
     private(set) var user: User?
     
-    @Published var name: String = String()
-    @Published var date: Date = Date()
-    
     @Published var sprint: Sprint?
     @Published var issue: IssueGeneralDTO?
     
@@ -29,7 +26,9 @@ class SprintsViewModel: ObservableObject, AsyncDataProvider {
         Task(priority: .high) {
             do {
                 state = .loading
+                print(#function)
                 let sprints = try await client.sprints(project: project.toDTO())
+                print(sprints)
                 state = .loaded(sprints)
             } catch {
                 state = .failed(error)

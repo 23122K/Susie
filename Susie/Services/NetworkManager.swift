@@ -108,16 +108,23 @@ actor NetworkManager {
                 print("Request status: completed")
         #endif
         
+        print("--------------------------------")
+        print(endpoint.request.url?.absoluteString)
+        print(endpoint.request.httpMethod)
+        if let data = endpoint.body {
+            print(String(data: data, encoding: .utf8))
+        }
+        
         //TODO: Do not cache if data is not valid
         if policy.shouldCache { cache[endpoint] = Cache(data: data, for: policy.shouldExpireIn)
-            print(endpoint.request.url?.absoluteString)
-            print(endpoint.request.httpMethod)
-            print("Here")
+        
         }
         
         do {
             return try decoder.decode(T.self, from: data)
         } catch {
+            print("------RAW JSON--------")
+            print(String(data: data, encoding: .utf8))
             print(error)
             throw NetworkError.invalidHTTPResponse
         }

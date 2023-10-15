@@ -20,8 +20,8 @@ struct IssueRowView: View {
                     .offset(y: 3)
                 
                 HStack(alignment: .center) {
-                    TagView(text: issue.status.description, color: .green)
-                    TagView(image: flagImage, text: issue.priority.description, color: .red)
+                    TagView(text: issue.type.description, color: issue.type.color)
+                    TagView(image: flagImage, text: issue.priority.description, color: issue.priority.color)
                     Spacer()
                     InitialsView(user: issue.asignee, size: 30)
                 }
@@ -35,8 +35,4 @@ struct IssueRowView: View {
             .fill(Color.susieWhiteSecondary)
         }
     }
-}
-
-#Preview {
-    IssueRowView(issue: IssueGeneralDTO(id: 1, name: "Test", asignee: User(email: "asd", firstName: "Jna", lastName: "Kowaslki"), status: .inProgress))
 }

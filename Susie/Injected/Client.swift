@@ -83,22 +83,6 @@ class Client: ObservableObject {
         try await network.request(to: endpoint)
     }
     
-    //MARK: Dictionaries
-    func statuses() async throws -> Array<IssueStatus> {
-        let endpoint = Endpoints.DictionaryEndpoint.status
-        return try await network.response(from: endpoint)
-    }
-    
-    func types() async throws -> Array<IssueType> {
-        let endpoint = Endpoints.DictionaryEndpoint.type
-        return try await network.response(from: endpoint)
-    }
-    
-    func priorities() async throws -> Array<IssuePriority> {
-        let endpoint = Endpoints.DictionaryEndpoint.priority
-        return try await network.response(from: endpoint)
-    }
-    
     //MARK: Issue
     func issues(project: Project) async throws -> Array<IssueGeneralDTO> {
         let endpoint = Endpoints.IssueEndpoint.fetch(project: project.toDTO())
@@ -166,8 +150,8 @@ class Client: ObservableObject {
         try await network.request(to: endpoint)
     }
     
-    func stop(sprint: Sprint) async throws {
-        let endpoint = Endpoints.SprintEndpoint.stop(sprint: sprint)
+    func stop(project: Project) async throws {
+        let endpoint = Endpoints.SprintEndpoint.stop(project: project)
         try await network.request(to: endpoint)
     }
     

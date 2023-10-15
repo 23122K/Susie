@@ -5,11 +5,6 @@
 //  Created by Patryk Maciąg on 22/08/2023.
 //
 
-protocol IssueEntity {
-    var id: Int32 { get set }
-    
-}
-
 struct Issue: Identifiable, Codable {
     let id: Int32
     let name: String
@@ -20,6 +15,9 @@ struct Issue: Identifiable, Codable {
     let priority: IssuePriority
     let status: IssueStatus
     let type: IssueType
+    let projectID: Int32
+    let sprintID: Int32?
+    let comments: Array<Comment>
     
     enum CodingKeys: String, CodingKey {
         case id = "issueID"
@@ -31,12 +29,15 @@ struct Issue: Identifiable, Codable {
         case type = "issueTypeID"
         case priority = "issuePriorityID"
         case status = "issueStatusID"
+        case projectID
+        case sprintID
+        case comments
     }
 }
 
 extension Issue {
     func toGeneralDTO() -> IssueGeneralDTO {
-        IssueGeneralDTO(id: self.id, name: self.name, asignee: self.asignee, status: self.status)
+        IssueGeneralDTO(id: self.id, name: self.name, asignee: self.asignee, status: self.status, type: self.type, priority: self.priority, projectID: self.projectID, sprintID: self.sprintID)
     }
 }
 
@@ -67,8 +68,8 @@ struct IssueDTO: Identifiable, Codable {
         case priority = "issuePriorityID"
     }
     
-    init(id: Int32 = -1, name: String, description: String, estimation: Int32, project: Project, type: IssueType, priority: IssuePriority) {
-        self.id = id
+    init(name: String, description: String, estimation: Int32, project: Project, type: IssueType, priority: IssuePriority) {
+        self.id = -1
         self.name = name
         self.description = description
         self.estimation = estimation
@@ -78,91 +79,24 @@ struct IssueDTO: Identifiable, Codable {
     }
 }
 
-
-//TODO: Add project id to issueGeneralDTO
 struct IssueGeneralDTO: Identifiable, Codable {
-    
     let id: Int32
     let name: String
     let asignee: User?
     let status: IssueStatus
+    let type: IssueType
+    let priority: IssuePriority
+    let projectID: Int32
+    let sprintID: Int32?
     
     enum CodingKeys: String, CodingKey {
         case id
         case name
         case asignee
+        case type = "issueTypeID"
+        case priority = "issuePriorityID"
         case status = "issueStatusID"
-    }
-}
-
-extension IssueGeneralDTO {
-    var type: IssueType { return IssueType.bug }
-    var priority: IssuePriority { return IssuePriority.high }
-    
-}
-
-enum IssueStatus: Int32, RawRepresentable, CaseIterable, Codable {
-    case toDo = 1
-    case inProgress = 2
-    case inReview = 3
-    case inTests = 4
-    case done = 5
-    
-    var description: String {
-        switch self {
-        case .toDo:
-            return "To do"
-        case .inProgress:
-            return "In progress"
-        case .inReview:
-            return "Code review"
-        case .inTests:
-            return "In tests"
-        case .done:
-            return "Done"
-        }
-    }
-}
-
-enum IssueType: Int32, RawRepresentable, CaseIterable, Codable {
-    case userStory = 1
-    case bug = 2
-    case toDo = 3
-    case aoa = 4
-    
-    var description: String {
-        switch self {
-        case .bug: 
-            return "Bug"
-        case .userStory:
-            return "User story"
-        case .toDo:
-            return "To Do"
-        case .aoa:
-            return "Agile assignment"
-        }
-    }
-}
-
-enum IssuePriority: Int32, RawRepresentable, CaseIterable, Codable {
-    case critical = 1
-    case high = 2
-    case medium = 3
-    case low = 4
-    case trivial = 5
-    
-    var description: String {
-        switch self {
-        case .critical:
-            return "Critical"
-        case .high:
-            return "High"
-        case .medium:
-            return "Medium"
-        case .low:
-            return "Low"
-        case .trivial:
-            return "Trivial"
-        }
+        case projectID
+        case sprintID
     }
 }

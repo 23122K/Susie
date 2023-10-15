@@ -98,13 +98,15 @@ enum Endpoints {
             }
         }
     }
+    
     internal enum IssueEndpoint: Endpoint {
         case create(issue: IssueDTO)
         case update(issue: IssueDTO)
         case delete(issue: IssueGeneralDTO)
-        case fetch(project: ProjectDTO)
+        case fetch(project: any ProjectEntity)
         case details(issue: IssueGeneralDTO)
-        case backlog(project: ProjectDTO)
+        case backlog(project: any ProjectEntity)
+        case history(project: any ProjectEntity)
         case assignTo(issue: IssueDTO)
         case unassignFrom(issue: IssueDTO)
         case assignedTo(sprint: Sprint)
@@ -143,6 +145,8 @@ enum Endpoints {
                 return "issue/\(issue.id)/status/\(status.rawValue)"
             case .userAssigned:
                 return "issue/user-assigned"
+            case .history:
+                return "issue/product-backlog-history"
             }
         }
         
@@ -154,7 +158,7 @@ enum Endpoints {
                 return .put
             case .delete:
                 return .delete
-            case .fetch, .details, .assignedTo, .backlog, .userAssigned:
+            case .fetch, .details, .assignedTo, .backlog, .userAssigned, .history:
                 return .get
             case .change:
                 return .patch
@@ -163,7 +167,7 @@ enum Endpoints {
         
         var queries: [String : String]? {
             switch self {
-            case .fetch(let project), .backlog(let project):
+            case .fetch(let project), .backlog(let project), .history(let project):
                 return ["projectID":"\(project.id)"]
             default:
                 return nil
@@ -183,12 +187,13 @@ enum Endpoints {
     internal enum SprintEndpoint: Endpoint {
         case create(sprint: Sprint)
         case delete(sprint: Sprint)
+        case update(sprint: Sprint)
         case assign(issue: IssueGeneralDTO, to: Sprint)
         case unassign(issue: IssueGeneralDTO, from: Sprint)
         case start(sprint: Sprint)
-        case stop(sprint: Sprint)
-        case ongoing(project: ProjectDTO)
-        case unbegun(project: ProjectDTO)
+        case stop(project: any ProjectEntity)
+        case ongoing(project: any ProjectEntity)
+        case unbegun(project: any ProjectEntity)
         
         var schema: String { "http" }
         var host: String { "127.0.0.1" }
@@ -204,7 +209,7 @@ enum Endpoints {
         
         var path: String {
             switch self {
-            case .create:
+            case .create, .update:
                 return "sprint"
             case .delete(let sprint):
                 return "sprint/\(sprint.id)"
@@ -214,8 +219,8 @@ enum Endpoints {
                 return "sprint/\(sprint.id)/issue/delete/\(issue.id)"
             case .start(let sprint):
                 return "sprint/start/\(sprint.id)"
-            case .stop(let sprint):
-                return "sprint/stop/\(sprint.id)"
+            case .stop(let project):
+                return "sprint/stop/\(project.id)"
             case .ongoing(let project):
                 return "sprint/active/\(project.id)"
             case .unbegun(let project):
@@ -227,6 +232,8 @@ enum Endpoints {
             switch self {
             case .create, .assign:
                 return .post
+            case .update:
+                return .put
             case .start, .stop:
                 return .patch
             case .ongoing, .unbegun:
@@ -240,7 +247,7 @@ enum Endpoints {
         
         var body: Data? {
             switch self {
-            case .create(let sprint):
+            case .create(let sprint), .update(let sprint):
                 return try? encoder.encode(sprint)
             default:
                 return nil
@@ -248,6 +255,7 @@ enum Endpoints {
         }
         
     }
+    
     internal enum ProjectEndpoint: Endpoint {
         case create(project: ProjectDTO)
         case update(project: ProjectDTO)
@@ -312,10 +320,11 @@ enum Endpoints {
             }
         }
     }
-    internal enum DictionaryEndpoint: Endpoint {
-        case type
-        case status
-        case priority
+    
+    internal enum CommentEndpoint: Endpoint {
+        case add(comment: Comment)
+        case update(comment: Comment)
+        case delete(comment: Comment)
         
         var schema: String { "http" }
         var host: String { "127.0.0.1" }
@@ -331,53 +340,35 @@ enum Endpoints {
         
         var path: String {
             switch self {
-            case .type:
-                return "dictionary/type"
-            case .status:
-                return "dictionary/status"
-            case .priority:
-                return "dictionary/priority"
+            case .add, .update:
+                return "comment"
+            case .delete(let comment):
+                return "comment/\(comment.id)"
             }
         }
         
-        var method: HTTPMethod { return .get }
+        var method: HTTPMethod {
+            switch self {
+            case .add:
+                return .post
+            case .update:
+                return .put
+            case .delete:
+                return .delete
+            }
+        }
         
         var queries: [String : String]? { return nil }
         
-        var body: Data? { return nil }
+        var body: Data? {
+            switch self {
+            case .add(let comment), .update(let comment):
+                return try? encoder.encode(comment)
+            default:
+                return nil
+            }
+        }
+        
+        
     }
-    
-//    internal enum CommentEndpoint: Endpoint {
-//        case add
-//        case update
-//        case delete
-//        
-//        var schema: String { "http" }
-//        var host: String { "127.0.0.1" }
-//        var port: Int { 8081 }
-//        var version: String { "/api" }
-//        
-//        var headers: [String: String] {
-//            [
-//                "Content-Type": "application/json",
-//                "Accept": "application/json",
-//            ]
-//        }
-//        
-//        var path: String {
-//            switch self {
-//            case .add, .update:
-//                return "comment"
-//            case .delete
-//            }
-//        }
-//        
-//        var method: HTTPMethod { return .get }
-//        
-//        var queries: [String : String]? { return nil }
-//        
-//        var body: Data? { return nil }
-//        
-//        
-//    }
 }

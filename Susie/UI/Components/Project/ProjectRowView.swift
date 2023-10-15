@@ -29,9 +29,3 @@ struct ProjectRowView: View {
         }
     }
 }
-
-struct ProjectRowView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProjectRowView(project: ProjectDTO(name: "Super", description: "Here we go dasdasd asdasda dasd"))
-    }
-}

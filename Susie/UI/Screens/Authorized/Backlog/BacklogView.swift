@@ -120,7 +120,7 @@ struct BacklogView: View {
         }
         .navigationTitle("Backlog")
         .fullScreenCover(item: $sprints.sprint) { sprint in
-            SprintView(sprint: sprint)
+            SprintView(sprint: sprint, project: sprints.project)
                 .onDisappear{ backlog.fetch() }
         }
         .sheet(item: $backlog.issue) { issue in

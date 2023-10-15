@@ -22,7 +22,7 @@ struct SprintView: View {
             }
             .padding()
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(sprintViewModel.name)
+            .navigationTitle(sprintViewModel.sprint.name)
             .refreshable {
                 sprintViewModel.fetch()
             }
@@ -36,15 +36,15 @@ struct SprintView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Menu(content: {
                         Button(action: {
-                            switch sprintViewModel.isAcitve {
+                            switch sprintViewModel.sprint.active {
                             case true:
                                 sprintViewModel.stop()
                             case false:
                                 sprintViewModel.start()
                             }
                         }, label: {
-                            Text(sprintViewModel.isAcitve ? "Complete" : "Start")
-                            Image(systemName: sprintViewModel.isAcitve ? "pause.fill" : "play.fill")
+                            Text(sprintViewModel.sprint.active ? "Complete" : "Start")
+                            Image(systemName: sprintViewModel.sprint.active ? "pause.fill" : "play.fill")
                         })
                         
                         NavigationLink(destination: {
@@ -80,9 +80,9 @@ struct SprintView: View {
         
     }
     
-    init(sprint: Sprint) {
+    init(sprint: Sprint, project: Project) {
         self.sprint = sprint
-        _sprintViewModel = StateObject(wrappedValue: SprintViewModel(sprint: sprint))
+        _sprintViewModel = StateObject(wrappedValue: SprintViewModel(sprint: sprint, project: project))
     }
 }
 

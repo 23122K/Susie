@@ -14,6 +14,7 @@ class SprintFromViewModel: ObservableObject {
     private var doesExist: Bool = false
     
     @Published var name: String = String()
+    @Published var goal: String = String()
     @Published var isAcitve: Bool = Bool()
     @Published var date: Date = Date()
     @Published var id: Int32 = Int32()
@@ -21,7 +22,7 @@ class SprintFromViewModel: ObservableObject {
     @Published var shouldHaveStartDate: Bool = Bool()
     
     func save() {
-        let sprint = Sprint(name: name, projectID: 1, startTime: shouldHaveStartDate ? date : nil, active: false)
+        let sprint = Sprint(name: name, projectID: sprint.id, goal: goal, startTime: shouldHaveStartDate ? date : nil, active: false)
         switch doesExist {
         case true:
             print("Sprint should be updated") //TODO: Endpoint for sprint data updating is missing
@@ -38,9 +39,10 @@ class SprintFromViewModel: ObservableObject {
             self.id = sprint.id
             self.sprint = sprint
             self.name = sprint.name
+            self.goal = sprint.goal
             self.isAcitve = sprint.active
         } else {
-            let sprint = Sprint(name: "", projectID: -1)
+            let sprint = Sprint(name: "", projectID: -1, goal: "")
             self.sprint = sprint
         }
     }

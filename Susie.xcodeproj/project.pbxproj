@@ -103,6 +103,10 @@
 		6FFF79B52ADB368400630013 /* AsyncContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79B42ADB368400630013 /* AsyncContentView.swift */; };
 		6FFF79B82ADB3F3000630013 /* AsyncDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79B72ADB3F3000630013 /* AsyncDataProvider.swift */; };
 		6FFF79BA2ADB4D8C00630013 /* SprintsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79B92ADB4D8C00630013 /* SprintsViewModel.swift */; };
+		6FFF79BC2ADB5F2B00630013 /* IssueType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79BB2ADB5F2B00630013 /* IssueType.swift */; };
+		6FFF79BE2ADB5F3200630013 /* IssuePriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79BD2ADB5F3200630013 /* IssuePriority.swift */; };
+		6FFF79C02ADB5F3B00630013 /* IssueStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79BF2ADB5F3B00630013 /* IssueStatus.swift */; };
+		6FFF79C22ADB697100630013 /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79C12ADB697100630013 /* Permission.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -212,6 +216,10 @@
 		6FFF79B42ADB368400630013 /* AsyncContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncContentView.swift; sourceTree = "<group>"; };
 		6FFF79B72ADB3F3000630013 /* AsyncDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncDataProvider.swift; sourceTree = "<group>"; };
 		6FFF79B92ADB4D8C00630013 /* SprintsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintsViewModel.swift; sourceTree = "<group>"; };
+		6FFF79BB2ADB5F2B00630013 /* IssueType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueType.swift; sourceTree = "<group>"; };
+		6FFF79BD2ADB5F3200630013 /* IssuePriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuePriority.swift; sourceTree = "<group>"; };
+		6FFF79BF2ADB5F3B00630013 /* IssueStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueStatus.swift; sourceTree = "<group>"; };
+		6FFF79C12ADB697100630013 /* Permission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,15 +242,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6F291EB52AC59484004C9A54 /* Issue form */ = {
-			isa = PBXGroup;
-			children = (
-				6F291EB62AC594B8004C9A54 /* IssueFormView.swift */,
-				6F291EB82AC594CB004C9A54 /* IssueFormViewModel.swift */,
-			);
-			path = "Issue form";
-			sourceTree = "<group>";
-		};
 		6F5F5F0529E05DAD00B9BCE6 /* Sign up */ = {
 			isa = PBXGroup;
 			children = (
@@ -354,12 +353,11 @@
 		6FD0153129DABFB1009F2A77 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6FFF79C32ADB69C400630013 /* Requests */,
 				6F8496EE2A8FAF1200A3F46A /* Backlog.swift */,
 				6F8496EC2A8FAF1200A3F46A /* Comment.swift */,
 				6F8496F12A8FAF1200A3F46A /* Issue.swift */,
 				6F8496EB2A8FAF1200A3F46A /* Project.swift */,
-				6F8496F72A8FAF1200A3F46A /* SignIn.swift */,
-				6F8496F52A8FAF1200A3F46A /* SignUp.swift */,
 				6F8496F62A8FAF1200A3F46A /* Sprint.swift */,
 				6F8496F32A8FAF1200A3F46A /* User.swift */,
 				6F895BFD2A949C110026438D /* Auth.swift */,
@@ -381,8 +379,6 @@
 			children = (
 				6FE1E0F32AAB6977009136A2 /* ProjectsViewModel.swift */,
 				6FE1E0F52AAB6980009136A2 /* ProjectsView.swift */,
-				6F291EBE2AC6A841004C9A54 /* ProjectFormView.swift */,
-				6F291EC02AC6A965004C9A54 /* ProjectFormViewModel.swift */,
 			);
 			path = Projects;
 			sourceTree = "<group>";
@@ -416,8 +412,6 @@
 			children = (
 				6FEC168F2AC86DFA006C7604 /* SprintViewModel.swift */,
 				6FEC168D2AC86BD8006C7604 /* SprintView.swift */,
-				6FEDB9AA2ACFFF5600D44B49 /* SprintFormView.swift */,
-				6FEDB9AC2AD000C900D44B49 /* SprintFormViewModel.swift */,
 			);
 			path = Sprint;
 			sourceTree = "<group>";
@@ -523,10 +517,10 @@
 		6FF149B82AA8C5AA005CDBF6 /* Authorized */ = {
 			isa = PBXGroup;
 			children = (
-				6FFF798B2AD9F9D200630013 /* Issue Details */,
 				6F5F5EEA29DC88BB00B9BCE6 /* AuthenticatedUserView.swift */,
+				6FFF79C42ADB710900630013 /* Forms */,
+				6FFF798B2AD9F9D200630013 /* Issue Details */,
 				6FEDB9A52ACFF36800D44B49 /* Sprint */,
-				6F291EB52AC59484004C9A54 /* Issue form */,
 				6FE1E0F12AAB692C009136A2 /* Projects */,
 				6FE816362A695FFC005D6817 /* Home */,
 				6FD0150B29DAAC38009F2A77 /* Boards */,
@@ -596,6 +590,9 @@
 			isa = PBXGroup;
 			children = (
 				6FFF79B02ADB34BF00630013 /* LoadingState.swift */,
+				6FFF79BB2ADB5F2B00630013 /* IssueType.swift */,
+				6FFF79BD2ADB5F3200630013 /* IssuePriority.swift */,
+				6FFF79BF2ADB5F3B00630013 /* IssueStatus.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -606,6 +603,53 @@
 				6FFF79B72ADB3F3000630013 /* AsyncDataProvider.swift */,
 			);
 			path = Protocols;
+			sourceTree = "<group>";
+		};
+		6FFF79C32ADB69C400630013 /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				6FFF79C12ADB697100630013 /* Permission.swift */,
+				6F8496F52A8FAF1200A3F46A /* SignUp.swift */,
+				6F8496F72A8FAF1200A3F46A /* SignIn.swift */,
+			);
+			path = Requests;
+			sourceTree = "<group>";
+		};
+		6FFF79C42ADB710900630013 /* Forms */ = {
+			isa = PBXGroup;
+			children = (
+				6FFF79C72ADB712800630013 /* Sprint form */,
+				6FFF79C62ADB712000630013 /* Project form */,
+				6FFF79C52ADB711700630013 /* Issue form */,
+			);
+			path = Forms;
+			sourceTree = "<group>";
+		};
+		6FFF79C52ADB711700630013 /* Issue form */ = {
+			isa = PBXGroup;
+			children = (
+				6F291EB62AC594B8004C9A54 /* IssueFormView.swift */,
+				6F291EB82AC594CB004C9A54 /* IssueFormViewModel.swift */,
+			);
+			path = "Issue form";
+			sourceTree = "<group>";
+		};
+		6FFF79C62ADB712000630013 /* Project form */ = {
+			isa = PBXGroup;
+			children = (
+				6F291EBE2AC6A841004C9A54 /* ProjectFormView.swift */,
+				6F291EC02AC6A965004C9A54 /* ProjectFormViewModel.swift */,
+			);
+			path = "Project form";
+			sourceTree = "<group>";
+		};
+		6FFF79C72ADB712800630013 /* Sprint form */ = {
+			isa = PBXGroup;
+			children = (
+				6FEDB9AA2ACFFF5600D44B49 /* SprintFormView.swift */,
+				6FEDB9AC2AD000C900D44B49 /* SprintFormViewModel.swift */,
+			);
+			path = "Sprint form";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -735,6 +779,7 @@
 				6F5F5F0D29E07A8100B9BCE6 /* PasswordField.swift in Sources */,
 				6FD008C42A02C0D800D3B760 /* DashboardView.swift in Sources */,
 				6FD0151629DAACFA009F2A77 /* PriotiryIndicatorView.swift in Sources */,
+				6FFF79BC2ADB5F2B00630013 /* IssueType.swift in Sources */,
 				6F5F5EF629DD82AB00B9BCE6 /* CustomDivider.swift in Sources */,
 				6F5F9D892A138A6300F51B8E /* SignUpFinalisationView.swift in Sources */,
 				6FE1E0F62AAB6980009136A2 /* ProjectsView.swift in Sources */,
@@ -761,6 +806,7 @@
 				6F8497052A8FAF1200A3F46A /* SignIn.swift in Sources */,
 				6FE1E0EE2AAB5633009136A2 /* Container.swift in Sources */,
 				6F5F5EE929DC472100B9BCE6 /* NetworkManager.swift in Sources */,
+				6FFF79BE2ADB5F3200630013 /* IssuePriority.swift in Sources */,
 				6FAF71502AD723F900ECCB30 /* IssueDetailedView.swift in Sources */,
 				6F895C202A9501770026438D /* Auth+Extension.swift in Sources */,
 				6F291EC32AC6BE34004C9A54 /* ScreenHeader.swift in Sources */,
@@ -805,6 +851,8 @@
 				6FF149C82AA8E220005CDBF6 /* ButtonStyles.swift in Sources */,
 				6F8496FC2A8FAF1200A3F46A /* Backlog.swift in Sources */,
 				6FE816382A69603B005D6817 /* HomeView.swift in Sources */,
+				6FFF79C22ADB697100630013 /* Permission.swift in Sources */,
+				6FFF79C02ADB5F3B00630013 /* IssueStatus.swift in Sources */,
 				6F291EBF2AC6A841004C9A54 /* ProjectFormView.swift in Sources */,
 				6F908B102A9791D10012463A /* Endpoint+Extension.swift in Sources */,
 				6F8496FA2A8FAF1200A3F46A /* Comment.swift in Sources */,

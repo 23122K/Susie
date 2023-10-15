@@ -14,6 +14,7 @@ struct SprintFormView: View {
     
     private enum FocusedField: Hashable {
         case name
+        case goal
     }
     
     var body: some View {
@@ -21,7 +22,13 @@ struct SprintFormView: View {
             TextField("Sprint name", text: $sprint.name)
                 .padding(.horizontal)
                 .focused($focusedField, equals: .name)
+                .onSubmit { focusedField = .goal}
                 .textFieldStyle(.susiePrimaryTextField)
+            
+            TextField("Goal", text: $sprint.goal)
+                .padding(.horizontal)
+                .focused($focusedField, equals: .goal)
+                .textFieldStyle(.susieSecondaryTextField)
             
             Toggle("Start date", isOn: $sprint.shouldHaveStartDate)
                 .padding(.horizontal)

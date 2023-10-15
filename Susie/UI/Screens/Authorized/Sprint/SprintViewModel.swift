@@ -11,7 +11,8 @@ import Factory
 @MainActor
 class SprintViewModel: ObservableObject {
     private var client: Client
-    private var sprint: Sprint
+    private var project: Project
+    private(set) var sprint: Sprint
     
     @Published var issues: Array<IssueGeneralDTO> = []
     @Published var issue: IssueGeneralDTO?
@@ -25,29 +26,16 @@ class SprintViewModel: ObservableObject {
     }
     
     func stop() {
-        Task { try await client.stop(sprint: sprint) }
+        Task { try await client.stop(project: project) }
     }
     
     func delete() {
         Task { try await client.delete(sprint: sprint) }
     }
     
-    @Published var name: String = String()
-    @Published var isAcitve: Bool = Bool()
-    @Published var date: Date = Date()
-    @Published var id: Int32 = Int32()
-    
-    init(sprint: Sprint?, container: Container = Container.shared) {
+    init(sprint: Sprint, project: Project, container: Container = Container.shared) {
         self.client = container.client()
-        
-        if let sprint {
-            self.id = sprint.id
-            self.sprint = sprint
-            self.name = sprint.name
-            self.isAcitve = sprint.active
-        } else {
-            let sprint = Sprint(name: "", projectID: -1)
-            self.sprint = sprint
-        }
+        self.sprint = sprint
+        self.project = project
     }
 }

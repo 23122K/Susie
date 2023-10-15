@@ -14,6 +14,7 @@ struct ProjectFormView: View {
     private enum FocusedField: Hashable {
         case name
         case description
+        case goal
     }
     
     var body: some View {
@@ -23,12 +24,20 @@ struct ProjectFormView: View {
                 .focused($focusedField, equals: .name)
                 .onSubmit { focusedField = .description }
             
-            TextField("Decription", text: $vm.description, axis: .vertical)
+            TextField("Description", text: $vm.description, axis: .vertical)
                 .lineLimit(4...)
                 .textFieldStyle(.susieSecondaryTextField)
                 .focused($focusedField, equals: .description)
-                .onSubmit{ vm.save() }
+                .onSubmit{ focusedField = .goal }
                 .padding(.bottom)
+            
+            //TODO: Remove constant
+//            TextField("Goal", text: $vm.goal ?? .constant("Change it"), axis: .vertical)
+//                .lineLimit(2...)
+//                .textFieldStyle(.susieSecondaryTextField)
+//                .focused($focusedField, equals: .goal)
+//                .onSubmit{ vm.save() }
+//                .padding(.bottom)
             
             Button("Save") {
                 vm.save()
