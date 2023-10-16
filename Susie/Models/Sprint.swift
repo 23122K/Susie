@@ -6,13 +6,13 @@
 //
 import Foundation
 
-struct Sprint: Identifiable, Codable {
-    let id: Int32
-    let name: String
-    let goal: String
-    let startTime: Date?
-    let projectID: Int32
-    let active: Bool
+class Sprint: Identifiable, Codable {
+    var id: Int32
+    var name: String
+    var goal: String
+    var startTime: Date?
+    var projectID: Int32
+    var active: Bool
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -23,7 +23,7 @@ struct Sprint: Identifiable, Codable {
         case active
     }
     
-    init(name: String, projectID: Int32, goal: String, startTime: Date? = nil, active: Bool = false) {
+    init(name: String, projectID: Int32 = -1, goal: String, startTime: Date? = nil, active: Bool = false) {
         self.id = -1
         self.name = name
         self.goal = goal
@@ -32,7 +32,7 @@ struct Sprint: Identifiable, Codable {
         self.active = active
     }
     
-    init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int32.self, forKey: .id)
         self.name = try container.decode(String.self, forKey: .name)
@@ -44,5 +44,11 @@ struct Sprint: Identifiable, Codable {
         self.startTime = try? container.decode(Date.self, forKey: .startTime)
         self.projectID = try container.decode(Int32.self, forKey: .projectID)
         self.active = try container.decode(Bool.self, forKey: .active)
+    }
+}
+
+extension Sprint {
+    var hasStartDate: Bool {
+        self.startTime == nil ? false : true
     }
 }

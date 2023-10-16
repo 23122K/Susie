@@ -13,13 +13,13 @@ protocol ProjectEntity {
 
 //TODO: Change goal: String? to goal: String after its fixed
 
-struct Project: ProjectEntity, Identifiable, Codable {
+class Project: ProjectEntity, Identifiable, Codable {
     var id: Int32
-    let name: String
-    let description: String
-    let goal: String?
-    let members: Array<User>
-    let owner: User
+    var name: String
+    var description: String
+    var goal: String?
+    var members: Array<User>
+    var owner: User
     
     enum CodingKeys: String, CodingKey {
         case id = "projectID"
@@ -37,11 +37,11 @@ extension Project {
     }
 }
 
-struct ProjectDTO: ProjectEntity, Identifiable, Codable, Hashable {
+class ProjectDTO: ProjectEntity, Identifiable, Codable {
     var id: Int32
-    let name: String
-    let description: String
-    let goal: String?
+    var name: String
+    var description: String
+    var goal: String?
     
     private enum CodingKeys: String, CodingKey {
         case id = "projectID"

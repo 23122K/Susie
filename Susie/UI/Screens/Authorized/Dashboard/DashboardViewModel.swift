@@ -13,9 +13,9 @@ class DashboardViewModel: ObservableObject {
     private(set) var user: User?
     
     private var client: Client
-    private var project: Project
+    private var project: ProjectDTO
     
-    init(project: Project, container: Container = Container.shared) {
+    init(project: ProjectDTO, container: Container = Container.shared) {
         self.client = container.client()
         self.user = client.user
         self.project = project

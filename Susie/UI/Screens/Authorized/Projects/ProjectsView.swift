@@ -6,51 +6,70 @@
 //
 
 import SwiftUI
+import SwipeActions
 
 struct ProjectsView: View {
-    @StateObject private var vm = ProjectsViewModel()
+    @StateObject private var projectsViewModel = ProjectsViewModel()
     @State private var isShown = false
     
     var body: some View {
         NavigationStack {
             HStack(alignment: .lastTextBaseline) {
-                ScreenHeader(user: vm.user, screenTitle: "Projects", action: {
+                ScreenHeader(user: projectsViewModel.user, screenTitle: "Projects", action: {
                     isShown.toggle()
                 }, content: {
                     NavigationLink(destination: {
                         ProjectFormView()
-                            .onAppear{
-                                print("Appeared")
-                            }
-                            .onDisappear {
-                                print("Should fetch")
-                                vm.fetch()
-                            }
+                            .onDisappear { projectsViewModel.fetch() }
                     }, label: {
                         Image(systemName: "plus")
                             .scaleEffect(1.1)
                     })
                 })
             }
-            .padding()
+            
             
             ScrollView {
-                ForEach(vm.projects) { project in
-                    ProjectRowView(project: project)
-                        .onTapGesture {
-                            vm.details(of: project)
-                        }
+                AsyncContentViewV2(state: $projectsViewModel.state, { projects in
+                    ForEach(projects) { project in
+                        SwipeView(label: {
+                            ProjectRowView(project: project)
+                        }, leadingActions: { _ in
+                            SwipeAction(action: {
+                                projectsViewModel.delete(project: project)
+                            }, label: { _ in
+                                HStack {
+                                    Text("Delete")
+                                        .fontWeight(.semibold)
+                                    Image(systemName: "trash.fill")
+                                }
+                                .foregroundColor(Color.susieWhitePrimary)
+                            }, background: { _ in
+                                Color.red.opacity(0.95)
+                            })
+                            .allowSwipeToTrigger()
+                            
+                        })
+                        .swipeSpacing(10)
+                        .swipeMinimumDistance(10)
+                        .swipeActionsStyle(.cascade)
+                        .swipeActionsMaskCornerRadius(9)
+                        .swipeActionCornerRadius(9)
                         .padding(.horizontal)
+                        .onTapGesture { projectsViewModel.project = project }
                 }
+                }, placeholder: ProjectPlaceholderView(), onAppear: {
+                    projectsViewModel.fetch()
+                })
             }
             .refreshable {
-                vm.fetch()
+                projectsViewModel.fetch()
             }
         }
         .sideMenu(isPresented: $isShown, menuContent: {
             VStack(alignment: .leading) {
                 HStack {
-                    Text(vm.user?.fullName ?? "User full name")
+                    Text(projectsViewModel.user?.fullName ?? "User full name")
                 }
                 
                 Text("Settings")
@@ -59,10 +78,7 @@ struct ProjectsView: View {
             .padding()
             .frame(maxWidth: .infinity, alignment: .leading)
         })
-        .onAppear {
-            vm.fetch()
-        }
-        .fullScreenCover(item: $vm.project) { project in
+        .fullScreenCover(item: $projectsViewModel.project) { project in
             AuthenticatedUserView(project: project)
         }
     }

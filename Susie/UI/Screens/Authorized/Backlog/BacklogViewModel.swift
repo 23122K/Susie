@@ -9,40 +9,75 @@ import SwiftUI
 import Factory
 
 @MainActor
-class BacklogViewModel: ObservableObject, AsyncDataProvider {
+class BacklogViewModel: ObservableObject {
     private var client: Client
-    private(set) var project: Project
+    private(set) var project: ProjectDTO
     private(set) var user: User?
     
+    @Published var sprint: Sprint?
     @Published var issue: IssueGeneralDTO?
     @Published var draggedIssue: IssueGeneralDTO?
     
-    @Published var state: LoadingState<[IssueGeneralDTO]> = .idle
+    @Published var sprints: LoadingState<[Sprint]> = .idle
+    @Published var issues: LoadingState<[IssueGeneralDTO]> = .idle
     
     func fetch() {
-        state = .idle
+        issues = .idle
+        sprints = .idle
         
         Task(priority: .high) {
             do {
-                state = .loading
-                let issues = try await client.issues(backlog: project.toDTO())
-                state = .loaded(issues)
+                issues = .loading
+                try await Task.sleep(nanoseconds: 500_000_000)
+                let issues = try await client.issues(backlog: project)
+                self.issues = .loaded(issues)
             } catch {
-                state = .failed(error)
+                issues = .failed(error)
+            }
+        }
+        
+        Task(priority: .high) {
+            do {
+                sprints = .loading
+                try await Task.sleep(nanoseconds: 500_000_000)
+                let sprints = try await client.sprints(project: project)
+                self.sprints = .loaded(sprints)
+            } catch {
+                sprints = .failed(error)
             }
         }
     }
     
+    func assign(to sprint: Sprint) -> Bool {
+        defer { draggedIssue = nil }
+        
+        guard let issue = draggedIssue else {
+            return false
+        }
+        
+        Task {
+            try await client.assign(issue: issue, to: sprint)
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.fetch()
+        }
+        
+        return true
+    }
+    
     func delete(issue: IssueGeneralDTO) {
-        print("Deleted")
         Task { try await client.delete(issue: issue) }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
+            fetch()
+        }
     }
     
     func edit(issue: IssueGeneralDTO) {
         print("Edited")
     }
     
-    init(project: Project, container: Container = Container.shared) {
+    init(project: ProjectDTO, container: Container = Container.shared) {
         self.client = container.client()
         self.user = client.user
         self.project = project

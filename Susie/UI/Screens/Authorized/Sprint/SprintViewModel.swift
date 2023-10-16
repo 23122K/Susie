@@ -9,31 +9,48 @@ import Foundation
 import Factory
 
 @MainActor
-class SprintViewModel: ObservableObject {
+class SprintViewModel: ObservableObject, AsyncDataProvider {
     private var client: Client
-    private var project: Project
+    private(set) var project: ProjectDTO
     private(set) var sprint: Sprint
     
-    @Published var issues: Array<IssueGeneralDTO> = []
     @Published var issue: IssueGeneralDTO?
+    @Published var state: LoadingState<[IssueGeneralDTO]> = .idle
     
     func fetch() {
-        Task { issues = try await client.issues(sprint: sprint) }
+        state = .idle
+        Task {
+            do {
+                state = .loading
+                let issues = try await client.issues(sprint: sprint)
+                state = .loaded(issues)
+            } catch {
+                state = .failed(error)
+            }
+        }
     }
     
     func start() {
-        Task { try await client.start(sprint: sprint) }
-    }
-    
-    func stop() {
-        Task { try await client.stop(project: project) }
+        Task {
+            do {
+                try await client.start(sprint: sprint)
+            } catch {
+                state = .failed(error)
+            }
+        }
     }
     
     func delete() {
-        Task { try await client.delete(sprint: sprint) }
+        Task {
+            do {
+                try await client.delete(sprint: sprint) 
+            } catch {
+                state = .failed(error)
+            }
+        }
     }
     
-    init(sprint: Sprint, project: Project, container: Container = Container.shared) {
+    init(sprint: Sprint, project: ProjectDTO, container: Container = Container.shared) {
         self.client = container.client()
         self.sprint = sprint
         self.project = project

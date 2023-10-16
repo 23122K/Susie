@@ -11,12 +11,13 @@ struct TagView: View {
     private let image: Image?
     private let text: String
     private var color: Color
+    private var enlarged: Bool
 
     var body: some View {
         HStack{
             if let image {
                 image
-                    .font(.caption)
+                    .font(enlarged ? .headline : .caption)
                     .fontWeight(.semibold)
                     .foregroundColor(.white)
             }
@@ -25,7 +26,7 @@ struct TagView: View {
                 .brightness(0.1)
                 .foregroundColor(.white)
                 .fontWeight(.bold)
-                .font(.caption)
+                .font(enlarged ? .headline : .caption)
         }
         .padding(.horizontal, 7)
         .padding(.vertical, 7)
@@ -36,8 +37,9 @@ struct TagView: View {
         }
     }
     
-    init(image: Image? = nil, text: String, color: Color) {
+    init(image: Image? = nil, text: String, color: Color, enlarged: Bool = false) {
         self.image = image
+        self.enlarged = enlarged
         self.text = text
         self.color = color
     }

@@ -102,11 +102,19 @@
 		6FFF79B12ADB34BF00630013 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79B02ADB34BF00630013 /* LoadingState.swift */; };
 		6FFF79B52ADB368400630013 /* AsyncContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79B42ADB368400630013 /* AsyncContentView.swift */; };
 		6FFF79B82ADB3F3000630013 /* AsyncDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79B72ADB3F3000630013 /* AsyncDataProvider.swift */; };
-		6FFF79BA2ADB4D8C00630013 /* SprintsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79B92ADB4D8C00630013 /* SprintsViewModel.swift */; };
 		6FFF79BC2ADB5F2B00630013 /* IssueType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79BB2ADB5F2B00630013 /* IssueType.swift */; };
 		6FFF79BE2ADB5F3200630013 /* IssuePriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79BD2ADB5F3200630013 /* IssuePriority.swift */; };
 		6FFF79C02ADB5F3B00630013 /* IssueStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79BF2ADB5F3B00630013 /* IssueStatus.swift */; };
 		6FFF79C22ADB697100630013 /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79C12ADB697100630013 /* Permission.swift */; };
+		6FFF79C92ADD293100630013 /* AsyncContentViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79C82ADD293100630013 /* AsyncContentViewV2.swift */; };
+		6FFF79CC2ADD398400630013 /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 6FFF79CB2ADD398400630013 /* Shimmer */; };
+		6FFF79CE2ADD3DDB00630013 /* ProjectPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79CD2ADD3DDB00630013 /* ProjectPlaceholderView.swift */; };
+		6FFF79D02ADD4BF300630013 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79CF2ADD4BF300630013 /* String+Extension.swift */; };
+		6FFF79D22ADD4C3C00630013 /* ProjectRowPlaceolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79D12ADD4C3C00630013 /* ProjectRowPlaceolderView.swift */; };
+		6FFF79D42ADD519D00630013 /* SprintRowPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79D32ADD519D00630013 /* SprintRowPlaceholderView.swift */; };
+		6FFF79D62ADD52F200630013 /* IssueRowPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79D52ADD52F200630013 /* IssueRowPlaceholderView.swift */; };
+		6FFF79D82ADD557800630013 /* IssuePlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79D72ADD557800630013 /* IssuePlaceholderView.swift */; };
+		6FFF79DB2ADD5AF300630013 /* BoardPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79DA2ADD5AF300630013 /* BoardPlaceholderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -215,11 +223,18 @@
 		6FFF79B02ADB34BF00630013 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		6FFF79B42ADB368400630013 /* AsyncContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncContentView.swift; sourceTree = "<group>"; };
 		6FFF79B72ADB3F3000630013 /* AsyncDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncDataProvider.swift; sourceTree = "<group>"; };
-		6FFF79B92ADB4D8C00630013 /* SprintsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintsViewModel.swift; sourceTree = "<group>"; };
 		6FFF79BB2ADB5F2B00630013 /* IssueType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueType.swift; sourceTree = "<group>"; };
 		6FFF79BD2ADB5F3200630013 /* IssuePriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuePriority.swift; sourceTree = "<group>"; };
 		6FFF79BF2ADB5F3B00630013 /* IssueStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueStatus.swift; sourceTree = "<group>"; };
 		6FFF79C12ADB697100630013 /* Permission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
+		6FFF79C82ADD293100630013 /* AsyncContentViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncContentViewV2.swift; sourceTree = "<group>"; };
+		6FFF79CD2ADD3DDB00630013 /* ProjectPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPlaceholderView.swift; sourceTree = "<group>"; };
+		6FFF79CF2ADD4BF300630013 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		6FFF79D12ADD4C3C00630013 /* ProjectRowPlaceolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRowPlaceolderView.swift; sourceTree = "<group>"; };
+		6FFF79D32ADD519D00630013 /* SprintRowPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprintRowPlaceholderView.swift; sourceTree = "<group>"; };
+		6FFF79D52ADD52F200630013 /* IssueRowPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueRowPlaceholderView.swift; sourceTree = "<group>"; };
+		6FFF79D72ADD557800630013 /* IssuePlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuePlaceholderView.swift; sourceTree = "<group>"; };
+		6FFF79DA2ADD5AF300630013 /* BoardPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardPlaceholderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,6 +249,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FFF79CC2ADD398400630013 /* Shimmer in Frameworks */,
 				6FE1E0EC2AAB5505009136A2 /* Factory in Frameworks */,
 				6FEDB9B22AD06D7900D44B49 /* SwipeActions in Frameworks */,
 			);
@@ -336,7 +352,6 @@
 				6F63307C2A71A60600719862 /* SprintDropDelegate.swift */,
 				6FD0153629DAED26009F2A77 /* BacklogView.swift */,
 				6F291EBC2AC6A09F004C9A54 /* BacklogViewModel.swift */,
-				6FFF79B92ADB4D8C00630013 /* SprintsViewModel.swift */,
 			);
 			path = Backlog;
 			sourceTree = "<group>";
@@ -394,6 +409,7 @@
 				6F434EF02A9B814100D13BB6 /* NSCache+Subscript.swift */,
 				6FF149C12AA8CB07005CDBF6 /* Colors+Extension.swift */,
 				6FEDB9AE2AD0225700D44B49 /* Date+Extension.swift */,
+				6FFF79CF2ADD4BF300630013 /* String+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -430,6 +446,7 @@
 				6F0EFE482ACEC2F400578330 /* Carousel.swift */,
 				6FFF79902ADAA1ED00630013 /* ToggableSection.swift */,
 				6FFF79B42ADB368400630013 /* AsyncContentView.swift */,
+				6FFF79C82ADD293100630013 /* AsyncContentViewV2.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -438,6 +455,8 @@
 			isa = PBXGroup;
 			children = (
 				6FE1E0F72AAB69AA009136A2 /* ProjectRowView.swift */,
+				6FFF79D12ADD4C3C00630013 /* ProjectRowPlaceolderView.swift */,
+				6FFF79CD2ADD3DDB00630013 /* ProjectPlaceholderView.swift */,
 			);
 			path = Project;
 			sourceTree = "<group>";
@@ -447,6 +466,7 @@
 			children = (
 				6F0EFE232ACB331D00578330 /* SprintRowView.swift */,
 				6F3667D22AD6E4D900FE17F3 /* CreateSprintView.swift */,
+				6FFF79D32ADD519D00630013 /* SprintRowPlaceholderView.swift */,
 			);
 			path = Sprint;
 			sourceTree = "<group>";
@@ -458,6 +478,8 @@
 				6FD0151529DAACFA009F2A77 /* PriotiryIndicatorView.swift */,
 				6FD0150D29DAAC8E009F2A77 /* IssueRowView.swift */,
 				6FAF714F2AD723F900ECCB30 /* IssueDetailedView.swift */,
+				6FFF79D52ADD52F200630013 /* IssueRowPlaceholderView.swift */,
+				6FFF79D72ADD557800630013 /* IssuePlaceholderView.swift */,
 			);
 			path = Issue;
 			sourceTree = "<group>";
@@ -505,6 +527,7 @@
 		6FF149B72AA8C53A005CDBF6 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				6FFF79D92ADD5AE900630013 /* Board */,
 				6FEDB9BC2AD1C5BA00D44B49 /* Issue */,
 				6FEDB9BB2AD1C5B200D44B49 /* Sprint */,
 				6FEDB9B92AD1C5AC00D44B49 /* Project */,
@@ -652,6 +675,14 @@
 			path = "Sprint form";
 			sourceTree = "<group>";
 		};
+		6FFF79D92ADD5AE900630013 /* Board */ = {
+			isa = PBXGroup;
+			children = (
+				6FFF79DA2ADD5AF300630013 /* BoardPlaceholderView.swift */,
+			);
+			path = Board;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -689,6 +720,7 @@
 			packageProductDependencies = (
 				6FE1E0EB2AAB5505009136A2 /* Factory */,
 				6FEDB9B12AD06D7900D44B49 /* SwipeActions */,
+				6FFF79CB2ADD398400630013 /* Shimmer */,
 			);
 			productName = Suzie;
 			productReference = 6FD014F129DAA6DC009F2A77 /* Susie.app */;
@@ -725,6 +757,7 @@
 			packageReferences = (
 				6FE1E0EA2AAB5505009136A2 /* XCRemoteSwiftPackageReference "Factory" */,
 				6FEDB9B02AD06D7900D44B49 /* XCRemoteSwiftPackageReference "SwipeActions" */,
+				6FFF79CA2ADD398400630013 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */,
 			);
 			productRefGroup = 6FD014F229DAA6DC009F2A77 /* Products */;
 			projectDirPath = "";
@@ -780,6 +813,7 @@
 				6FD008C42A02C0D800D3B760 /* DashboardView.swift in Sources */,
 				6FD0151629DAACFA009F2A77 /* PriotiryIndicatorView.swift in Sources */,
 				6FFF79BC2ADB5F2B00630013 /* IssueType.swift in Sources */,
+				6FFF79DB2ADD5AF300630013 /* BoardPlaceholderView.swift in Sources */,
 				6F5F5EF629DD82AB00B9BCE6 /* CustomDivider.swift in Sources */,
 				6F5F9D892A138A6300F51B8E /* SignUpFinalisationView.swift in Sources */,
 				6FE1E0F62AAB6980009136A2 /* ProjectsView.swift in Sources */,
@@ -788,7 +822,9 @@
 				6F291EB72AC594B8004C9A54 /* IssueFormView.swift in Sources */,
 				6FFF79912ADAA1ED00630013 /* ToggableSection.swift in Sources */,
 				6FEC16902AC86DFA006C7604 /* SprintViewModel.swift in Sources */,
+				6FFF79D62ADD52F200630013 /* IssueRowPlaceholderView.swift in Sources */,
 				6F8496F92A8FAF1200A3F46A /* Project.swift in Sources */,
+				6FFF79D22ADD4C3C00630013 /* ProjectRowPlaceolderView.swift in Sources */,
 				6FD0152E29DAB67F009F2A77 /* TextButton.swift in Sources */,
 				6FE517A22A9A435A001A5EDF /* URL+Extension.swift in Sources */,
 				6F895BFE2A949C110026438D /* Auth.swift in Sources */,
@@ -800,16 +836,19 @@
 				6FE1E0F42AAB6977009136A2 /* ProjectsViewModel.swift in Sources */,
 				6F59AEE22AAC8C570020977E /* Client.swift in Sources */,
 				6FEDB9AB2ACFFF5600D44B49 /* SprintFormView.swift in Sources */,
+				6FFF79CE2ADD3DDB00630013 /* ProjectPlaceholderView.swift in Sources */,
 				6FD008BA2A02705C00D3B760 /* FormTitleView.swift in Sources */,
 				6FEDB9AD2AD000C900D44B49 /* SprintFormViewModel.swift in Sources */,
 				6F8497032A8FAF1200A3F46A /* SignUp.swift in Sources */,
 				6F8497052A8FAF1200A3F46A /* SignIn.swift in Sources */,
+				6FFF79D82ADD557800630013 /* IssuePlaceholderView.swift in Sources */,
 				6FE1E0EE2AAB5633009136A2 /* Container.swift in Sources */,
 				6F5F5EE929DC472100B9BCE6 /* NetworkManager.swift in Sources */,
 				6FFF79BE2ADB5F3200630013 /* IssuePriority.swift in Sources */,
 				6FAF71502AD723F900ECCB30 /* IssueDetailedView.swift in Sources */,
 				6F895C202A9501770026438D /* Auth+Extension.swift in Sources */,
 				6F291EC32AC6BE34004C9A54 /* ScreenHeader.swift in Sources */,
+				6FFF79D42ADD519D00630013 /* SprintRowPlaceholderView.swift in Sources */,
 				6FE5179A2A9A111A001A5EDF /* NetworkMonitor.swift in Sources */,
 				6FF702332AC559EF002A03B5 /* BoardsViewModel.swift in Sources */,
 				6FFF79B82ADB3F3000630013 /* AsyncDataProvider.swift in Sources */,
@@ -842,10 +881,11 @@
 				6FD0151F29DAB0B7009F2A77 /* WelcomePageView.swift in Sources */,
 				6F8497012A8FAF1200A3F46A /* User.swift in Sources */,
 				6F8496FF2A8FAF1200A3F46A /* Issue.swift in Sources */,
+				6FFF79C92ADD293100630013 /* AsyncContentViewV2.swift in Sources */,
 				6F291EB92AC594CB004C9A54 /* IssueFormViewModel.swift in Sources */,
 				6FD014F529DAA6DC009F2A77 /* Root.swift in Sources */,
+				6FFF79D02ADD4BF300630013 /* String+Extension.swift in Sources */,
 				6F291EBB2AC5A3F9004C9A54 /* BoardViewModel.swift in Sources */,
-				6FFF79BA2ADB4D8C00630013 /* SprintsViewModel.swift in Sources */,
 				6FD0151A29DAAE48009F2A77 /* BoardsView.swift in Sources */,
 				6F3667D32AD6E4D900FE17F3 /* CreateSprintView.swift in Sources */,
 				6FF149C82AA8E220005CDBF6 /* ButtonStyles.swift in Sources */,
@@ -1150,6 +1190,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		6FFF79CA2ADD398400630013 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/markiv/SwiftUI-Shimmer.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1162,6 +1210,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6FEDB9B02AD06D7900D44B49 /* XCRemoteSwiftPackageReference "SwipeActions" */;
 			productName = SwipeActions;
+		};
+		6FFF79CB2ADD398400630013 /* Shimmer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6FFF79CA2ADD398400630013 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */;
+			productName = Shimmer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

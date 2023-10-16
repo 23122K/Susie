@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct ProjectFormView: View {
-    @StateObject private var vm: ProjectViewModel
+    @Environment (\.dismiss) var dismiss
+    @StateObject private var projectViewModel: ProjectViewModel
     @FocusState private var focusedField: FocusedField?
     
     private enum FocusedField: Hashable {
@@ -19,12 +20,12 @@ struct ProjectFormView: View {
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            TextField("Project name", text: $vm.name)
+            TextField("Project name", text: $projectViewModel.project.name)
                 .textFieldStyle(.susiePrimaryTextField)
                 .focused($focusedField, equals: .name)
                 .onSubmit { focusedField = .description }
             
-            TextField("Description", text: $vm.description, axis: .vertical)
+            TextField("Description", text: $projectViewModel.project.description, axis: .vertical)
                 .lineLimit(4...)
                 .textFieldStyle(.susieSecondaryTextField)
                 .focused($focusedField, equals: .description)
@@ -38,19 +39,20 @@ struct ProjectFormView: View {
 //                .focused($focusedField, equals: .goal)
 //                .onSubmit{ vm.save() }
 //                .padding(.bottom)
-            
+        }
+        .toolbar {
             Button("Save") {
-                vm.save()
+                projectViewModel.save()
+                dismiss()
             }
-            .buttonStyle(.secondary)
         }
         .padding()
-        .navigationTitle(vm.name.isEmpty ? "New project" : vm.name)
+        .navigationTitle(projectViewModel.project.name.isEmpty ? "New project" : projectViewModel.project.name)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear{ focusedField = .name }
     }
     
     init(project: ProjectDTO? = nil) {
-        _vm = StateObject(wrappedValue: ProjectViewModel(project: project))
+        _projectViewModel = StateObject(wrappedValue: ProjectViewModel(project: project))
     }
 }

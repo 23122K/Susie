@@ -26,6 +26,8 @@ struct IssueTypeView: View {
                 }
         }
     }
+    
+    
 }
 
 struct IssueType_View: PreviewProvider {

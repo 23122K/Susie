@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct AsyncContentView<Source: AsyncDataProvider, Content: View>: View {
-    
-    @ObservedObject var source: Source
+    @ObservedObject private var source: Source
     var content: (Source.Output) -> Content
     
     var body: some View {
@@ -17,9 +16,9 @@ struct AsyncContentView<Source: AsyncDataProvider, Content: View>: View {
         case .idle:
             Color.clear.onAppear{ source.fetch() }
         case .loading:
-            Color.susieBluePriamry
+            Color.clear
         case .failed(let error):
-            Color.red
+            Text(error.localizedDescription)
         case .loaded(let output):
             content(output)
         }

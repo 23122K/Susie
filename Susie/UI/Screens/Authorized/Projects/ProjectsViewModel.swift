@@ -9,27 +9,34 @@ import SwiftUI
 import Factory
 
 @MainActor
-class ProjectsViewModel: ObservableObject {
+class ProjectsViewModel: ObservableObject, AsyncDataProvider {
     private var client: Client
     
-    @Published var projects: Array<ProjectDTO> = .init()
-    @Published var project: Project?
+    @Published var project: ProjectDTO?
     @Published var user: User?
     
-    @Published var name: String = .init()
-    @Published var description: String = .init()
+    @Published var state: LoadingState<[ProjectDTO]> = .idle
     
     func fetch() {
-        Task { self.projects = try await client.projects() }
-    }
-    
-    func details(of project: ProjectDTO) {
-        Task { self.project = try await client.details(project: project) }
+        state = .idle
+        
+        Task {
+            do {
+                state = .loading
+                try await Task.sleep(nanoseconds: 300_000_000)
+                let projects = try await client.projects()
+                state = .loaded(projects)
+            } catch {
+                state = .failed(error)
+            }
+        }
     }
     
     func delete(project: ProjectDTO) {
-        Task { try await client.delete(project: project) }
-        projects.removeAll(where: { $0.id == project.id })
+        Task { 
+            try await client.delete(project: project)
+            self.fetch()
+        }
     }
     
     func info() {

@@ -32,7 +32,7 @@ struct ToggableSection<Content: View> : View {
                 angle = isToggled ? 90: 0
             }
         
-            if isToggled { content().padding(.top) }
+            if isToggled { content() }
             
         }
         .padding()

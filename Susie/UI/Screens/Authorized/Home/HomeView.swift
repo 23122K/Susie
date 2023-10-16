@@ -13,7 +13,7 @@ struct HomeView: View {
     @State private var isPresented: Bool = false
     
     var body: some View {
-        VStack(alignment: .leading) {
+        NavigationStack {
            ScreenHeader(user: home.user, screenTitle: "Home", action: {
                isPresented.toggle()
            }, content: {
@@ -25,14 +25,15 @@ struct HomeView: View {
                        .scaleEffect(1.1)
                })
            })
-           .padding(.top)
-           .padding(.horizontal)
             
             Spacer()
         }
+        .sideMenu(isPresented: $isPresented) {
+
+        }
     }
     
-    init(project: Project) {
+    init(project: ProjectDTO) {
         _home = StateObject(wrappedValue: HomeViewModel(project: project))
     }
 }

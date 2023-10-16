@@ -220,7 +220,7 @@ enum Endpoints {
             case .start(let sprint):
                 return "sprint/start/\(sprint.id)"
             case .stop(let project):
-                return "sprint/stop/\(project.id)"
+                return "sprint/project/\(project.id)/stop"
             case .ongoing(let project):
                 return "sprint/active/\(project.id)"
             case .unbegun(let project):

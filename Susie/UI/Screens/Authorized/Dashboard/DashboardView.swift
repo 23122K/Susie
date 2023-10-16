@@ -18,14 +18,12 @@ struct DashboardView: View {
                        .scaleEffect(1.1)
                })
            })
-           .padding(.top)
-           .padding(.horizontal)
             
             Spacer()
         }
     }
     
-    init(project: Project) {
+    init(project: ProjectDTO) {
         _dashboard = StateObject(wrappedValue: DashboardViewModel(project: project))
     }
 }

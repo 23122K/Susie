@@ -10,40 +10,34 @@ import Factory
 
 class SprintFromViewModel: ObservableObject {
     private var client: Client
-    private var sprint: Sprint
-    private var doesExist: Bool = false
+    private(set) var doesExist: Bool = false
     
-    @Published var name: String = String()
-    @Published var goal: String = String()
-    @Published var isAcitve: Bool = Bool()
-    @Published var date: Date = Date()
-    @Published var id: Int32 = Int32()
-    
-    @Published var shouldHaveStartDate: Bool = Bool()
+    @Published var sprint: Sprint
+    @Published var shouldHaveStartDate: Bool = false
+    @Published var startDate: Date = Date()
     
     func save() {
-        let sprint = Sprint(name: name, projectID: sprint.id, goal: goal, startTime: shouldHaveStartDate ? date : nil, active: false)
+        shouldHaveStartDate ? (sprint.startTime = startDate) : (sprint.startTime = nil)
+        
         switch doesExist {
         case true:
-            print("Sprint should be updated") //TODO: Endpoint for sprint data updating is missing
+            Task { try await client.update(sprint: sprint) }
         case false:
-            Task { try await client.create(sprint: sprint)}
+            Task { try await client.create(sprint: sprint) }
         }
     }
     
-    init(sprint: Sprint?, container: Container = Container.shared) {
+    init(sprint: Sprint?, project: ProjectDTO, container: Container = Container.shared) {
         self.client = container.client()
         
         if let sprint {
             self.doesExist = true
-            self.id = sprint.id
             self.sprint = sprint
-            self.name = sprint.name
-            self.goal = sprint.goal
-            self.isAcitve = sprint.active
+            
+            if sprint.hasStartDate { shouldHaveStartDate = true }
+            
         } else {
-            let sprint = Sprint(name: "", projectID: -1, goal: "")
-            self.sprint = sprint
+            self.sprint = Sprint(name: "", projectID: project.id, goal: "")
         }
     }
 }

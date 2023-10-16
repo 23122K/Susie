@@ -7,7 +7,12 @@
 
 import SwiftUI
 
-enum IssueType: Int32, RawRepresentable, CaseIterable, Codable {
+protocol Tag: RawRepresentable, CaseIterable, Hashable, Codable{
+    var description: String { get }
+    var color: Color { get }
+}
+
+enum IssueType: Int32, Tag {
     case userStory = 1
     case bug = 2
     case toDo = 3

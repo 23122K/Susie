@@ -10,7 +10,7 @@ import Factory
 
 @MainActor
 class IssueFormViewModel: ObservableObject {
-    private var project: Project
+    private var project: ProjectDTO
     private var client: Client
     
     @Published var name: String = .init()
@@ -31,7 +31,7 @@ class IssueFormViewModel: ObservableObject {
         }
     }
     
-    init(container: Container = Container.shared, project: Project) {
+    init(project: ProjectDTO, container: Container = Container.shared) {
         self.client = container.client()
         self.project = project
         

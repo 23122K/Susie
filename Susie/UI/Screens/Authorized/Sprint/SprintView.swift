@@ -10,14 +10,15 @@ import SwiftUI
 struct SprintView: View {
     @Environment (\.dismiss) var dismiss
     @StateObject private var sprintViewModel: SprintViewModel
-    private var sprint: Sprint //TODO: Remove it and take value from sprintViewModel
     
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
-                ForEach(sprintViewModel.issues) { issue in
-                    IssueRowView(issue: issue)
-                        .onTapGesture { sprintViewModel.issue = issue }
+                AsyncContentView(source: sprintViewModel) { issues in
+                    ForEach(issues) { issue in
+                        IssueRowView(issue: issue)
+                            .onTapGesture { sprintViewModel.issue = issue }
+                    }
                 }
             }
             .padding()
@@ -36,19 +37,15 @@ struct SprintView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Menu(content: {
                         Button(action: {
-                            switch sprintViewModel.sprint.active {
-                            case true:
-                                sprintViewModel.stop()
-                            case false:
-                                sprintViewModel.start()
-                            }
+                            sprintViewModel.start()
+                            dismiss()
                         }, label: {
-                            Text(sprintViewModel.sprint.active ? "Complete" : "Start")
-                            Image(systemName: sprintViewModel.sprint.active ? "pause.fill" : "play.fill")
+                            Text("Start")
+                            Image(systemName: "play.fill")
                         })
                         
                         NavigationLink(destination: {
-                            SprintFormView(sprint: sprint)
+                            SprintFormView(sprint: sprintViewModel.sprint, project: sprintViewModel.project)
                         }, label: {
                             Text("Edit")
                             Image(systemName: "pencil")
@@ -80,8 +77,7 @@ struct SprintView: View {
         
     }
     
-    init(sprint: Sprint, project: Project) {
-        self.sprint = sprint
+    init(sprint: Sprint, project: ProjectDTO) {
         _sprintViewModel = StateObject(wrappedValue: SprintViewModel(sprint: sprint, project: project))
     }
 }

@@ -13,17 +13,22 @@ enum DropStatus {
 }
 
 struct SprintDropDelegate: DropDelegate {
-    @ObservedObject var sprints: SprintsViewModel
+    @ObservedObject var backlogViewModel: BacklogViewModel
     @Binding var dropStatus: DropStatus
-    
-    let sprint: Sprint
+    var sprint: Sprint
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
         return DropProposal(operation: .move)
     }
     
     func performDrop(info: DropInfo) -> Bool {
-        sprints.assign(to: sprint) ? true : false
+        dropStatus = .exited
+        
+        guard backlogViewModel.assign(to: sprint) else {
+            return false
+        }
+        
+        return true
     }
     
     func dropEntered(info: DropInfo) {

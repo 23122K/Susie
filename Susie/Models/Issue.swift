@@ -5,19 +5,19 @@
 //  Created by Patryk Maciąg on 22/08/2023.
 //
 
-struct Issue: Identifiable, Codable {
-    let id: Int32
-    let name: String
-    let description: String
-    let estimation: Int32
-    let reporter: User
-    let asignee: User?
-    let priority: IssuePriority
-    let status: IssueStatus
-    let type: IssueType
-    let projectID: Int32
-    let sprintID: Int32?
-    let comments: Array<Comment>
+class Issue: Identifiable, Codable {
+    var id: Int32
+    var name: String
+    var description: String
+    var estimation: Int32
+    var reporter: User
+    var asignee: User?
+    var priority: IssuePriority
+    var status: IssueStatus
+    var type: IssueType
+    var projectID: Int32
+    var sprintID: Int32?
+    var comments: Array<Comment>
     
     enum CodingKeys: String, CodingKey {
         case id = "issueID"
@@ -49,7 +49,7 @@ extension Array where Element == IssueGeneralDTO {
     }
 }
 
-struct IssueDTO: Identifiable, Codable {
+class IssueDTO: Identifiable, Codable {
     let id: Int32
     let name: String
     let description: String
@@ -68,7 +68,7 @@ struct IssueDTO: Identifiable, Codable {
         case priority = "issuePriorityID"
     }
     
-    init(name: String, description: String, estimation: Int32, project: Project, type: IssueType, priority: IssuePriority) {
+    init(name: String, description: String, estimation: Int32, project: ProjectDTO, type: IssueType, priority: IssuePriority) {
         self.id = -1
         self.name = name
         self.description = description
@@ -79,8 +79,8 @@ struct IssueDTO: Identifiable, Codable {
     }
 }
 
-struct IssueGeneralDTO: Identifiable, Codable {
-    let id: Int32
+class IssueGeneralDTO: Identifiable, Codable {
+    var id: Int32
     let name: String
     let asignee: User?
     let status: IssueStatus
@@ -98,5 +98,16 @@ struct IssueGeneralDTO: Identifiable, Codable {
         case status = "issueStatusID"
         case projectID
         case sprintID
+    }
+    
+    required init(id: Int32, name: String, asignee: User?, status: IssueStatus, type: IssueType, priority: IssuePriority, projectID: Int32, sprintID: Int32?) {
+        self.id = id
+        self.name = name
+        self.asignee = asignee
+        self.status = status
+        self.type = type
+        self.priority = priority
+        self.projectID = projectID
+        self.sprintID = sprintID
     }
 }

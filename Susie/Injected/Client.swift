@@ -150,13 +150,18 @@ class Client: ObservableObject {
         try await network.request(to: endpoint)
     }
     
-    func stop(project: Project) async throws {
+    func stop(project: ProjectDTO) async throws {
         let endpoint = Endpoints.SprintEndpoint.stop(project: project)
         try await network.request(to: endpoint)
     }
     
     func active(project: ProjectDTO) async throws -> Sprint {
         let endpoint = Endpoints.SprintEndpoint.ongoing(project: project)
+        return try await network.response(from: endpoint)
+    }
+    
+    func update(sprint: Sprint) async throws -> Sprint {
+        let endpoint = Endpoints.SprintEndpoint.update(sprint: sprint)
         return try await network.response(from: endpoint)
     }
     

@@ -6,20 +6,22 @@
 //
 
 import Foundation
+import SwiftUI
 import Factory
 
 @MainActor
-class IssueDetailsViewModel: ObservableObject, AsyncDataProvider {
+class IssueDetailsViewModel: ObservableObject {
     private var client: Client
     private var issue: IssueGeneralDTO
-        
+    @Published var detailedIssue: Issue!
     @Published var state: LoadingState<Issue> = .idle
     
     func fetch() {
         Task(priority: .high, operation: {
             do {
                 self.state = .loading
-                let issue = try await client.details(issue: issue)
+                let issue = try await self.client.details(issue: issue)
+                detailedIssue = issue
                 self.state = .loaded(issue)
             } catch {
                 self.state = .failed(error)
@@ -27,7 +29,9 @@ class IssueDetailsViewModel: ObservableObject, AsyncDataProvider {
         })
     }
     
-    init(issue: IssueGeneralDTO, container: Container = Container.shared) throws {
+    
+    
+    init(issue: IssueGeneralDTO, container: Container = Container.shared) {
         self.client = container.client()
         self.issue = issue
     }

@@ -11,28 +11,22 @@ import Factory
 @MainActor
 class ProjectViewModel: ObservableObject {
     private var client: Client
+    private var doesExist: Bool = false
     
-    @Published var name: String
-    @Published var description: String
-    @Published var goal: String?
-    
-    private var shoudUpdate = false
-    private var project: ProjectDTO
+    @Published var project: ProjectDTO
     
     //TODO: Remove it later, create central validation class
     private var isValid: Bool {
         !(project.name.isEmpty && project.description.isEmpty)
     }
     
-    func save() { shoudUpdate ? update() : create() }
+    func save() { doesExist ? update() : create() }
     
     private func create() {
-        let project = ProjectDTO(name: name, description: description, goal: goal)
         Task { let _ = try await client.create(project: project) }
     }
     
     private func update() {
-        let project = ProjectDTO(id: project.id, name: name, description: description, goal: goal)
         Task { let _ = try await client.update(project: project) }
     }
     
@@ -44,16 +38,10 @@ class ProjectViewModel: ObservableObject {
         self.client = container.client()
         
         if let project {
-            self.shoudUpdate = true
+            self.doesExist = true
             self.project = project
-            self.name = project.name
-            self.goal = project.goal
-            self.description = project.description
         } else {
-            self.project = ProjectDTO(name: String(), description: String(), goal: String())
-            self.name = self.project.name
-            self.description = self.project.description
-            self.goal = self.project.goal
+            self.project = ProjectDTO(name: "", description: "", goal: nil)
         }
     }
 }

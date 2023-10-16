@@ -66,7 +66,7 @@ struct IssueFormView: View {
         .onAppear{ focusedField = .title }
     }
     
-    init(project: Project) {
+    init(project: ProjectDTO) {
         _vm = StateObject(wrappedValue: IssueFormViewModel(project: project))
     }
 }

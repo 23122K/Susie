@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AuthenticatedUserView: View {
-    let project: Project
+    let project: ProjectDTO
     
     var body: some View {
         TabView{

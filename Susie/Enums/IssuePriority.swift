@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum IssuePriority: Int32, RawRepresentable, CaseIterable, Codable {
+enum IssuePriority: Int32, Tag {
     case critical = 1
     case high = 2
     case medium = 3

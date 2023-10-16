@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SprintFormView: View {
     @Environment (\.dismiss) private var dismiss
-    @StateObject private var sprint: SprintFromViewModel
+    @StateObject private var sprintViewModel: SprintFromViewModel
     @FocusState private var focusedField: FocusedField?
     
     private enum FocusedField: Hashable {
@@ -19,47 +19,41 @@ struct SprintFormView: View {
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            TextField("Sprint name", text: $sprint.name)
+            TextField("Sprint name", text: $sprintViewModel.sprint.name)
                 .padding(.horizontal)
                 .focused($focusedField, equals: .name)
                 .onSubmit { focusedField = .goal}
                 .textFieldStyle(.susiePrimaryTextField)
             
-            TextField("Goal", text: $sprint.goal)
+            TextField("Goal", text: $sprintViewModel.sprint.goal)
                 .padding(.horizontal)
                 .focused($focusedField, equals: .goal)
                 .textFieldStyle(.susieSecondaryTextField)
             
-            Toggle("Start date", isOn: $sprint.shouldHaveStartDate)
+            Toggle("Start date", isOn: $sprintViewModel.shouldHaveStartDate)
                 .padding(.horizontal)
                 .tint(.susieBluePriamry)
             
-            DatePicker("Start date", selection: $sprint.date)
+            DatePicker("Start date", selection: $sprintViewModel.startDate)
                 .padding(.horizontal)
-                .disabled(!sprint.shouldHaveStartDate)
-                .opacity(sprint.shouldHaveStartDate ? 1 : 0)
+                .disabled(!sprintViewModel.shouldHaveStartDate)
+                .opacity(sprintViewModel.shouldHaveStartDate ? 1 : 0)
                 .datePickerStyle(.graphical)
-                .animation(.spring, value: sprint.shouldHaveStartDate)
+                .animation(.spring, value: sprintViewModel.shouldHaveStartDate)
         }
         .toolbar {
             Button("Save") {
-                sprint.save()
+                sprintViewModel.save()
                 dismiss()
             }
         }
         .padding(.vertical)
         .onAppear{ focusedField = .name }
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle(sprint.name.isEmpty ? "New sprint" : sprint.name)
+        .navigationTitle(sprintViewModel.sprint.name.isEmpty ? "New sprint" : sprintViewModel.sprint.name)
     }
     
-    init(sprint: Sprint? = nil) {
-        _sprint = StateObject(wrappedValue: SprintFromViewModel(sprint: sprint))
+    init(sprint: Sprint? = nil, project: ProjectDTO) {
+        _sprintViewModel = StateObject(wrappedValue: SprintFromViewModel(sprint: sprint, project: project))
     }
 }
-
-//struct SprintFormView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SprintFormView()
-//    }
-//}

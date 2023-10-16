@@ -47,7 +47,8 @@ struct Carousel<T: Any, Content: View>: View {
                 
             }
             
-            if data.count > 1 {
+            switch data.count {
+            case 2...:
                 HStack(spacing: 2) {
                     ForEach((1..<data.count-1), id: \.self) { index in
                         Circle()
@@ -56,6 +57,13 @@ struct Carousel<T: Any, Content: View>: View {
                             .padding(.horizontal, 1)
                         
                     }
+                }
+            default:
+                HStack(spacing: 2) {
+                    Circle()
+                        .fill(Color.gray)
+                        .frame(width: 7, height: 7)
+                        .padding(.horizontal, 1)
                 }
             }
         }

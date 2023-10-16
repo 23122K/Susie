@@ -13,25 +13,33 @@ struct BoardsView: View {
     
     var body: some View {
         NavigationStack{
-            ScreenHeader(user: boards.user, screenTitle: "Backlog", action: {
+            ScreenHeader(user: boards.user, screenTitle: boards.sprint?.name ?? "Backlog", action: {
                 isPresented.toggle()
             }, content: {
                 Menu(content: {
-                    Button("Create sprint") {}
-                    Button("Create issue") {}
+                    Button(role: .destructive, action: {
+                        boards.stop()
+                    }, label: {
+                        Text("Stop sprint")
+                            .foregroundColor(.red)
+                        Image(systemName: "pause.fill")
+                            .foregroundStyle(.red)
+                    })
                 }, label: {
                     Image(systemName: "ellipsis")
                         .scaleEffect(1.1)
                 })
             })
             
-            AsyncContentView(source: boards) { issues in
+            GeometryReader { reader in
                 TabView {
                     ForEach(IssueStatus.allCases, id: \.rawValue) { status in
-                        GeometryReader { g in
+                        AsyncContentViewV2(state: $boards.state, { issues in
                             BoardView(issues: issues, status: status)
-                        }
-                        .frame(width: 380, height: 650)
+                                .frame(width: reader.size.width, height: reader.size.height)
+                        }, placeholder: BoardPlaceholderView(), onAppear: {
+                            boards.fetch()
+                        })
                     }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
@@ -40,7 +48,7 @@ struct BoardsView: View {
         .refreshable { boards.fetch() }
     }
     
-    init(project: Project) {
+    init(project: ProjectDTO) {
         _boards = StateObject(wrappedValue: BoardsViewModel(project: project))
     }
     

@@ -8,12 +8,10 @@
 import SwiftUI
 
 struct BoardView: View {
-    @StateObject private var vm: BoardViewModel = BoardViewModel()
-    let issues: Array<IssueGeneralDTO>
-    let status: IssueStatus
+    @State private var issue: IssueGeneralDTO?
     
-    //Make task view flexible
-    let columns = [GridItem(.flexible())]
+    private let issues: Array<IssueGeneralDTO>
+    private let status: IssueStatus
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -34,17 +32,16 @@ struct BoardView: View {
             .offset(y: 10)
             
             ScrollView(showsIndicators: false) {
-                LazyVGrid(columns: columns) {
-                    ForEach(issues) { issue in
-                       IssueRowView(issue: issue)
-                            .padding(.horizontal)
-                            .offset(y: 8)
-                            .onTapGesture {
-                                vm.issue = issue
-                            }
-                    }
+                ForEach(issues) { issue in
+                    IssueRowView(issue: issue)
+                        .padding(.horizontal)
+                        .offset(y: 8)
+                        .onTapGesture { self.issue = issue }
                 }
             }
+        }
+        .fullScreenCover(item: $issue) { issue in
+            IssueDetailsView(issue: issue)
         }
     }
     
