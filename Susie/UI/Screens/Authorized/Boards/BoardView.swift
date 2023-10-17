@@ -13,6 +13,8 @@ struct BoardView: View {
     private let issues: Array<IssueGeneralDTO>
     private let status: IssueStatus
     
+    let columns = [GridItem(.flexible())]
+    
     var body: some View {
         VStack(alignment: .leading) {
             HStack{
@@ -32,11 +34,15 @@ struct BoardView: View {
             .offset(y: 10)
             
             ScrollView(showsIndicators: false) {
-                ForEach(issues) { issue in
-                    IssueRowView(issue: issue)
-                        .padding(.horizontal)
-                        .offset(y: 8)
-                        .onTapGesture { self.issue = issue }
+                LazyVGrid(columns: columns) {
+                    ForEach(issues) { issue in
+                        IssueRowView(issue: issue)
+                            .padding(.horizontal)
+                            .offset(y: 8)
+                            .onTapGesture {
+                                self.issue = issue
+                            }
+                    }
                 }
             }
         }
