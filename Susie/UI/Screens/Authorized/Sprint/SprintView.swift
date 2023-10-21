@@ -14,12 +14,15 @@ struct SprintView: View {
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
-                AsyncContentView(source: sprintViewModel) { issues in
+                //TODO: Remove state from sprintViewModle and rename it to issue
+                AsyncContentView(state: $sprintViewModel.state, { issues in
                     ForEach(issues) { issue in
                         IssueRowView(issue: issue)
-                            .onTapGesture { sprintViewModel.issue = issue }
+                            .padding()
                     }
-                }
+                }, placeholder: EmptyView(), onAppear: {
+                    sprintViewModel.fetch()
+                })
             }
             .padding()
             .navigationBarTitleDisplayMode(.inline)

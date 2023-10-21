@@ -35,6 +35,7 @@ class SprintViewModel: ObservableObject, AsyncDataProvider {
             do {
                 try await client.start(sprint: sprint)
             } catch {
+                print(error.localizedDescription)
                 state = .failed(error)
             }
         }

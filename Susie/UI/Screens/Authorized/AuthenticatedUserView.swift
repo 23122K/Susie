@@ -1,4 +1,5 @@
 import SwiftUI
+import PartialSheet
 
 struct AuthenticatedUserView: View {
     let project: ProjectDTO
@@ -7,27 +8,28 @@ struct AuthenticatedUserView: View {
         TabView{
             HomeView(project: project)
                 .tabItem{
-                    Image(systemName: "house")
                     Text("Home")
                 }
             
             BoardsView(project: project)
                 .tabItem{
-                    Image(systemName: "house")
                     Text("Board")
                 }
 
             BacklogView(project: project)
+                .attachPartialSheetToRoot()
                 .tabItem{
-                    Image(systemName: "list.dash")
                     Text("Backlog")
                 }
 
             DashboardView(project: project)
                 .tabItem{
-                    Image("dashboard")
                     Text("Dashboard")
                 }
         }
     }
+}
+
+#Preview {
+    AuthenticatedUserView(project: ProjectDTO(name: "", description: "", goal: ""))
 }

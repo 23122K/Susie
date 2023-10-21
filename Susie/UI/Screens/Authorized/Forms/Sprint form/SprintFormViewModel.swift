@@ -21,7 +21,9 @@ class SprintFromViewModel: ObservableObject {
         
         switch doesExist {
         case true:
-            Task { try await client.update(sprint: sprint) }
+            Task { 
+                try await client.update(sprint: sprint)
+            }
         case false:
             Task { try await client.create(sprint: sprint) }
         }

@@ -13,26 +13,25 @@ import SwipeActions
 
 @MainActor
 struct BacklogView: View {
-    @StateObject private var backlog: BacklogViewModel
-    //    @StateObject private var sprints: SprintsViewModel
+    @StateObject private var vm: BacklogViewModel
     
     @State private var dropStatus: DropStatus = .exited
     @State private var isPresented: Bool = false
     
     var body: some View {
         NavigationStack {
-            ScreenHeader(user: backlog.user, screenTitle: "Backlog", action: {
+            ScreenHeader(user: vm.user, screenTitle: "Backlog", action: {
                 isPresented.toggle()
             }, content: {
                 Menu(content: {
                     NavigationLink("Crate sprint") {
-                        SprintFormView(project: backlog.project)
-                            .onDisappear{ backlog.fetch() }
+                        SprintFormView(project: vm.project)
+                            .onDisappear{ vm.fetch() }
                     }
                     
                     NavigationLink("Create issue") {
-                        IssueFormView(project: backlog.project)
-                            .onDisappear { backlog.fetch() }
+                        IssueFormView(project: vm.project)
+                            .onDisappear { vm.fetch() }
                     }
                 }, label: {
                     Image(systemName: "ellipsis")
@@ -40,32 +39,32 @@ struct BacklogView: View {
                 })
             })
             
-            AsyncContentViewV2(state: $backlog.sprints, { sprints in
+            AsyncContentView(state: $vm.sprints, { sprints in
                 if sprints.isEmpty {
                     NavigationLink(destination: {
-                        SprintFormView(project: self.backlog.project)
-                            .onDisappear{ self.backlog.fetch() }
+                        SprintFormView(project: self.vm.project)
+                            .onDisappear{ self.vm.fetch() }
                     }, label: { CreateSprintView() })
                 } else {
                     Carousel(sprints, type: .unbounded) { sprint in
                         SprintRowView(sprint: sprint, status: $dropStatus)
-                            .onTapGesture { self.backlog.sprint = sprint }
-                            .onDrop(of: [.text], delegate: SprintDropDelegate(backlogViewModel: backlog, dropStatus: $dropStatus, sprint: sprint))
+                            .onTapGesture { self.vm.sprint = sprint }
+                            .onDrop(of: [.text], delegate: SprintDropDelegate(backlogViewModel: vm, dropStatus: $dropStatus, sprint: sprint))
                     }
                 }
             }, placeholder: SprintRowPlaceholderView() ,onAppear: {
-                backlog.fetch()
+                vm.fetch()
             })
             .frame(height: 215)
             
             ScrollView(showsIndicators: false) {
-                AsyncContentViewV2(state: $backlog.issues, { issues in
+                AsyncContentView(state: $vm.issues, { issues in
                     ForEach(issues) { issue in
                         SwipeView(label: {
                             IssueRowView(issue: issue)
                         }, leadingActions: { _ in
                             SwipeAction(action: {
-                                backlog.delete(issue: issue)
+                                vm.delete(issue: issue)
                             }, label: { _ in
                                 HStack {
                                     Text("Delete")
@@ -80,7 +79,7 @@ struct BacklogView: View {
                             
                         }, trailingActions: { _ in
                             SwipeAction(action: {
-                                backlog.edit(issue: issue)
+                                vm.issue = issue
                             }, label: { _ in
                                 HStack {
                                     Text("Edit")
@@ -100,40 +99,39 @@ struct BacklogView: View {
                         .swipeActionCornerRadius(9)
                         .padding(.horizontal)
                         .onDrag {
-                            backlog.draggedIssue = issue
+                            vm.draggedIssue = issue
                             return NSItemProvider()
                         }
                         .onTapGesture {
-                            backlog.issue = issue
+                            vm.issue = issue
                         }
                     }
                     
                 }, placeholder: IssuePlaceholderView())
                 NavigationLink("Create issue", destination: {
-                    IssueFormView(project: backlog.project)
+                    IssueFormView(project: vm.project)
+                        .onDisappear{ vm.fetch() }
                 })
                 .buttonStyle(.issueCreation)
                 .offset(y: -15)
             }
         }
         .refreshable {
-            backlog.fetch()
+            vm.fetch()
         }
             
         .navigationTitle("Backlog")
-        .fullScreenCover(item: $backlog.sprint) { sprint in
-            SprintView(sprint: sprint, project: backlog.project)
-                .onDisappear{ backlog.fetch() }
+        .fullScreenCover(item: $vm.sprint) { sprint in
+            SprintView(sprint: sprint, project: vm.project)
+                .onDisappear{ vm.fetch() }
         }
-        .sheet(item: $backlog.issue) { issue in
+        .fullScreenCover(item: $vm.issue) { issue in
             IssueDetailsView(issue: issue)
         }
-        
     }
     
     init(project: ProjectDTO) {
-        _backlog = StateObject(wrappedValue: BacklogViewModel(project: project))
-//        _sprints = StateObject(wrappedValue: SprintsViewModel(project: project))
+        _vm = StateObject(wrappedValue: BacklogViewModel(project: project))
     }
 }
 

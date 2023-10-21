@@ -26,7 +26,7 @@ struct APIError: Codable {
 enum NetworkError: Error {
     case noInternetConnection
     case invalidHTTPResponse
-    case failure(statusCode: Int)
+    case failure(statusCode: Int32, message: String)
 }
 
 enum KeychainError: Error {
@@ -40,7 +40,6 @@ enum KeychainError: Error {
 enum AuthError: Error {
     case authObjectIsMissing
     case couldNotRefreshAuthObject
-    
 }
 
 extension NetworkError: LocalizedError {
@@ -48,8 +47,8 @@ extension NetworkError: LocalizedError {
         switch self {
         case .invalidHTTPResponse:
             return NSLocalizedString("Recived response is invalid", comment: "")
-        case let .failure(statusCode):
-            return NSLocalizedString("Response status code \(statusCode)", comment: "")
+        case let .failure(statusCode, message):
+            return NSLocalizedString("Error message \(message), status code: \(statusCode)", comment: "")
         case .noInternetConnection:
             return NSLocalizedString("Device is currently offline", comment: "")
         }

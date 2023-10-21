@@ -72,8 +72,7 @@ class Client: ObservableObject {
         return try await network.response(from: endpoint)
     }
     
-    func invite(user: User, to project: ProjectDTO) async throws {
-        let request = UserAssociationDTO(email: user.email, projectID: project.id)
+    func invite(invitation request: InviteRequest) async throws {
         let endpoint = Endpoints.ProjectEndpoint.invite(request: request)
         let _ :SignInResponse = try await network.response(from: endpoint)
     }

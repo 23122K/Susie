@@ -22,7 +22,7 @@ struct SprintRowPlaceholderView: View {
             }
             .frame(width: reader.size.width, height: 200)
             .fontWeight(.semibold)
-            .background(Color.susieWhiteSecondary)
+            .background(Color.susieBlueTertiary)
             .cornerRadius(9)
             .redacted(reason: .placeholder)
             .shimmering()

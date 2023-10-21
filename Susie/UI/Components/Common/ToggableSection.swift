@@ -40,7 +40,6 @@ struct ToggableSection<Content: View> : View {
         .cornerRadius(9)
         .transition(.move(edge: .top))
         .animation(.spring(response: 0.2), value: isToggled)
-        
     }
     
     init(title: String, isToggled: Bool = false, @ViewBuilder _ content: @escaping () -> Content){

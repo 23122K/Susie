@@ -13,12 +13,12 @@ struct SusieTextField: TextFieldStyle {
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
             .font(main ? .title : .body)
-            .fontWeight(.semibold)
+//            .fontWeight(.semibold)
             .autocapitalization(.sentences)
             .autocorrectionDisabled()
             .keyboardType(.default)
             .frame(height: 50)
-            .foregroundColor(main ? .susieBluePriamry : .black)
+            .foregroundColor(main ? .susieBluePriamry : .gray)
     }
     
     init(main: Bool) {

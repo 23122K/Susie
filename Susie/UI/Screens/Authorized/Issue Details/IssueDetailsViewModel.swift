@@ -13,18 +13,17 @@ import Factory
 class IssueDetailsViewModel: ObservableObject {
     private var client: Client
     private var issue: IssueGeneralDTO
-    @Published var detailedIssue: Issue!
-    @Published var state: LoadingState<Issue> = .idle
+    
+    @Published var issueDetails: LoadingState<Issue> = .idle
     
     func fetch() {
         Task(priority: .high, operation: {
             do {
-                self.state = .loading
+                issueDetails = .loading
                 let issue = try await self.client.details(issue: issue)
-                detailedIssue = issue
-                self.state = .loaded(issue)
+                issueDetails = .loaded(issue)
             } catch {
-                self.state = .failed(error)
+                issueDetails = .failed(error)
             }
         })
     }

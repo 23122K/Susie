@@ -73,10 +73,6 @@ class BacklogViewModel: ObservableObject {
         }
     }
     
-    func edit(issue: IssueGeneralDTO) {
-        print("Edited")
-    }
-    
     init(project: ProjectDTO, container: Container = Container.shared) {
         self.client = container.client()
         self.user = client.user

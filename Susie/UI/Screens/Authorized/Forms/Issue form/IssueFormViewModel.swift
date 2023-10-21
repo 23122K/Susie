@@ -10,21 +10,13 @@ import Factory
 
 @MainActor
 class IssueFormViewModel: ObservableObject {
-    private var project: ProjectDTO
     private var client: Client
-    
-    @Published var name: String = .init()
-    @Published var description: String = .init()
-    @Published var estimation: Int32 = 0
-
-    @Published var type: IssueType = .bug
-    @Published var priority: IssuePriority = .low
+    @Published var issue: IssueDTO
     
     func create() {
         Task {
             do {
-                let details: IssueDTO = IssueDTO(name: name, description: description, estimation: estimation, project: project, type: type,  priority: priority)
-                let _ = try await client.create(issue: details)
+                let _ = try await client.create(issue: issue)
             } catch {
                 print(#function)
             }
@@ -33,7 +25,6 @@ class IssueFormViewModel: ObservableObject {
     
     init(project: ProjectDTO, container: Container = Container.shared) {
         self.client = container.client()
-        self.project = project
-        
+        self.issue = IssueDTO(project: project)
     }
 }

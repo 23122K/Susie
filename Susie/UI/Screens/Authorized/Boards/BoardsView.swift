@@ -34,7 +34,7 @@ struct BoardsView: View {
             GeometryReader { reader in
                 TabView {
                     ForEach(IssueStatus.allCases, id: \.rawValue) { status in
-                        AsyncContentViewV2(state: $boards.state, { issues in
+                        AsyncContentView(state: $boards.state, { issues in
                             BoardView(issues: issues, status: status)
                                 .frame(width: reader.size.width, height: reader.size.height)
                         }, placeholder: BoardPlaceholderView(), onAppear: {

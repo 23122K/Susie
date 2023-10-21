@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import SwiftUI
 
-enum IssueStatus: Int32, RawRepresentable, CaseIterable, Codable {
+enum IssueStatus: Int32, Tag {
     case toDo = 1
     case inProgress = 2
     case inReview = 3
@@ -27,5 +28,9 @@ enum IssueStatus: Int32, RawRepresentable, CaseIterable, Codable {
         case .done:
             return "Done"
         }
+    }
+    
+    var color: Color {
+        return Color.susieBluePriamry
     }
 }

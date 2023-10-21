@@ -46,6 +46,7 @@ struct ProjectFormView: View {
                 dismiss()
             }
         }
+        
         .padding()
         .navigationTitle(projectViewModel.project.name.isEmpty ? "New project" : projectViewModel.project.name)
         .navigationBarTitleDisplayMode(.inline)

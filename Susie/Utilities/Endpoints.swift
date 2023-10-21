@@ -262,7 +262,7 @@ enum Endpoints {
         case delete(project: ProjectDTO)
         case fetch
         case details(project: ProjectDTO)
-        case invite(request: UserAssociationDTO)
+        case invite(request: InviteRequest)
         case remove(request: UserRemovalDTO)
         
         var schema: String { "http" }

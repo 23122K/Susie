@@ -79,41 +79,25 @@ actor NetworkManager {
     
         let task = Task<Data, Error> {
             guard let (data, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
-                #if DEBUG
-                    print("Print response is invalid")
-                #endif
-                
+                print("INVALID")
                 cache.status[endpoint] = .completed
                 throw NetworkError.invalidHTTPResponse
             }
             
             guard (200...299).contains(response.statusCode) else {
-                #if DEBUG
-                    print("Status code is valid")
-                #endif
+                print("OUT OF RANGE 12")
                 cache.status[endpoint] = .completed
-                throw NetworkError.failure(statusCode: response.statusCode)
+                let response: APIError = try decoder.decode(APIError.self, from: data)
+                print(response.description)
+                throw NetworkError.failure(statusCode: response.status, message: response.description)
             }
             
             return data
         }
         
-        #if DEBUG
-                print("Request status: ongoing")
-        #endif
         cache.status[endpoint] = .ongoing(task)
         let data = try await task.value
         cache.status[endpoint] = .completed
-        #if DEBUG
-                print("Request status: completed")
-        #endif
-        
-        print("--------------------------------")
-        print(endpoint.request.url?.absoluteString)
-        print(endpoint.request.httpMethod)
-        if let data = endpoint.body {
-            print(String(data: data, encoding: .utf8))
-        }
         
         //TODO: Do not cache if data is not valid
         if policy.shouldCache { cache[endpoint] = Cache(data: data, for: policy.shouldExpireIn)
@@ -123,9 +107,7 @@ actor NetworkManager {
         do {
             return try decoder.decode(T.self, from: data)
         } catch {
-            print("------RAW JSON--------")
-            print(String(data: data, encoding: .utf8))
-            print(error)
+            print("ERROR \(error) WHILE DECODING")
             throw NetworkError.invalidHTTPResponse
         }
     }
@@ -143,21 +125,20 @@ actor NetworkManager {
         
         let request = authorize ? try await self.authorize(request: endpoint.request) : endpoint.request
         let task = Task<Data, Error> {
-            guard let (_, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
+            guard let (data, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
                 throw NetworkError.invalidHTTPResponse
             }
             
             guard (200...299).contains( response.statusCode ) else {
-                throw NetworkError.failure(statusCode: response.statusCode)
+                let response: APIError = try decoder.decode(APIError.self, from: data)
+                throw NetworkError.failure(statusCode: response.status, message: response.description)
             }
             
-            //TODO: Response of error or success should be returned here
-            //Disclamer: If responses will be implemented from server side to all endpoints, might marge this method with `Response`
             return Data()
         }
         
         cache.status[endpoint] = .ongoing(task)
-        let _ = try await task.value
+        let _  = try await task.value
         cache.status[endpoint] = .completed
     }
     

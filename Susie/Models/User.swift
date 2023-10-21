@@ -5,17 +5,24 @@
 //  Created by Patryk Maciąg on 22/08/2023.
 //
 
-struct User: Codable {
-    let uuid: String
+struct User: Identifiable, Codable {
+    let id: String
     let email: String
     let firstName: String
     let lastName: String
     
     init(email: String, firstName: String, lastName: String) {
-        self.uuid = String()
+        self.id = String()
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "uuid"
+        case email
+        case firstName
+        case lastName
     }
 }
 
@@ -31,9 +38,14 @@ extension User {
     }
 }
 
-struct UserAssociationDTO: Codable {
-    let email: String
-    let projectID: Int32
+class InviteRequest: Codable {
+    var email: String
+    var projectID: Int32
+    
+    required init(email: String = "", project: any ProjectEntity) {
+        self.email = email
+        self.projectID = project.id
+    }
 }
 
 struct UserRemovalDTO: Codable {
@@ -41,7 +53,7 @@ struct UserRemovalDTO: Codable {
     let projectID: Int32
     
     init(user: User, project: ProjectDTO) {
-        self.userUUID = user.uuid
+        self.userUUID = user.id
         self.projectID = project.id
     }
 }
