@@ -23,7 +23,7 @@ struct IssueRowView: View {
                     TagView(text: issue.type.description, color: issue.type.color)
                     TagView(image: flagImage, text: issue.priority.description, color: issue.priority.color)
                     Spacer()
-                    InitialsView(user: issue.asignee, size: 30)
+                    InitialsView(user: issue.assignee, size: 30)
                 }
                 .offset(y: -3)
             }

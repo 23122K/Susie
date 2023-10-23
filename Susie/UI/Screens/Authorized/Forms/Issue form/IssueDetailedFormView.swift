@@ -1,5 +1,5 @@
 //
-//  IssueDetailedFromView.swift
+//  IssueDetailedFormView.swift
 //  Susie
 //
 //  Created by Patryk Maciąg on 19/10/2023.
@@ -65,10 +65,14 @@ struct IssueDetailedFormView: View {
                 }
                 
                 ToggableSectionRowView(title: "Asignee", divider: false) {
-                    HStack{
-                        InitialsView(user: vm.issue.asignee, size: 30)
-                        Text(vm.issue.asignee?.fullName ?? "Unasigned")
-                    }
+                    Button(action: {
+                        vm.assign()
+                    }, label: {
+                        HStack{
+                            InitialsView(user: vm.issue.assignee, size: 30)
+                            Text(vm.issue.assignee?.fullName ?? "Unassigned")
+                        }
+                    })
                 }
             }
             

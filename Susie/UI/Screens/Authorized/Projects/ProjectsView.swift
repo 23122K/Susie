@@ -30,7 +30,7 @@ struct ProjectsView: View {
             
             
             ScrollView {
-                AsyncContentView(state: $projectsViewModel.state, { projects in
+                AsyncContentView(state: $projectsViewModel.projects, { projects in
                     ForEach(projects) { project in
                         SwipeView(label: {
                             ProjectRowView(project: project)

@@ -79,16 +79,13 @@ actor NetworkManager {
     
         let task = Task<Data, Error> {
             guard let (data, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
-                print("INVALID")
                 cache.status[endpoint] = .completed
                 throw NetworkError.invalidHTTPResponse
             }
             
             guard (200...299).contains(response.statusCode) else {
-                print("OUT OF RANGE 12")
                 cache.status[endpoint] = .completed
                 let response: APIError = try decoder.decode(APIError.self, from: data)
-                print(response.description)
                 throw NetworkError.failure(statusCode: response.status, message: response.description)
             }
             
@@ -100,16 +97,11 @@ actor NetworkManager {
         cache.status[endpoint] = .completed
         
         //TODO: Do not cache if data is not valid
-        if policy.shouldCache { cache[endpoint] = Cache(data: data, for: policy.shouldExpireIn)
-        
-        }
+        if policy.shouldCache { cache[endpoint] = Cache(data: data, for: policy.shouldExpireIn) }
         
         do {
             return try decoder.decode(T.self, from: data)
-        } catch {
-            print("ERROR \(error) WHILE DECODING")
-            throw NetworkError.invalidHTTPResponse
-        }
+        } catch { throw NetworkError.couldNotDecodeResponseData(type: T.self) }
     }
     
     //TODO: Add -> Some sort of resposne, Kacper did not implemented it yet
@@ -126,11 +118,13 @@ actor NetworkManager {
         let request = authorize ? try await self.authorize(request: endpoint.request) : endpoint.request
         let task = Task<Data, Error> {
             guard let (data, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
+                print("Failes here")
                 throw NetworkError.invalidHTTPResponse
             }
             
             guard (200...299).contains( response.statusCode ) else {
                 let response: APIError = try decoder.decode(APIError.self, from: data)
+                
                 throw NetworkError.failure(statusCode: response.status, message: response.description)
             }
             
@@ -139,6 +133,7 @@ actor NetworkManager {
         
         cache.status[endpoint] = .ongoing(task)
         let _  = try await task.value
+        print("Completed")
         cache.status[endpoint] = .completed
     }
     

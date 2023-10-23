@@ -9,26 +9,24 @@ import SwiftUI
 
 struct SprintView: View {
     @Environment (\.dismiss) var dismiss
-    @StateObject private var sprintViewModel: SprintViewModel
+    @StateObject private var vm: SprintViewModel
     
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
-                //TODO: Remove state from sprintViewModle and rename it to issue
-                AsyncContentView(state: $sprintViewModel.state, { issues in
+                AsyncContentView(state: $vm.issues, { issues in
                     ForEach(issues) { issue in
                         IssueRowView(issue: issue)
-                            .padding()
                     }
                 }, placeholder: EmptyView(), onAppear: {
-                    sprintViewModel.fetch()
+                    vm.fetch()
                 })
             }
             .padding()
             .navigationBarTitleDisplayMode(.inline)
-            .navigationTitle(sprintViewModel.sprint.name)
+            .navigationTitle(vm.sprint.name)
             .refreshable {
-                sprintViewModel.fetch()
+                vm.fetch()
             }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -40,7 +38,7 @@ struct SprintView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Menu(content: {
                         Button(action: {
-                            sprintViewModel.start()
+                            vm.start()
                             dismiss()
                         }, label: {
                             Text("Start")
@@ -48,7 +46,7 @@ struct SprintView: View {
                         })
                         
                         NavigationLink(destination: {
-                            SprintFormView(sprint: sprintViewModel.sprint, project: sprintViewModel.project)
+                            SprintFormView(sprint: vm.sprint, project: vm.project)
                         }, label: {
                             Text("Edit")
                             Image(systemName: "pencil")
@@ -56,7 +54,7 @@ struct SprintView: View {
                         
                         Section {
                             Button(role: .destructive, action: {
-                                sprintViewModel.delete()
+                                vm.delete()
                                 dismiss()
                             }, label: {
                                 Text("Delete")
@@ -71,22 +69,16 @@ struct SprintView: View {
                 }
             }
         }
-        .sheet(item: $sprintViewModel.issue) { issue in
+        .sheet(item: $vm.issue) { issue in
             IssueDetailsView(issue: issue)
         }
         .onAppear{
-            sprintViewModel.fetch()
+            vm.fetch()
         }
         
     }
     
     init(sprint: Sprint, project: ProjectDTO) {
-        _sprintViewModel = StateObject(wrappedValue: SprintViewModel(sprint: sprint, project: project))
+        _vm = StateObject(wrappedValue: SprintViewModel(sprint: sprint, project: project))
     }
 }
-
-//struct SprintView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SprintView()
-//    }
-//}

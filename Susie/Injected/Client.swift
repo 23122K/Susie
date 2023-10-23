@@ -109,6 +109,7 @@ class Client: ObservableObject {
     }
     
     func assign(to issue: IssueDTO) async throws {
+        print("assign")
         let endpoint = Endpoints.IssueEndpoint.assignTo(issue: issue)
         try await network.request(to: endpoint)
     }
@@ -154,9 +155,15 @@ class Client: ObservableObject {
         try await network.request(to: endpoint)
     }
     
-    func active(project: ProjectDTO) async throws -> Sprint {
+    func active(project: ProjectDTO) async throws -> Sprint? {
         let endpoint = Endpoints.SprintEndpoint.ongoing(project: project)
-        return try await network.response(from: endpoint)
+        do {
+            return try await network.response(from: endpoint)
+        } catch NetworkError.couldNotDecodeResponseData { //In case when no sprint is active empty response is returned
+            return nil
+        } catch {
+            throw error
+        }
     }
     
     func update(sprint: Sprint) async throws -> Sprint {
@@ -177,6 +184,23 @@ class Client: ObservableObject {
     func unassign(issue: IssueGeneralDTO, from sprint: Sprint) async throws {
         let endpoint = Endpoints.SprintEndpoint.unassign(issue: issue, from: sprint)
         return try await network.request(to: endpoint)
+    }
+    
+    //MARK: Comments
+    
+    func post(comment: CommentDTO) async throws {
+        let endpoint = Endpoints.CommentEndpoint.post(comment: comment)
+        try await network.request(to: endpoint)
+    }
+    
+    func update(comment: CommentDTO) async throws {
+        let endpoint = Endpoints.CommentEndpoint.update(comment: comment)
+        try await network.request(to: endpoint)
+    }
+    
+    func delete(comment: Comment) async throws {
+        let endpoint = Endpoints.CommentEndpoint.delete(comment: comment)
+        try await network.request(to: endpoint)
     }
     
     init(keychainManager: KeychainManager = KeychainManager(),

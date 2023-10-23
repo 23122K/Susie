@@ -9,23 +9,23 @@ import Foundation
 import Factory
 
 @MainActor
-class SprintViewModel: ObservableObject, AsyncDataProvider {
+class SprintViewModel: ObservableObject {
     private var client: Client
     private(set) var project: ProjectDTO
     private(set) var sprint: Sprint
     
     @Published var issue: IssueGeneralDTO?
-    @Published var state: LoadingState<[IssueGeneralDTO]> = .idle
+    @Published var issues: LoadingState<[IssueGeneralDTO]> = .idle
     
     func fetch() {
-        state = .idle
+        self.issues = .idle
         Task {
             do {
-                state = .loading
+                self.issues = .loading
                 let issues = try await client.issues(sprint: sprint)
-                state = .loaded(issues)
+                self.issues = .loaded(issues)
             } catch {
-                state = .failed(error)
+                self.issues = .failed(error)
             }
         }
     }
@@ -36,7 +36,6 @@ class SprintViewModel: ObservableObject, AsyncDataProvider {
                 try await client.start(sprint: sprint)
             } catch {
                 print(error.localizedDescription)
-                state = .failed(error)
             }
         }
     }
@@ -46,7 +45,7 @@ class SprintViewModel: ObservableObject, AsyncDataProvider {
             do {
                 try await client.delete(sprint: sprint) 
             } catch {
-                state = .failed(error)
+                print(error.localizedDescription)
             }
         }
     }

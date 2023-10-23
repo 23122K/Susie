@@ -41,7 +41,7 @@ class ProjectViewModel: ObservableObject {
             self.doesExist = true
             self.project = project
         } else {
-            self.project = ProjectDTO(name: "", description: "", goal: nil)
+            self.project = ProjectDTO(name: "", description: "", goal: "")
         }
     }
 }

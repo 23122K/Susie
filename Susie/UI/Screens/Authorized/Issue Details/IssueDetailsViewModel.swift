@@ -14,6 +14,7 @@ class IssueDetailsViewModel: ObservableObject {
     private var client: Client
     private var issue: IssueGeneralDTO
     
+    @Published var comment: CommentDTO
     @Published var issueDetails: LoadingState<Issue> = .idle
     
     func fetch() {
@@ -28,10 +29,31 @@ class IssueDetailsViewModel: ObservableObject {
         })
     }
     
+    func post() {
+        Task {
+            do {
+                try await client.post(comment: comment)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func delete(comment: Comment) {
+        Task {
+            do {
+                try await client.delete(comment: comment)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
     
     
     init(issue: IssueGeneralDTO, container: Container = Container.shared) {
         self.client = container.client()
         self.issue = issue
+        self.comment = CommentDTO(issue: issue, body: String())
     }
 }

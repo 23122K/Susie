@@ -38,7 +38,6 @@ struct IssueFormView: View {
                     .focused($focusedField, equals: .description)
                     .onSubmit { focusedField = .description }
             }
-            .animation(.bouncy)
             
             ToggableSection(title: "Details", isToggled: true) {
                 ToggableSectionRowView(title: "Issue Priority") {

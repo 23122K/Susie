@@ -25,28 +25,32 @@ struct ProjectFormView: View {
                 .focused($focusedField, equals: .name)
                 .onSubmit { focusedField = .description }
             
-            TextField("Description", text: $projectViewModel.project.description, axis: .vertical)
-                .lineLimit(4...)
-                .textFieldStyle(.susieSecondaryTextField)
-                .focused($focusedField, equals: .description)
-                .onSubmit{ focusedField = .goal }
-                .padding(.bottom)
+            ToggableSection(title: "Description", isToggled: true) {
+                TextField("Project description", text: $projectViewModel.project.description, axis: .vertical)
+                    .lineLimit(4...)
+                    .textFieldStyle(.susieSecondaryTextField)
+                    .focused($focusedField, equals: .description)
+                    .onSubmit{ focusedField = .goal }
+                    .padding(.top)
+            }
             
-            //TODO: Remove constant
-//            TextField("Goal", text: $vm.goal ?? .constant("Change it"), axis: .vertical)
-//                .lineLimit(2...)
-//                .textFieldStyle(.susieSecondaryTextField)
-//                .focused($focusedField, equals: .goal)
-//                .onSubmit{ vm.save() }
-//                .padding(.bottom)
+            ToggableSection(title: "Goal", isToggled: true) {
+                TextField("Project goal", text: $projectViewModel.project.goal, axis: .vertical)
+                    .lineLimit(4...)
+                    .textFieldStyle(.susieSecondaryTextField)
+                    .focused($focusedField, equals: .goal)
+                    .padding(.top)
+                    .onSubmit{ projectViewModel.save(); dismiss() }
+            }
+            
         }
+        .toolbar(.hidden, for: .tabBar)
         .toolbar {
             Button("Save") {
                 projectViewModel.save()
                 dismiss()
             }
         }
-        
         .padding()
         .navigationTitle(projectViewModel.project.name.isEmpty ? "New project" : projectViewModel.project.name)
         .navigationBarTitleDisplayMode(.inline)

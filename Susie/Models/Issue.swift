@@ -11,7 +11,7 @@ class Issue: Identifiable, Codable {
     var description: String
     var estimation: Int32
     var reporter: User
-    var asignee: User?
+    var assignee: User?
     var priority: IssuePriority
     var status: IssueStatus
     var type: IssueType
@@ -25,7 +25,7 @@ class Issue: Identifiable, Codable {
         case description
         case estimation
         case reporter
-        case asignee
+        case assignee
         case type = "issueTypeID"
         case priority = "issuePriorityID"
         case status = "issueStatusID"
@@ -37,7 +37,7 @@ class Issue: Identifiable, Codable {
 
 extension Issue {
     func toGeneralDTO() -> IssueGeneralDTO {
-        IssueGeneralDTO(id: self.id, name: self.name, asignee: self.asignee, status: self.status, type: self.type, priority: self.priority, projectID: self.projectID, sprintID: self.sprintID)
+        IssueGeneralDTO(id: self.id, name: self.name, assignee: self.assignee, status: self.status, type: self.type, priority: self.priority, projectID: self.projectID, sprintID: self.sprintID)
     }
     
     func toDTO() -> IssueDTO {
@@ -90,7 +90,7 @@ class IssueDTO: Identifiable, Codable {
 class IssueGeneralDTO: Identifiable, Codable {
     var id: Int32
     let name: String
-    let asignee: User?
+    let assignee: User?
     let status: IssueStatus
     let type: IssueType
     let priority: IssuePriority
@@ -100,7 +100,7 @@ class IssueGeneralDTO: Identifiable, Codable {
     enum CodingKeys: String, CodingKey {
         case id
         case name
-        case asignee
+        case assignee
         case type = "issueTypeID"
         case priority = "issuePriorityID"
         case status = "issueStatusID"
@@ -108,10 +108,10 @@ class IssueGeneralDTO: Identifiable, Codable {
         case sprintID
     }
     
-    required init(id: Int32, name: String, asignee: User?, status: IssueStatus, type: IssueType, priority: IssuePriority, projectID: Int32, sprintID: Int32?) {
+    required init(id: Int32, name: String, assignee: User?, status: IssueStatus, type: IssueType, priority: IssuePriority, projectID: Int32, sprintID: Int32?) {
         self.id = id
         self.name = name
-        self.asignee = asignee
+        self.assignee = assignee
         self.status = status
         self.type = type
         self.priority = priority

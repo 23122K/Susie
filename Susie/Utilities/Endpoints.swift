@@ -322,8 +322,8 @@ enum Endpoints {
     }
     
     internal enum CommentEndpoint: Endpoint {
-        case add(comment: Comment)
-        case update(comment: Comment)
+        case post(comment: CommentDTO)
+        case update(comment: CommentDTO)
         case delete(comment: Comment)
         
         var schema: String { "http" }
@@ -340,7 +340,7 @@ enum Endpoints {
         
         var path: String {
             switch self {
-            case .add, .update:
+            case .post, .update:
                 return "comment"
             case .delete(let comment):
                 return "comment/\(comment.id)"
@@ -349,7 +349,7 @@ enum Endpoints {
         
         var method: HTTPMethod {
             switch self {
-            case .add:
+            case .post:
                 return .post
             case .update:
                 return .put
@@ -362,7 +362,7 @@ enum Endpoints {
         
         var body: Data? {
             switch self {
-            case .add(let comment), .update(let comment):
+            case .post(let comment), .update(let comment):
                 return try? encoder.encode(comment)
             default:
                 return nil

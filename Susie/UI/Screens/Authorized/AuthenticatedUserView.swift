@@ -7,23 +7,29 @@ struct AuthenticatedUserView: View {
     var body: some View {
         TabView{
             HomeView(project: project)
+                .attachPartialSheetToRoot()
                 .tabItem{
+                    Image(systemName: "house.fill")
                     Text("Home")
                 }
             
             BoardsView(project: project)
+                .attachPartialSheetToRoot()
                 .tabItem{
-                    Text("Board")
+                    Image(systemName: "chart.bar.doc.horizontal.fill")
+                    Text("Boards")
                 }
 
             BacklogView(project: project)
                 .attachPartialSheetToRoot()
                 .tabItem{
+                    Image(systemName: "doc.plaintext.fill")
                     Text("Backlog")
                 }
 
             DashboardView(project: project)
                 .tabItem{
+                    Image(systemName: "chart.bar.xaxis")
                     Text("Dashboard")
                 }
         }

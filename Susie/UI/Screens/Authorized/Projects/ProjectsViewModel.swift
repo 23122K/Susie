@@ -9,25 +9,25 @@ import SwiftUI
 import Factory
 
 @MainActor
-class ProjectsViewModel: ObservableObject, AsyncDataProvider {
+class ProjectsViewModel: ObservableObject {
     private var client: Client
     
     @Published var project: ProjectDTO?
     @Published var user: User?
     
-    @Published var state: LoadingState<[ProjectDTO]> = .idle
+    @Published var projects: LoadingState<[ProjectDTO]> = .idle
     
     func fetch() {
-        state = .idle
+        self.projects = .idle
         
         Task {
             do {
-                state = .loading
+                self.projects = .loading
                 try await Task.sleep(nanoseconds: 300_000_000)
                 let projects = try await client.projects()
-                state = .loaded(projects)
+                self.projects = .loaded(projects)
             } catch {
-                state = .failed(error)
+                self.projects = .failed(error)
             }
         }
     }

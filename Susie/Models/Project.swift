@@ -11,13 +11,11 @@ protocol ProjectEntity {
     var id: Int32 { get set }
 }
 
-//TODO: Change goal: String? to goal: String after its fixed
-
 class Project: ProjectEntity, Identifiable, Codable {
     var id: Int32
     var name: String
     var description: String
-    var goal: String?
+    var goal: String
     var members: Array<User>
     var owner: User
     
@@ -41,7 +39,7 @@ class ProjectDTO: ProjectEntity, Identifiable, Codable {
     var id: Int32
     var name: String
     var description: String
-    var goal: String?
+    var goal: String
     
     private enum CodingKeys: String, CodingKey {
         case id = "projectID"
@@ -50,7 +48,7 @@ class ProjectDTO: ProjectEntity, Identifiable, Codable {
         case goal = "projectGoal"
     }
     
-    init(id: Int32 = -1, name: String, description: String, goal: String?) {
+    init(id: Int32 = -1, name: String, description: String, goal: String) {
         self.id = id
         self.name = name
         self.description = description

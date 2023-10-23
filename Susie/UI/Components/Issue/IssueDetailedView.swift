@@ -13,7 +13,7 @@ struct IssueDetailedView: View {
     var body: some View {
         VStack {
             Text(issue.name)
-            Text(issue.asignee?.fullName ?? "Not assigned")
+            Text(issue.assignee?.fullName ?? "Not assigned")
             Text(issue.type.description)
             Text(issue.status.description)
             Text(issue.priority.description)

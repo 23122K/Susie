@@ -10,10 +10,10 @@ import Foundation
 
 @MainActor
 class DashboardViewModel: ObservableObject {
-    private(set) var user: User?
-    
     private var client: Client
-    private var project: ProjectDTO
+    
+    private(set) var project: ProjectDTO
+    private(set) var user: User?
     
     @Published var invitation: InviteRequest
     @Published var projectDetials: LoadingState<Project> = .idle
