@@ -15,7 +15,7 @@ class ProjectsViewModel: ObservableObject {
     @Published var project: ProjectDTO?
     @Published var user: User?
     
-    @Published var projects: LoadingState<[ProjectDTO]> = .idle
+    @Published var projects: Loadable<[ProjectDTO]> = .idle
     
     func fetch() {
         self.projects = .idle

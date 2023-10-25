@@ -15,7 +15,7 @@ class IssueDetailsViewModel: ObservableObject {
     private var issue: IssueGeneralDTO
     
     @Published var comment: CommentDTO
-    @Published var issueDetails: LoadingState<Issue> = .idle
+    @Published var issueDetails: Loadable<Issue> = .idle
     
     func fetch() {
         Task(priority: .high, operation: {

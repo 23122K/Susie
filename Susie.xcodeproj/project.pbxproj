@@ -108,7 +108,7 @@
 		6FFF798D2AD9F9E600630013 /* IssueDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF798C2AD9F9E600630013 /* IssueDetailsView.swift */; };
 		6FFF798F2AD9F9F300630013 /* IssueDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF798E2AD9F9F300630013 /* IssueDetailsViewModel.swift */; };
 		6FFF79912ADAA1ED00630013 /* ToggableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79902ADAA1ED00630013 /* ToggableSection.swift */; };
-		6FFF79B12ADB34BF00630013 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79B02ADB34BF00630013 /* LoadingState.swift */; };
+		6FFF79B12ADB34BF00630013 /* Loadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79B02ADB34BF00630013 /* Loadable.swift */; };
 		6FFF79BC2ADB5F2B00630013 /* IssueType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79BB2ADB5F2B00630013 /* IssueType.swift */; };
 		6FFF79BE2ADB5F3200630013 /* IssuePriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79BD2ADB5F3200630013 /* IssuePriority.swift */; };
 		6FFF79C02ADB5F3B00630013 /* IssueStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF79BF2ADB5F3B00630013 /* IssueStatus.swift */; };
@@ -235,7 +235,7 @@
 		6FFF798C2AD9F9E600630013 /* IssueDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueDetailsView.swift; sourceTree = "<group>"; };
 		6FFF798E2AD9F9F300630013 /* IssueDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueDetailsViewModel.swift; sourceTree = "<group>"; };
 		6FFF79902ADAA1ED00630013 /* ToggableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggableSection.swift; sourceTree = "<group>"; };
-		6FFF79B02ADB34BF00630013 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
+		6FFF79B02ADB34BF00630013 /* Loadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loadable.swift; sourceTree = "<group>"; };
 		6FFF79BB2ADB5F2B00630013 /* IssueType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueType.swift; sourceTree = "<group>"; };
 		6FFF79BD2ADB5F3200630013 /* IssuePriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssuePriority.swift; sourceTree = "<group>"; };
 		6FFF79BF2ADB5F3B00630013 /* IssueStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueStatus.swift; sourceTree = "<group>"; };
@@ -639,7 +639,7 @@
 		6FFF79AF2ADB34AC00630013 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
-				6FFF79B02ADB34BF00630013 /* LoadingState.swift */,
+				6FFF79B02ADB34BF00630013 /* Loadable.swift */,
 				6FFF79BB2ADB5F2B00630013 /* IssueType.swift */,
 				6FFF79BD2ADB5F3200630013 /* IssuePriority.swift */,
 				6FFF79BF2ADB5F3B00630013 /* IssueStatus.swift */,
@@ -934,7 +934,7 @@
 				6FFF798A2AD9AEAE00630013 /* TextFieldModifier.swift in Sources */,
 				6FEDB9C42AD1C7B800D44B49 /* HomeViewModel.swift in Sources */,
 				6F5F5F0F29E07E4800B9BCE6 /* CustomNavigationView.swift in Sources */,
-				6FFF79B12ADB34BF00630013 /* LoadingState.swift in Sources */,
+				6FFF79B12ADB34BF00630013 /* Loadable.swift in Sources */,
 				6F4FA1152AE6D831002297C9 /* CommentTextInputView.swift in Sources */,
 				6FD0151029DAACA0009F2A77 /* TagView.swift in Sources */,
 				6F59AEE42AAC8C6D0020977E /* RootViewModel.swift in Sources */,

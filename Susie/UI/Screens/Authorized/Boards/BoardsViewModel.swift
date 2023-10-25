@@ -15,7 +15,7 @@ class BoardsViewModel: ObservableObject {
     private var client: Client
     
     @Published var statuses: IssueStatus = .toDo
-    @Published var issues: LoadingState<[IssueGeneralDTO]> = .idle
+    @Published var issues: Loadable<[IssueGeneralDTO]> = .idle
     @Published var sprint: Sprint?
     
     func fetch() {

@@ -15,7 +15,7 @@ class SprintViewModel: ObservableObject {
     private(set) var sprint: Sprint
     
     @Published var issue: IssueGeneralDTO?
-    @Published var issues: LoadingState<[IssueGeneralDTO]> = .idle
+    @Published var issues: Loadable<[IssueGeneralDTO]> = .idle
     
     func fetch() {
         self.issues = .idle

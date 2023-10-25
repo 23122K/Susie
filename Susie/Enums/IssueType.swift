@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-protocol Tag: RawRepresentable, CaseIterable, Hashable, Codable{
+protocol Tag: RawRepresentable, CaseIterable, Hashable, Codable {
     var description: String { get }
     var color: Color { get }
 }

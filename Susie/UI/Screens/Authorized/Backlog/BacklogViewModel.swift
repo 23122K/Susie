@@ -18,8 +18,8 @@ class BacklogViewModel: ObservableObject {
     @Published var issue: IssueGeneralDTO?
     @Published var draggedIssue: IssueGeneralDTO?
     
-    @Published var sprints: LoadingState<[Sprint]> = .idle
-    @Published var issues: LoadingState<[IssueGeneralDTO]> = .idle
+    @Published var sprints: Loadable<[Sprint]> = .idle
+    @Published var issues: Loadable<[IssueGeneralDTO]> = .idle
     
     func fetch() {
         issues = .idle

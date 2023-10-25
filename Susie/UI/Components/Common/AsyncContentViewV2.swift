@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AsyncContentView<T: Any, Content: View, Placeholder: View>: View {
-    @Binding var state: LoadingState<T>
+    @Binding var state: Loadable<T>
     var content: (T) -> Content
     var placeholder: Placeholder
     var onAppear: (() -> Void)?
@@ -26,7 +26,7 @@ struct AsyncContentView<T: Any, Content: View, Placeholder: View>: View {
         }
     }
     
-    init(state: Binding<LoadingState<T>>, @ViewBuilder _ content: @escaping (T) -> Content, placeholder: Placeholder,  onAppear: (() -> Void)? = nil) {
+    init(state: Binding<Loadable<T>>, @ViewBuilder _ content: @escaping (T) -> Content, placeholder: Placeholder,  onAppear: (() -> Void)? = nil) {
         _state = state
         self.content = content
         self.placeholder = placeholder
@@ -37,7 +37,7 @@ struct AsyncContentView<T: Any, Content: View, Placeholder: View>: View {
 
 typealias DefaultPlaceholder = ProgressView<EmptyView, EmptyView>
 extension AsyncContentView where Placeholder == DefaultPlaceholder {
-    init(state: Binding<LoadingState<T>>, @ViewBuilder _ content: @escaping (T) -> Content, onAppear: (() -> Void)? = nil) {        
+    init(state: Binding<Loadable<T>>, @ViewBuilder _ content: @escaping (T) -> Content, onAppear: (() -> Void)? = nil) {        
         self.init(state: state, content, placeholder: ProgressView(), onAppear: onAppear)
     }
 }

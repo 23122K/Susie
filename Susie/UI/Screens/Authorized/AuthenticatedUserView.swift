@@ -2,7 +2,7 @@ import SwiftUI
 import PartialSheet
 
 struct AuthenticatedUserView: View {
-    let project: ProjectDTO
+    private let project: ProjectDTO
     
     var body: some View {
         TabView{

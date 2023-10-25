@@ -16,7 +16,7 @@ class DashboardViewModel: ObservableObject {
     private(set) var user: User?
     
     @Published var invitation: InviteRequest
-    @Published var projectDetials: LoadingState<Project> = .idle
+    @Published var projectDetials: Loadable<Project> = .idle
     
     func invite() {
         Task {
