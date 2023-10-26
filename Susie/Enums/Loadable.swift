@@ -13,7 +13,7 @@ enum Loadable<Value> {
     case failed(Error)
     case loaded(Value)
     
-    var isLoading: Bool {
+    var isLoading: Bool? {
         switch self {
         case .loading: return true
         default: return nil
@@ -22,7 +22,7 @@ enum Loadable<Value> {
     
     var error: Error? {
         switch self {
-        case .failed(error): return error
+        case .failed(let error): return error
         default: return nil
         }
     }

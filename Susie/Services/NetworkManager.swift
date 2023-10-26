@@ -1,6 +1,13 @@
 import Foundation
 
-actor NetworkManager {
+protocol AuthStatusDelegate: AnyObject {
+    func sessionHasExpired() 
+}
+
+class NetworkManager {
+    
+    weak var delegate: AuthStatusDelegate?
+    
     private let cache: CacheManager
     private let keychain: KeychainManager
     
@@ -46,10 +53,12 @@ actor NetworkManager {
         }
         
         guard let refreshAuth = keychain[.refreshAuth] else {
+            delegate?.sessionHasExpired()
             throw AuthError.authObjectIsMissing
         }
         
         guard refreshAuth.isValid else {
+            delegate?.sessionHasExpired()
             throw AuthError.couldNotRefreshAuthObject
         }
         
@@ -57,8 +66,14 @@ actor NetworkManager {
             defer { refreshTask = nil }
             
             let endpoint = Endpoints.AuthEndpoint.refresh(token: refreshAuth.token)
-            return try await response(from: endpoint)
+            let response: RefreshResponse = try await response(from: endpoint, authorize: false)
+            
+            keychain[.accessAuth] = Auth(token: response.accessToken, expiresIn: response.expiresIn)
+            keychain[.refreshAuth] = Auth(token: response.refreshToken, expiresIn: response.refreshExpiresIn)
+            
+            return Auth(token: response.accessToken, expiresIn: response.expiresIn)
         }
+        
         
         self.refreshTask = task
         return try await task.value
@@ -99,8 +114,7 @@ actor NetworkManager {
         //TODO: Do not cache if data is not valid
         if policy.shouldCache { cache[endpoint] = Cache(data: data, for: policy.shouldExpireIn) }
         
-        do {
-            return try decoder.decode(T.self, from: data)
+        do { return try decoder.decode(T.self, from: data)
         } catch { throw NetworkError.couldNotDecodeResponseData(type: T.self) }
     }
     
@@ -116,15 +130,14 @@ actor NetworkManager {
         }
         
         let request = authorize ? try await self.authorize(request: endpoint.request) : endpoint.request
+        
         let task = Task<Data, Error> {
             guard let (data, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
-                print("Failes here")
                 throw NetworkError.invalidHTTPResponse
             }
             
             guard (200...299).contains( response.statusCode ) else {
                 let response: APIError = try decoder.decode(APIError.self, from: data)
-                
                 throw NetworkError.failure(statusCode: response.status, message: response.description)
             }
             
@@ -132,12 +145,11 @@ actor NetworkManager {
         }
         
         cache.status[endpoint] = .ongoing(task)
-        let _  = try await task.value
-        print("Completed")
+        let _ = try await task.value
         cache.status[endpoint] = .completed
     }
     
-    init(keychainManager: KeychainManager, cacheManager: CacheManager){
+    init(keychainManager: KeychainManager, cacheManager: CacheManager) {
         self.cache = cacheManager
         self.keychain = keychainManager
     }

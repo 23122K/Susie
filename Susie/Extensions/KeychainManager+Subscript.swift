@@ -26,4 +26,9 @@ extension KeychainManager {
             }
         }
     }
+    
+    func flush() {
+        self[.accessAuth] = nil
+        self[.refreshAuth] = nil
+    }
 }

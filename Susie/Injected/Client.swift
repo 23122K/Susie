@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 
+
 class Client: ObservableObject {
     private(set) var cache: CacheManager
     private(set) var keychain: KeychainManager
@@ -28,6 +29,7 @@ class Client: ObservableObject {
     }
     
     func signOut() async {
+        keychain.flush()
         await cache.flush()
         isAuthenticated = false
     }
@@ -211,16 +213,23 @@ class Client: ObservableObject {
         self.monitor = networkMonitor
         self.network = NetworkManager(keychainManager: keychain, cacheManager: cacheManager)
 
+        network.delegate = self
         monitor.delegate = self
         monitor.start()
     }
 }
 
-extension Client: NetworkStatusDelegate {
+extension Client: NetworkStatusDelegate, AuthStatusDelegate {
     func networkStatusDidChange(to status: NetworkStatus) {
         Task {
             networkStatus = status
             cache.updateNetworkStatus(to: status)
+        }
+    }
+    
+    func sessionHasExpired() {
+        Task {
+            await signOut()
         }
     }
 }
