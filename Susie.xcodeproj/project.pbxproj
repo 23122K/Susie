@@ -25,6 +25,7 @@
 		6F32B78E2AC1E92B00D5F4E8 /* CacheManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F32B78D2AC1E92B00D5F4E8 /* CacheManagerTests.swift */; };
 		6F3667D32AD6E4D900FE17F3 /* CreateSprintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3667D22AD6E4D900FE17F3 /* CreateSprintView.swift */; };
 		6F42A3A62AEA9C86000983AD /* Refresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F42A3A52AEA9C86000983AD /* Refresh.swift */; };
+		6F42A3A92AEB0145000983AD /* CommentFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F42A3A82AEB0145000983AD /* CommentFormView.swift */; };
 		6F434EF12A9B814100D13BB6 /* NSCache+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F434EF02A9B814100D13BB6 /* NSCache+Subscript.swift */; };
 		6F4FA1032AE13A8F002297C9 /* IssueDetailedFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F4FA1022AE13A8F002297C9 /* IssueDetailedFormViewModel.swift */; };
 		6F4FA1052AE13AB7002297C9 /* TagPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F4FA1042AE13AB7002297C9 /* TagPickerView.swift */; };
@@ -154,6 +155,7 @@
 		6F32B78D2AC1E92B00D5F4E8 /* CacheManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManagerTests.swift; sourceTree = "<group>"; };
 		6F3667D22AD6E4D900FE17F3 /* CreateSprintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSprintView.swift; sourceTree = "<group>"; };
 		6F42A3A52AEA9C86000983AD /* Refresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Refresh.swift; sourceTree = "<group>"; };
+		6F42A3A82AEB0145000983AD /* CommentFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentFormView.swift; sourceTree = "<group>"; };
 		6F434EF02A9B814100D13BB6 /* NSCache+Subscript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSCache+Subscript.swift"; sourceTree = "<group>"; };
 		6F4FA1022AE13A8F002297C9 /* IssueDetailedFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueDetailedFormViewModel.swift; sourceTree = "<group>"; };
 		6F4FA1042AE13AB7002297C9 /* TagPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagPickerView.swift; sourceTree = "<group>"; };
@@ -274,6 +276,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6F42A3A72AEB0130000983AD /* Comment form */ = {
+			isa = PBXGroup;
+			children = (
+				6F42A3A82AEB0145000983AD /* CommentFormView.swift */,
+			);
+			path = "Comment form";
+			sourceTree = "<group>";
+		};
 		6F4FA1132AE6D819002297C9 /* Comments */ = {
 			isa = PBXGroup;
 			children = (
@@ -670,6 +680,7 @@
 		6FFF79C42ADB710900630013 /* Forms */ = {
 			isa = PBXGroup;
 			children = (
+				6F42A3A72AEB0130000983AD /* Comment form */,
 				6FFF79C72ADB712800630013 /* Sprint form */,
 				6FFF79C62ADB712000630013 /* Project form */,
 				6FFF79C52ADB711700630013 /* Issue form */,
@@ -931,6 +942,7 @@
 				6F8496FC2A8FAF1200A3F46A /* Backlog.swift in Sources */,
 				6FE816382A69603B005D6817 /* HomeView.swift in Sources */,
 				6FFF79C22ADB697100630013 /* Permission.swift in Sources */,
+				6F42A3A92AEB0145000983AD /* CommentFormView.swift in Sources */,
 				6FFF79C02ADB5F3B00630013 /* IssueStatus.swift in Sources */,
 				6F291EBF2AC6A841004C9A54 /* ProjectFormView.swift in Sources */,
 				6F908B102A9791D10012463A /* Endpoint+Extension.swift in Sources */,

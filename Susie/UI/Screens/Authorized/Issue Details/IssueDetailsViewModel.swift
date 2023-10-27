@@ -14,12 +14,16 @@ class IssueDetailsViewModel: ObservableObject {
     private var client: Client
     private var issue: IssueGeneralDTO
     
+    
+    @Published var commentToEdit: Comment?
+    
     @Published var comment: CommentDTO
     @Published var issueDetails: Loadable<Issue> = .idle
     
     func fetch() {
         Task(priority: .high, operation: {
             do {
+                try await Task.sleep(nanoseconds: 500_000_000)
                 issueDetails = .loading
                 let issue = try await self.client.details(issue: issue)
                 issueDetails = .loaded(issue)
@@ -33,6 +37,7 @@ class IssueDetailsViewModel: ObservableObject {
         Task {
             do {
                 try await client.post(comment: comment)
+                self.fetch()
             } catch {
                 print(error)
             }
@@ -43,6 +48,7 @@ class IssueDetailsViewModel: ObservableObject {
         Task {
             do {
                 try await client.delete(comment: comment)
+                self.fetch()
             } catch {
                 print(error)
             }

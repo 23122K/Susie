@@ -12,7 +12,6 @@ import SwipeActions
 struct IssueDetailsView: View {
     @Environment (\.dismiss) private var dismiss
     @StateObject private var vm: IssueDetailsViewModel
-    @State var test: String = ""
     
     var body: some View {
         NavigationStack {
@@ -49,48 +48,10 @@ struct IssueDetailsView: View {
                                     CommentRowView(comment: comment)
                                 }, onDelete: {
                                     vm.delete(comment: comment)
+                                }, onEdit: {
+                                    vm.comment.body = comment.body
                                 })
                             }
-//                            ForEach(issue.comments) { comment in
-//                                SwipeView(label: {
-//                                    CommentRowView(comment: comment)
-//                                }, leadingActions: { _ in
-//                                    SwipeAction(action: {
-//                                        vm.delete(comment: comment)
-//                                    }, label: { _ in
-//                                        HStack {
-//                                            Text("Delete")
-//                                                .fontWeight(.semibold)
-//                                            Image(systemName: "trash.fill")
-//                                        }
-//                                        .foregroundColor(Color.susieWhitePrimary)
-//                                    }, background: { _ in
-//                                        Color.red.opacity(0.95)
-//                                    })
-//                                    .allowSwipeToTrigger()
-//                                    
-//                                }, trailingActions: { _ in
-//                                    SwipeAction(action: {
-//            //                            vm.issue = issue
-//                                    }, label: { _ in
-//                                        HStack {
-//                                            Text("Edit")
-//                                            Image(systemName: "pencil")
-//                                        }
-//                                        .fontWeight(.semibold)
-//                                        .foregroundColor(Color.susieWhitePrimary)
-//                                    }, background: { _ in
-//                                        Color.susieBluePriamry
-//                                    })
-//                                    .allowSwipeToTrigger()
-//                                })
-//                                .swipeSpacing(10)
-//                                .swipeMinimumDistance(10)
-//                                .swipeActionsStyle(.cascade)
-//                                .swipeActionsMaskCornerRadius(9)
-//                                .swipeActionCornerRadius(9)
-//                                .padding(.horizontal)
-//                            }
                         }
                     }
                     .scrollIndicators(.hidden)

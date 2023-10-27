@@ -13,7 +13,7 @@ struct BoardsView: View {
     
     var body: some View {
         NavigationStack{
-            ScreenHeader(user: boards.user, screenTitle: boards.sprint?.name ?? "Backlog", action: {
+            ScreenHeader(user: boards.user, screenTitle: boards.sprint?.name ?? "Boards", action: {
                 isPresented.toggle()
             }, content: {
                 Menu(content: {

@@ -29,6 +29,7 @@ class BoardsViewModel: ObservableObject {
                     let issues = try await client.issues(sprint: sprint)
                     self.issues = .loaded(issues)
                 } else {
+                    self.sprint = nil
                     self.issues = .loaded([])
                 }
             } catch {
