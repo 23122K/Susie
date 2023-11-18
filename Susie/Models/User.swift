@@ -58,13 +58,9 @@ struct UserRemovalDTO: Codable {
     }
 }
 
-struct UserRole: Identifiable, Codable {
-    let id: String
-    let name: String
-}
-
-enum UserScope: String, CaseIterable {
-    case sm = "sm"
-    case dev = "client_user"
-    case none
+enum UserRole: Equatable {
+    case notDetermined
+    case sm
+    case po
+    case dev
 }

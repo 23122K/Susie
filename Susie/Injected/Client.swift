@@ -8,13 +8,15 @@ class Client: ObservableObject {
     private(set) var monitor: NetworkMonitor
     private(set) var network: NetworkManager
     
+    //TODO: To be removed
+    public static let shared: Client = Client.init()
+    
     private var decoder: JSONDecoder = JSONDecoder()
 
     private(set) var networkStatus: NetworkStatus = .connected
     
     @Published private(set) var user: User?
     
-    @Published private(set) var scope: UserScope = .none
     @Published private(set) var isAuthenticated: Bool = false {
         willSet {
             Task { self.user = try await info() }

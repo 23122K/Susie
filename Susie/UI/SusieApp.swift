@@ -10,7 +10,8 @@ struct Susie: App {
             case true:
                 ProjectsView()
             case false:
-                WelcomePageView()
+                ProjectsView()
+//                WelcomeView()
             }
         }
     }

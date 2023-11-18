@@ -5,44 +5,42 @@
 //  Created by Patryk Maciąg on 16/05/2023.
 //
 
+import ComposableArchitecture
 import SwiftUI
 
 struct SignUpFinalisationView: View {
-    @ObservedObject var vm: SignUpViewModel
-    @FocusState private var focusedField: FocusedField?
-    
-    private enum FocusedField: Hashable {
-        case password
-        case confirmPassword
-    }
+    @FocusState private var focus: SignUpFeature.State.Field?
+    let store: StoreOf<SignUpFeature>
     
     var body: some View {
-        VStack(alignment: .leading){
-            FormTitleView(title: "Create", highlighted: "password")
-            PasswordField(title: "Password", text: $vm.password, focusedField: $focusedField, equals: .password)
-                .onSubmit { focusedField = .confirmPassword }
-            
-            Divider()
-            
-            PasswordField(title: "Confirm password", text: $vm.confirmPassword, focusedField: $focusedField, equals: .confirmPassword)
-                .onSubmit { if vm.doesPasswordsMatch { vm.signUp() } }
-            
-            Button("Sign up") {
-                vm.signUp()
+        WithViewStore(store, observe: { $0 }) { viewStore in
+            VStack(alignment: .leading){
+                FormTitleView(title: "Create", highlighted: "password")
+                PasswordField(title: "Password", text: viewStore.$password, focusedField: $focus, equals: .password)
+                    .onSubmit { viewStore.send(.onPasswordSubmit) }
+                
+                Divider()
+                
+                PasswordField(title: "Confirm password", text: viewStore.$confirmPassword, focusedField: $focus, equals: .confirmPassword)
+                  .onSubmit { viewStore.send(.onConfirmPasswordSubmit) }
+                
+                //TODO: Validate that passwords match and match given requirements
+                Button("Sign up") {
+                    viewStore.send(.onSignUpButtonTapped)
+                }
+                .buttonStyle(.secondary)
+                
+                Spacer()
             }
-            .buttonStyle(.secondary)
-            .disabled(!vm.doesPasswordsMatch)
-            
-            Spacer()
+            .bind(viewStore.$focus, to: $focus)
+            .padding()
         }
-        .padding()
-        .onAppear { focusedField = .password }
     }
     
 }
 
-struct SignUpFinalisationView_Previews: PreviewProvider {
-    static var previews: some View {
-        SignUpFinalisationView(vm: SignUpViewModel())
-    }
+#Preview {
+    SignUpFinalisationView(store: Store(initialState: SignUpFeature.State()) {
+        SignUpFeature()
+    })
 }

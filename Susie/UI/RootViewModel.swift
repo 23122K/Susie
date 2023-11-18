@@ -13,7 +13,7 @@ class RootViewModel: ObservableObject {
     private var client: Client
     
     @Published var isAuthenticted: Bool = false
-    @Published var scope: UserScope = .none
+//    @Published var scope: UserScope = .none
     
     init(container: Container = Container.shared) {
         self.client = container.client()
@@ -22,9 +22,9 @@ class RootViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .assign(to: &$isAuthenticted)
         
-        client.$scope
-            .receive(on: DispatchQueue.main)
-            .assign(to: &$scope)
+//        client.$scope
+//            .receive(on: DispatchQueue.main)
+//            .assign(to: &$scope)
     }
 }
 

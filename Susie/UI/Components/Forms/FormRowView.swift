@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CustomTextField<T: Hashable, Content: View>: View {
     @Binding private var text: String
+    
     private var focusedField: FocusState<T>.Binding
     private var field: T
     

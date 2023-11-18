@@ -22,13 +22,13 @@ struct SignInResponse: Codable {
     let expiresIn: Int32
     let refreshExpiresIn: Int32
     
-    let userRoles: Array<UserRole>
+//    let userRoles: Array<UserRole>
     
     private enum CodingKeys: String, CodingKey {
         case accessToken = "access_token"
         case refreshToken = "refresh_token"
         case expiresIn = "expires_in"
         case refreshExpiresIn = "refresh_expires_in"
-        case userRoles
+//        case userRoles
     }
 }

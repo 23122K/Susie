@@ -38,7 +38,6 @@
 		6F5F5EF629DD82AB00B9BCE6 /* CustomDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5F5EF529DD82AB00B9BCE6 /* CustomDivider.swift */; };
 		6F5F5F0D29E07A8100B9BCE6 /* PasswordField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5F5F0C29E07A8100B9BCE6 /* PasswordField.swift */; };
 		6F5F5F0F29E07E4800B9BCE6 /* CustomNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5F5F0E29E07E4800B9BCE6 /* CustomNavigationView.swift */; };
-		6F5F9D5C2A129B0D00F51B8E /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5F9D5B2A129B0D00F51B8E /* SignInViewModel.swift */; };
 		6F5F9D872A13871D00F51B8E /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5F9D862A13871D00F51B8E /* SignUpViewModel.swift */; };
 		6F5F9D892A138A6300F51B8E /* SignUpFinalisationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5F9D882A138A6300F51B8E /* SignUpFinalisationView.swift */; };
 		6F5F9D8B2A139A7100F51B8E /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5F9D8A2A139A7100F51B8E /* TermsOfService.swift */; };
@@ -75,7 +74,7 @@
 		6FD0151629DAACFA009F2A77 /* PriotiryIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0151529DAACFA009F2A77 /* PriotiryIndicatorView.swift */; };
 		6FD0151829DAADDE009F2A77 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0151729DAADDE009F2A77 /* BoardView.swift */; };
 		6FD0151A29DAAE48009F2A77 /* BoardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0151929DAAE48009F2A77 /* BoardsView.swift */; };
-		6FD0151F29DAB0B7009F2A77 /* WelcomePageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0151E29DAB0B7009F2A77 /* WelcomePageView.swift */; };
+		6FD0151F29DAB0B7009F2A77 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0151E29DAB0B7009F2A77 /* WelcomeView.swift */; };
 		6FD0152129DAB0D0009F2A77 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0152029DAB0D0009F2A77 /* SignUpView.swift */; };
 		6FD0152329DAB0D9009F2A77 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0152229DAB0D9009F2A77 /* SignInView.swift */; };
 		6FD0152E29DAB67F009F2A77 /* TextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0152D29DAB67F009F2A77 /* TextButton.swift */; };
@@ -163,7 +162,6 @@
 		6F5F5EF529DD82AB00B9BCE6 /* CustomDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDivider.swift; sourceTree = "<group>"; };
 		6F5F5F0C29E07A8100B9BCE6 /* PasswordField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordField.swift; sourceTree = "<group>"; };
 		6F5F5F0E29E07E4800B9BCE6 /* CustomNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationView.swift; sourceTree = "<group>"; };
-		6F5F9D5B2A129B0D00F51B8E /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		6F5F9D862A13871D00F51B8E /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		6F5F9D882A138A6300F51B8E /* SignUpFinalisationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpFinalisationView.swift; sourceTree = "<group>"; };
 		6F5F9D8A2A139A7100F51B8E /* TermsOfService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfService.swift; sourceTree = "<group>"; };
@@ -201,7 +199,7 @@
 		6FD0151529DAACFA009F2A77 /* PriotiryIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriotiryIndicatorView.swift; sourceTree = "<group>"; };
 		6FD0151729DAADDE009F2A77 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		6FD0151929DAAE48009F2A77 /* BoardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardsView.swift; sourceTree = "<group>"; };
-		6FD0151E29DAB0B7009F2A77 /* WelcomePageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomePageView.swift; sourceTree = "<group>"; };
+		6FD0151E29DAB0B7009F2A77 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		6FD0152029DAB0D0009F2A77 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		6FD0152229DAB0D9009F2A77 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		6FD0152D29DAB67F009F2A77 /* TextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextButton.swift; sourceTree = "<group>"; };
@@ -300,7 +298,6 @@
 			isa = PBXGroup;
 			children = (
 				6FD0152229DAB0D9009F2A77 /* SignInView.swift */,
-				6F5F9D5B2A129B0D00F51B8E /* SignInViewModel.swift */,
 			);
 			path = "Sign in";
 			sourceTree = "<group>";
@@ -316,7 +313,6 @@
 		6FBF22A52AC0BECB000A4612 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				6FF702312AC48C33002A03B5 /* Unit tests */,
 				6F32B7852AC1D33E00D5F4E8 /* Mockup Data.swift */,
 				6F32B7832AC1D2FE00D5F4E8 /* ModelsTests.swift */,
 			);
@@ -469,6 +465,8 @@
 		6FEDB9B72AD1BA7000D44B49 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				6F5F9D8A2A139A7100F51B8E /* TermsOfService.swift */,
+				6F5F9D8D2A139B2600F51B8E /* UserGreetingMessange.swift */,
 				6FF149C72AA8E220005CDBF6 /* ButtonStyles.swift */,
 				6FEDB9B32AD06F6200D44B49 /* SideMenu.swift */,
 				6FD0151129DAACAF009F2A77 /* InitialsView.swift */,
@@ -592,7 +590,7 @@
 		6FF149B92AA8C5B8005CDBF6 /* Unauthorized */ = {
 			isa = PBXGroup;
 			children = (
-				6FF149C62AA8E178005CDBF6 /* Welcome Page */,
+				6FF149C62AA8E178005CDBF6 /* Welcome */,
 				6F5F5F0629E05DB700B9BCE6 /* Sign in */,
 				6F5F5F0529E05DAD00B9BCE6 /* Sign up */,
 			);
@@ -619,21 +617,12 @@
 			path = Forms;
 			sourceTree = "<group>";
 		};
-		6FF149C62AA8E178005CDBF6 /* Welcome Page */ = {
+		6FF149C62AA8E178005CDBF6 /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
-				6F5F9D8A2A139A7100F51B8E /* TermsOfService.swift */,
-				6F5F9D8D2A139B2600F51B8E /* UserGreetingMessange.swift */,
-				6FD0151E29DAB0B7009F2A77 /* WelcomePageView.swift */,
+				6FD0151E29DAB0B7009F2A77 /* WelcomeView.swift */,
 			);
-			path = "Welcome Page";
-			sourceTree = "<group>";
-		};
-		6FF702312AC48C33002A03B5 /* Unit tests */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Unit tests";
+			path = Welcome;
 			sourceTree = "<group>";
 		};
 		6FFF798B2AD9F9D200630013 /* Issue Details */ = {
@@ -851,7 +840,6 @@
 				6F291EC12AC6A965004C9A54 /* ProjectFormViewModel.swift in Sources */,
 				6F42A3A62AEA9C86000983AD /* Refresh.swift in Sources */,
 				6F5F9D8B2A139A7100F51B8E /* TermsOfService.swift in Sources */,
-				6F5F9D5C2A129B0D00F51B8E /* SignInViewModel.swift in Sources */,
 				6F895BFC2A949BCC0026438D /* KeychainManager.swift in Sources */,
 				6FD008B82A026E6E00D3B760 /* FormRowView.swift in Sources */,
 				6FE1E0F42AAB6977009136A2 /* ProjectsViewModel.swift in Sources */,
@@ -904,7 +892,7 @@
 				6FF149C22AA8CB07005CDBF6 /* Colors+Extension.swift in Sources */,
 				6F5F9D8E2A139B2600F51B8E /* UserGreetingMessange.swift in Sources */,
 				6F5F9D872A13871D00F51B8E /* SignUpViewModel.swift in Sources */,
-				6FD0151F29DAB0B7009F2A77 /* WelcomePageView.swift in Sources */,
+				6FD0151F29DAB0B7009F2A77 /* WelcomeView.swift in Sources */,
 				6F8497012A8FAF1200A3F46A /* User.swift in Sources */,
 				6F8496FF2A8FAF1200A3F46A /* Issue.swift in Sources */,
 				6FFF79C92ADD293100630013 /* AsyncContentViewV2.swift in Sources */,
