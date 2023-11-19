@@ -38,8 +38,25 @@ struct AppFeature {
     
         Reduce { state, action in
             switch action {
+            case .welcome(.signInButtonTapped):
+                state.router.append(.signIn(state.signInState))
+                return .none
+                
+            case .welcome(.signUpButtonTapped):
+                state.router.append(.signUp(state.signUpState))
+                return .none
+                
+//            case .signUp(.nextButtonTapped):
+//                state.router.append(.signUpFinalization(state.signUpState))
+//                return .none
+//    
             case .welcome, .signIn, .signUp:
                 return .none
+                
+            case .router(.element(id: _, action: .signUp(.nextButtonTapped))):
+                state.router.append(.signUpFinalization(state.signUpState))
+                return .none
+                
             case .router:
                 return .none
             }
@@ -58,6 +75,7 @@ struct AppFeature {
             case welcome(WelcomeFeature.State)
             case signIn(SignInFeature.State)
             case signUp(SignUpFeature.State)
+            case signUpFinalization(SignUpFeature.State)
             
         }
         
@@ -65,9 +83,10 @@ struct AppFeature {
             case welcome(WelcomeFeature.Action)
             case signIn(SignInFeature.Action)
             case signUp(SignUpFeature.Action)
+            case signUpFinalization(SignUpFeature.Action)
         }
         
-        var body: some Reducer<Router.State, Router.Action> {
+        var body: some ReducerOf<Self> {
             Scope(state: /State.welcome, action: /Action.welcome) {
                 WelcomeFeature()
             }
@@ -84,9 +103,38 @@ struct AppFeature {
 }
 
 struct AppView: View {
+    let store: StoreOf<AppFeature>
+    
     var body: some View {
-        NavigationStack {
-            
+        NavigationStackStore(store.scope(state: \.router, action: { .router($0) })) {
+            WithViewStore(store, observe: \.role) { viewStore in
+                WelcomeView(store: store.scope(state: \.welcomeState, action: { .welcome($0) }))
+            }
+        } destination: { state in
+            switch state {
+            case .welcome:
+                CaseLet(/AppFeature.Router.State.welcome, action: AppFeature.Router.Action.welcome) { store in
+                    WelcomeView(store: store)
+                }
+            case .signIn:
+                CaseLet(/AppFeature.Router.State.signIn, action: AppFeature.Router.Action.signIn) { store in
+                    SignInView(store: store)
+                }
+            case .signUp:
+                CaseLet(/AppFeature.Router.State.signUp, action: AppFeature.Router.Action.signUp) { store in
+                    SignUpView(store: store)
+                }
+            case .signUpFinalization:
+                CaseLet(/AppFeature.Router.State.signUpFinalization, action: AppFeature.Router.Action.signUpFinalization) { store in
+                    SignUpFinalizationView(store: store)
+                }
+            }
         }
     }
+}
+
+#Preview {
+    AppView(store: Store(initialState: AppFeature.State()) {
+      AppFeature()
+    })
 }

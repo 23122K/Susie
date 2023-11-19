@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct SignUpFinalisationView: View {
+struct SignUpFinalizationView: View {
     @FocusState private var focus: SignUpFeature.State.Field?
     let store: StoreOf<SignUpFeature>
     
@@ -40,7 +40,7 @@ struct SignUpFinalisationView: View {
 }
 
 #Preview {
-    SignUpFinalisationView(store: Store(initialState: SignUpFeature.State()) {
+    SignUpFinalizationView(store: Store(initialState: SignUpFeature.State()) {
         SignUpFeature()
     })
 }
