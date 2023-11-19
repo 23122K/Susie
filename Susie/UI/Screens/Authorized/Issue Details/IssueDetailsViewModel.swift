@@ -14,7 +14,6 @@ class IssueDetailsViewModel: ObservableObject {
     private var client: Client
     private var issue: IssueGeneralDTO
     
-    
     @Published var commentToEdit: Comment?
     
     @Published var comment: CommentDTO

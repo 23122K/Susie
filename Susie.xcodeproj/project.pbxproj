@@ -384,11 +384,11 @@
 		6FD0153129DABFB1009F2A77 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6FFF79C32ADB69C400630013 /* Requests */,
 				6FFF79B02ADB34BF00630013 /* Loadable.swift */,
 				6FFF79BB2ADB5F2B00630013 /* IssueType.swift */,
 				6FFF79BD2ADB5F3200630013 /* IssuePriority.swift */,
 				6FFF79BF2ADB5F3B00630013 /* IssueStatus.swift */,
-				6FFF79C32ADB69C400630013 /* Requests */,
 				6F8496EE2A8FAF1200A3F46A /* Backlog.swift */,
 				6F8496EC2A8FAF1200A3F46A /* Comment.swift */,
 				6F8496F12A8FAF1200A3F46A /* Issue.swift */,

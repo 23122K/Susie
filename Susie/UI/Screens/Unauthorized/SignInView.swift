@@ -60,7 +60,7 @@ struct SignInView: View {
     
     private let envelopeImage = Image(systemName: "envelope")
     
-    var body : some View {
+    var body: some View {
         WithViewStore(store, observe: { $0 }) { viewStore in
             VStack(alignment: .leading){
                 FormTitleView(title: "Log in to", highlighted: "Susie")

@@ -50,6 +50,8 @@ struct SignUpFeature {
         case onConfirmPasswordSubmit
         case onSignUpButtonTapped
         case nextButtonTapped
+        
+        case signUpRequestSent(SignUpRequest)
     }
     
     var body: some ReducerOf<Self> {
@@ -60,7 +62,8 @@ struct SignUpFeature {
             case .nextButtonTapped:
                 return .none
             case .onSignUpButtonTapped:
-                return .none
+                let credentials = SignUpRequest(firstName: state.firstName, lastName: state.lastName, email: state.email, password: state.password)
+                return .send(.signUpRequestSent(credentials))
             case .onFirstNameSubmit:
                 state.focus = .lastName
                 return .none
@@ -77,6 +80,8 @@ struct SignUpFeature {
                 state.focus = nil
                 return .send(.onSignUpButtonTapped)
             case .binding:
+                return .none
+            case .signUpRequestSent:
                 return .none
             }
         }

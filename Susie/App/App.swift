@@ -46,18 +46,15 @@ struct AppFeature {
                 state.router.append(.signUp(state.signUpState))
                 return .none
                 
-//            case .signUp(.nextButtonTapped):
-//                state.router.append(.signUpFinalization(state.signUpState))
-//                return .none
-//    
-            case .welcome, .signIn, .signUp:
-                return .none
-                
             case .router(.element(id: _, action: .signUp(.nextButtonTapped))):
                 state.router.append(.signUpFinalization(state.signUpState))
                 return .none
                 
-            case .router:
+            case .router(.element(id: _, action: .signUp(SignUpFeature.Action.onSignUpButtonTapped))):
+                print("XD")
+                return .none
+                
+            case .router, .welcome, .signIn, .signUp:
                 return .none
             }
         }
@@ -76,7 +73,6 @@ struct AppFeature {
             case signIn(SignInFeature.State)
             case signUp(SignUpFeature.State)
             case signUpFinalization(SignUpFeature.State)
-            
         }
         
         enum Action {
@@ -98,6 +94,10 @@ struct AppFeature {
             Scope(state: /State.signUp, action: /Action.signUp) {
                 SignUpFeature()
             }
+            
+            Scope(state: /State.signUpFinalization, action: /Action.signUpFinalization) {
+                SignUpFeature()
+            }
         }
     }
 }
@@ -108,7 +108,12 @@ struct AppView: View {
     var body: some View {
         NavigationStackStore(store.scope(state: \.router, action: { .router($0) })) {
             WithViewStore(store, observe: \.role) { viewStore in
-                WelcomeView(store: store.scope(state: \.welcomeState, action: { .welcome($0) }))
+                switch viewStore.state {
+                case .notDetermined:
+                    WelcomeView(store: store.scope(state: \.welcomeState, action: { .welcome($0) }))
+                default:
+                    Text("Logged")
+                }
             }
         } destination: { state in
             switch state {
