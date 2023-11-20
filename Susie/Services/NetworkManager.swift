@@ -31,7 +31,7 @@ class NetworkManager {
                 throw AuthError.authObjectIsMissing
             }
             
-            guard accessAuth.isValid else {
+            guard accessAuth.isValid() else {
                 return try await refresh()
             }
             
@@ -57,7 +57,7 @@ class NetworkManager {
             throw AuthError.authObjectIsMissing
         }
         
-        guard refreshAuth.isValid else {
+        guard refreshAuth.isValid() else {
             delegate?.sessionHasExpired()
             throw AuthError.couldNotRefreshAuthObject
         }
