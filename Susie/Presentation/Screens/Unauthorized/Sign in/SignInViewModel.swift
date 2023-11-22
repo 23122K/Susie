@@ -10,7 +10,8 @@ import Factory
 
 @MainActor
 class SignInViewModel: ObservableObject {
-    private var client: Client
+    @Injected (\.authenticationInteractor) var authenticationInteractor
+    @Injected (\.store) var store
     
     @Published var email = String()
     @Published var password = String()
@@ -28,18 +29,13 @@ class SignInViewModel: ObservableObject {
         defer { clean() }
         let credentials = SignInRequest(email: email, password: password)
         Task {
-            do { try await client.signIn(with: credentials) } catch {
-                print("Invalid credentials")
-            }
+            try await authenticationInteractor.signIn(credentials)
+            store.dispatch(.authenticate)
         }
     }
     
     func clean() {
         email = .init()
         password = .init()
-    }
-    
-    init(container: Container = Container.shared) {
-        self.client = container.client()
     }
 }

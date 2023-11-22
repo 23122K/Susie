@@ -1,7 +1,6 @@
 import Foundation
 import SwiftUI
 
-
 class Client: ObservableObject {
     private(set) var cache: CacheManager
     private(set) var keychain: KeychainManager
@@ -19,6 +18,10 @@ class Client: ObservableObject {
         willSet {
             Task { self.user = try await info() }
         }
+    }
+    
+    func toogleAuth() {
+        self.isAuthenticated = true
     }
     
     //MARK: Auth

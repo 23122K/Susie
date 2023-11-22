@@ -13,5 +13,9 @@ extension Auth {
     func isValid(currentDate: () -> Date = { Date() } ) -> Bool {
         return expiresAt > currentDate()
     }
+    
+    func hasExpired(currentDate: () -> Date = { Date() } ) -> Bool {
+        return expiresAt < currentDate()
+    }
 }
 

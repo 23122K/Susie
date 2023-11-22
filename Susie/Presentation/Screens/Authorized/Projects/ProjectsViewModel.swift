@@ -11,6 +11,7 @@ import Factory
 @MainActor
 class ProjectsViewModel: ObservableObject {
     private var client: Client
+    @Injected(\.remoteProjectDTORepository) var remoteProjectDTORepository
     
     @Published var project: ProjectDTO?
     @Published var user: User?
@@ -24,7 +25,7 @@ class ProjectsViewModel: ObservableObject {
             do {
                 self.projects = .loading
                 try await Task.sleep(nanoseconds: 300_000_000)
-                let projects = try await client.projects()
+                let projects = try await remoteProjectDTORepository.fetch()
                 self.projects = .loaded(projects)
             } catch {
                 self.projects = .failed(error)
@@ -34,7 +35,7 @@ class ProjectsViewModel: ObservableObject {
     
     func delete(project: ProjectDTO) {
         Task { 
-            try await client.delete(project: project)
+            try await remoteProjectDTORepository.delete(project: project)
             self.fetch()
         }
     }

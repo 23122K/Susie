@@ -13,7 +13,14 @@ class NetworkManager {
     
     private var refreshTask: Task<Auth, Error>?
     
-    private lazy var decoder: JSONDecoder = {
+    private lazy var decoderLazy: JSONDecoder = {
+        let decoder: JSONDecoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .customISO8601
+        
+        return decoder
+    }()
+    
+    private static var decoder: JSONDecoder = {
         let decoder: JSONDecoder = JSONDecoder()
         decoder.dateDecodingStrategy = .customISO8601
         
@@ -79,12 +86,33 @@ class NetworkManager {
         return try await task.value
     }
     
+    static func requestV2<T: Codable>(request: URLRequest, interceptor: RequestInterceptor? = nil) async throws -> T {
+        let request = try await interceptor?.intercept(request: request) ?? request
+    
+        let task = Task<Data, Error> {
+            guard let (data, response) = try await URLSession.shared.data(for: request) as? (Data, HTTPURLResponse) else {
+                throw NetworkError.invalidHTTPResponse
+            }
+            
+            guard (200...299).contains(response.statusCode) else {
+                throw NetworkError.failedWithStatusCode(response.statusCode)
+            }
+            
+            return data
+        }
+        
+        let data = try await task.value
+        
+        do { return try decoder.decode(T.self, from: data)
+        } catch { throw NetworkError.couldNotDecodeResponseData(type: T.self) }
+    }
+    
     func response<T: Codable>(from endpoint: Endpoint, authorize: Bool = true, retry: Bool = true, policy: CachePolicy = CachePolicy()) async throws -> T {
         if let status = cache.status[endpoint] {
             switch status {
             case .ongoing(let task):
                 let data = try await task.value
-                return try decoder.decode(T.self, from: data)
+                return try decoderLazy.decode(T.self, from: data)
             case .completed:
                 break
             }
@@ -100,7 +128,7 @@ class NetworkManager {
             
             guard (200...299).contains(response.statusCode) else {
                 cache.status[endpoint] = .completed
-                let response: APIError = try decoder.decode(APIError.self, from: data)
+                let response: APIError = try decoderLazy.decode(APIError.self, from: data)
                 throw NetworkError.failure(statusCode: response.status, message: response.description)
             }
             
@@ -114,7 +142,7 @@ class NetworkManager {
         //TODO: Do not cache if data is not valid
         if policy.shouldCache { cache[endpoint] = Cache(data: data, for: policy.shouldExpireIn) }
         
-        do { return try decoder.decode(T.self, from: data)
+        do { return try decoderLazy.decode(T.self, from: data)
         } catch { throw NetworkError.couldNotDecodeResponseData(type: T.self) }
     }
     
@@ -137,7 +165,7 @@ class NetworkManager {
             }
             
             guard (200...299).contains( response.statusCode ) else {
-                let response: APIError = try decoder.decode(APIError.self, from: data)
+                let response: APIError = try decoderLazy.decode(APIError.self, from: data)
                 throw NetworkError.failure(statusCode: response.status, message: response.description)
             }
             
