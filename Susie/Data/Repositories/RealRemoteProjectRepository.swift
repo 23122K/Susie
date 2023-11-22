@@ -6,13 +6,8 @@
 //
 
 import Foundation
-import Factory
 
-protocol ProtectedRepository {
-    var authenticationInterceptor: any AuthenticationInterceptor { get }
-}
-
-class RemoteProjectDTORepository: ProjectDTORepository, ProtectedRepository {
+class RealRemoteProjectRepository: RemoteProjectRepository, ProtectedRepository {
     var authenticationInterceptor: AuthenticationInterceptor
     
     func fetch() async throws -> Array<ProjectDTO> {

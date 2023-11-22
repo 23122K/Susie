@@ -59,7 +59,7 @@
 		6F908B0B2A974CA70012463A /* KeychainManager+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F908B0A2A974CA70012463A /* KeychainManager+Subscript.swift */; };
 		6F908B102A9791D10012463A /* Endpoint+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F908B0F2A9791D10012463A /* Endpoint+Extension.swift */; };
 		6FAF71502AD723F900ECCB30 /* IssueDetailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FAF714F2AD723F900ECCB30 /* IssueDetailedView.swift */; };
-		6FC3DA1B2B0BA3C1009877F9 /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3DA1A2B0BA3C1009877F9 /* AuthRepository.swift */; };
+		6FC3DA1B2B0BA3C1009877F9 /* RealRemoteAuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3DA1A2B0BA3C1009877F9 /* RealRemoteAuthRepository.swift */; };
 		6FC3DA222B0BA9AA009877F9 /* EndpointProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3DA212B0BA9AA009877F9 /* EndpointProtocol.swift */; };
 		6FC3DA252B0BACA4009877F9 /* TagProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3DA242B0BACA4009877F9 /* TagProtocol.swift */; };
 		6FC3DA292B0BAD39009877F9 /* CommentDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC3DA282B0BAD39009877F9 /* CommentDTO.swift */; };
@@ -86,12 +86,12 @@
 		6FD0152E29DAB67F009F2A77 /* TextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0152D29DAB67F009F2A77 /* TextButton.swift */; };
 		6FD0153729DAED26009F2A77 /* BacklogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0153629DAED26009F2A77 /* BacklogView.swift */; };
 		6FD91F292B0CB55100E3CE48 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F282B0CB55100E3CE48 /* NetworkService.swift */; };
-		6FD91F2C2B0CB83C00E3CE48 /* RemoteAuthRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F2B2B0CB83C00E3CE48 /* RemoteAuthRepositoryProtocol.swift */; };
+		6FD91F2C2B0CB83C00E3CE48 /* RemoteAuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F2B2B0CB83C00E3CE48 /* RemoteAuthRepository.swift */; };
 		6FD91F2E2B0CB85700E3CE48 /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F2D2B0CB85700E3CE48 /* AuthInterceptor.swift */; };
 		6FD91F302B0CB89A00E3CE48 /* RequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F2F2B0CB89A00E3CE48 /* RequestInterceptor.swift */; };
-		6FD91F322B0CBBE100E3CE48 /* RemoteProjectRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F312B0CBBE100E3CE48 /* RemoteProjectRepository.swift */; };
-		6FD91F342B0D467200E3CE48 /* ProjectDTORepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F332B0D467200E3CE48 /* ProjectDTORepository.swift */; };
-		6FD91F382B0D474400E3CE48 /* AuthInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F372B0D474400E3CE48 /* AuthInteractor.swift */; };
+		6FD91F322B0CBBE100E3CE48 /* RealRemoteProjectRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F312B0CBBE100E3CE48 /* RealRemoteProjectRepository.swift */; };
+		6FD91F342B0D467200E3CE48 /* RemoteProjectRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F332B0D467200E3CE48 /* RemoteProjectRepository.swift */; };
+		6FD91F382B0D474400E3CE48 /* RealAuthInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F372B0D474400E3CE48 /* RealAuthInteractor.swift */; };
 		6FD91F3A2B0E34C900E3CE48 /* AuthenticationInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F392B0E34C900E3CE48 /* AuthenticationInterceptor.swift */; };
 		6FD91F3D2B0E415000E3CE48 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F3C2B0E415000E3CE48 /* Store.swift */; };
 		6FD91F432B0E4B2300E3CE48 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F422B0E4B2300E3CE48 /* AppState.swift */; };
@@ -99,6 +99,19 @@
 		6FD91F472B0E4B5F00E3CE48 /* AppReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F462B0E4B5F00E3CE48 /* AppReducer.swift */; };
 		6FD91F492B0E4B9300E3CE48 /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F482B0E4B9300E3CE48 /* Reducer.swift */; };
 		6FD91F4B2B0E4C3300E3CE48 /* ProtectedRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F4A2B0E4C3300E3CE48 /* ProtectedRepository.swift */; };
+		6FD91F4D2B0E50F400E3CE48 /* AuthenticationInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F4C2B0E50F400E3CE48 /* AuthenticationInteractor.swift */; };
+		6FD91F502B0E516700E3CE48 /* RealRemoteIssueRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F4F2B0E516700E3CE48 /* RealRemoteIssueRepository.swift */; };
+		6FD91F532B0E5A4E00E3CE48 /* RealRemoteSprintRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F522B0E5A4E00E3CE48 /* RealRemoteSprintRepository.swift */; };
+		6FD91F552B0E5D6E00E3CE48 /* RealRemoteCommentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F542B0E5D6E00E3CE48 /* RealRemoteCommentRepository.swift */; };
+		6FD91F572B0E5E8600E3CE48 /* RemoteCommentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F562B0E5E8600E3CE48 /* RemoteCommentRepository.swift */; };
+		6FD91F592B0E5F1D00E3CE48 /* RemoteSprintRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F582B0E5F1D00E3CE48 /* RemoteSprintRepository.swift */; };
+		6FD91F5B2B0E5F2C00E3CE48 /* RemoteIssueRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F5A2B0E5F2C00E3CE48 /* RemoteIssueRepository.swift */; };
+		6FD91F5D2B0E62F200E3CE48 /* RealProjectInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F5C2B0E62F200E3CE48 /* RealProjectInteractor.swift */; };
+		6FD91F5F2B0E646C00E3CE48 /* ProjectInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F5E2B0E646C00E3CE48 /* ProjectInteractor.swift */; };
+		6FD91F622B0E70FF00E3CE48 /* RemoteUserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F612B0E70FF00E3CE48 /* RemoteUserRepository.swift */; };
+		6FD91F642B0E723B00E3CE48 /* RealRemoteUserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F632B0E723B00E3CE48 /* RealRemoteUserRepository.swift */; };
+		6FD91F662B0E72BB00E3CE48 /* RealUserInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F652B0E72BB00E3CE48 /* RealUserInteractor.swift */; };
+		6FD91F682B0E738E00E3CE48 /* UserInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F672B0E738E00E3CE48 /* UserInteractor.swift */; };
 		6FE1E0EC2AAB5505009136A2 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 6FE1E0EB2AAB5505009136A2 /* Factory */; };
 		6FE1E0EE2AAB5633009136A2 /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE1E0ED2AAB5633009136A2 /* Container.swift */; };
 		6FE1E0F42AAB6977009136A2 /* ProjectsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE1E0F32AAB6977009136A2 /* ProjectsViewModel.swift */; };
@@ -204,7 +217,7 @@
 		6F908B0F2A9791D10012463A /* Endpoint+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+Extension.swift"; sourceTree = "<group>"; };
 		6FAF714F2AD723F900ECCB30 /* IssueDetailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueDetailedView.swift; sourceTree = "<group>"; };
 		6FBF22A42AC0BECB000A4612 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6FC3DA1A2B0BA3C1009877F9 /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
+		6FC3DA1A2B0BA3C1009877F9 /* RealRemoteAuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealRemoteAuthRepository.swift; sourceTree = "<group>"; };
 		6FC3DA212B0BA9AA009877F9 /* EndpointProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointProtocol.swift; sourceTree = "<group>"; };
 		6FC3DA242B0BACA4009877F9 /* TagProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagProtocol.swift; sourceTree = "<group>"; };
 		6FC3DA282B0BAD39009877F9 /* CommentDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDTO.swift; sourceTree = "<group>"; };
@@ -232,12 +245,12 @@
 		6FD0152D29DAB67F009F2A77 /* TextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextButton.swift; sourceTree = "<group>"; };
 		6FD0153629DAED26009F2A77 /* BacklogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BacklogView.swift; sourceTree = "<group>"; };
 		6FD91F282B0CB55100E3CE48 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
-		6FD91F2B2B0CB83C00E3CE48 /* RemoteAuthRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteAuthRepositoryProtocol.swift; sourceTree = "<group>"; };
+		6FD91F2B2B0CB83C00E3CE48 /* RemoteAuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteAuthRepository.swift; sourceTree = "<group>"; };
 		6FD91F2D2B0CB85700E3CE48 /* AuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInterceptor.swift; sourceTree = "<group>"; };
 		6FD91F2F2B0CB89A00E3CE48 /* RequestInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptor.swift; sourceTree = "<group>"; };
-		6FD91F312B0CBBE100E3CE48 /* RemoteProjectRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteProjectRepository.swift; sourceTree = "<group>"; };
-		6FD91F332B0D467200E3CE48 /* ProjectDTORepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDTORepository.swift; sourceTree = "<group>"; };
-		6FD91F372B0D474400E3CE48 /* AuthInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInteractor.swift; sourceTree = "<group>"; };
+		6FD91F312B0CBBE100E3CE48 /* RealRemoteProjectRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealRemoteProjectRepository.swift; sourceTree = "<group>"; };
+		6FD91F332B0D467200E3CE48 /* RemoteProjectRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteProjectRepository.swift; sourceTree = "<group>"; };
+		6FD91F372B0D474400E3CE48 /* RealAuthInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealAuthInteractor.swift; sourceTree = "<group>"; };
 		6FD91F392B0E34C900E3CE48 /* AuthenticationInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationInterceptor.swift; sourceTree = "<group>"; };
 		6FD91F3C2B0E415000E3CE48 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		6FD91F422B0E4B2300E3CE48 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -245,6 +258,19 @@
 		6FD91F462B0E4B5F00E3CE48 /* AppReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReducer.swift; sourceTree = "<group>"; };
 		6FD91F482B0E4B9300E3CE48 /* Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
 		6FD91F4A2B0E4C3300E3CE48 /* ProtectedRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectedRepository.swift; sourceTree = "<group>"; };
+		6FD91F4C2B0E50F400E3CE48 /* AuthenticationInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationInteractor.swift; sourceTree = "<group>"; };
+		6FD91F4F2B0E516700E3CE48 /* RealRemoteIssueRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealRemoteIssueRepository.swift; sourceTree = "<group>"; };
+		6FD91F522B0E5A4E00E3CE48 /* RealRemoteSprintRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealRemoteSprintRepository.swift; sourceTree = "<group>"; };
+		6FD91F542B0E5D6E00E3CE48 /* RealRemoteCommentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealRemoteCommentRepository.swift; sourceTree = "<group>"; };
+		6FD91F562B0E5E8600E3CE48 /* RemoteCommentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCommentRepository.swift; sourceTree = "<group>"; };
+		6FD91F582B0E5F1D00E3CE48 /* RemoteSprintRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteSprintRepository.swift; sourceTree = "<group>"; };
+		6FD91F5A2B0E5F2C00E3CE48 /* RemoteIssueRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteIssueRepository.swift; sourceTree = "<group>"; };
+		6FD91F5C2B0E62F200E3CE48 /* RealProjectInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealProjectInteractor.swift; sourceTree = "<group>"; };
+		6FD91F5E2B0E646C00E3CE48 /* ProjectInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectInteractor.swift; sourceTree = "<group>"; };
+		6FD91F612B0E70FF00E3CE48 /* RemoteUserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteUserRepository.swift; sourceTree = "<group>"; };
+		6FD91F632B0E723B00E3CE48 /* RealRemoteUserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealRemoteUserRepository.swift; sourceTree = "<group>"; };
+		6FD91F652B0E72BB00E3CE48 /* RealUserInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealUserInteractor.swift; sourceTree = "<group>"; };
+		6FD91F672B0E738E00E3CE48 /* UserInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInteractor.swift; sourceTree = "<group>"; };
 		6FE1E0ED2AAB5633009136A2 /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
 		6FE1E0F32AAB6977009136A2 /* ProjectsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsViewModel.swift; sourceTree = "<group>"; };
 		6FE1E0F52AAB6980009136A2 /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
@@ -355,8 +381,12 @@
 		6FC3DA192B0BA3AD009877F9 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				6FC3DA1A2B0BA3C1009877F9 /* AuthRepository.swift */,
-				6FD91F312B0CBBE100E3CE48 /* RemoteProjectRepository.swift */,
+				6FC3DA1A2B0BA3C1009877F9 /* RealRemoteAuthRepository.swift */,
+				6FD91F312B0CBBE100E3CE48 /* RealRemoteProjectRepository.swift */,
+				6FD91F4F2B0E516700E3CE48 /* RealRemoteIssueRepository.swift */,
+				6FD91F522B0E5A4E00E3CE48 /* RealRemoteSprintRepository.swift */,
+				6FD91F542B0E5D6E00E3CE48 /* RealRemoteCommentRepository.swift */,
+				6FD91F632B0E723B00E3CE48 /* RealRemoteUserRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -389,12 +419,19 @@
 				6FFF79B02ADB34BF00630013 /* LoadableProtocol.swift */,
 				6FC3DA212B0BA9AA009877F9 /* EndpointProtocol.swift */,
 				6FC3DA242B0BACA4009877F9 /* TagProtocol.swift */,
-				6FD91F2B2B0CB83C00E3CE48 /* RemoteAuthRepositoryProtocol.swift */,
-				6FD91F2F2B0CB89A00E3CE48 /* RequestInterceptor.swift */,
-				6FD91F332B0D467200E3CE48 /* ProjectDTORepository.swift */,
-				6FD91F392B0E34C900E3CE48 /* AuthenticationInterceptor.swift */,
 				6FD91F482B0E4B9300E3CE48 /* Reducer.swift */,
+				6FD91F4C2B0E50F400E3CE48 /* AuthenticationInteractor.swift */,
+				6FD91F5E2B0E646C00E3CE48 /* ProjectInteractor.swift */,
+				6FD91F672B0E738E00E3CE48 /* UserInteractor.swift */,
+				6FD91F2F2B0CB89A00E3CE48 /* RequestInterceptor.swift */,
+				6FD91F392B0E34C900E3CE48 /* AuthenticationInterceptor.swift */,
 				6FD91F4A2B0E4C3300E3CE48 /* ProtectedRepository.swift */,
+				6FD91F2B2B0CB83C00E3CE48 /* RemoteAuthRepository.swift */,
+				6FD91F332B0D467200E3CE48 /* RemoteProjectRepository.swift */,
+				6FD91F562B0E5E8600E3CE48 /* RemoteCommentRepository.swift */,
+				6FD91F582B0E5F1D00E3CE48 /* RemoteSprintRepository.swift */,
+				6FD91F5A2B0E5F2C00E3CE48 /* RemoteIssueRepository.swift */,
+				6FD91F612B0E70FF00E3CE48 /* RemoteUserRepository.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -503,6 +540,8 @@
 		6FD91F352B0D46E700E3CE48 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				6FE1E0ED2AAB5633009136A2 /* Container.swift */,
+				6FD014F429DAA6DC009F2A77 /* SusieApp.swift */,
 				6FD91F3C2B0E415000E3CE48 /* Store.swift */,
 				6FD91F422B0E4B2300E3CE48 /* AppState.swift */,
 				6FD91F442B0E4B3400E3CE48 /* AppAction.swift */,
@@ -514,7 +553,9 @@
 		6FD91F362B0D471900E3CE48 /* Interactors */ = {
 			isa = PBXGroup;
 			children = (
-				6FD91F372B0D474400E3CE48 /* AuthInteractor.swift */,
+				6FD91F372B0D474400E3CE48 /* RealAuthInteractor.swift */,
+				6FD91F5C2B0E62F200E3CE48 /* RealProjectInteractor.swift */,
+				6FD91F652B0E72BB00E3CE48 /* RealUserInteractor.swift */,
 			);
 			path = Interactors;
 			sourceTree = "<group>";
@@ -523,7 +564,6 @@
 			isa = PBXGroup;
 			children = (
 				6F59AEE12AAC8C570020977E /* Client.swift */,
-				6FE1E0ED2AAB5633009136A2 /* Container.swift */,
 			);
 			path = Injected;
 			sourceTree = "<group>";
@@ -643,7 +683,6 @@
 		6FF149B32AA8C48D005CDBF6 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				6FD014F429DAA6DC009F2A77 /* SusieApp.swift */,
 				6FF149B52AA8C4AD005CDBF6 /* Screens */,
 				6FF149B72AA8C53A005CDBF6 /* Components */,
 			);
@@ -908,7 +947,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6FD0151229DAACAF009F2A77 /* InitialsView.swift in Sources */,
-				6FC3DA1B2B0BA3C1009877F9 /* AuthRepository.swift in Sources */,
+				6FC3DA1B2B0BA3C1009877F9 /* RealRemoteAuthRepository.swift in Sources */,
 				6F5F5F0D29E07A8100B9BCE6 /* PasswordField.swift in Sources */,
 				6FD008C42A02C0D800D3B760 /* DashboardView.swift in Sources */,
 				6FD0151629DAACFA009F2A77 /* PriotiryIndicatorView.swift in Sources */,
@@ -928,6 +967,7 @@
 				6FFF79D62ADD52F200630013 /* IssueRowPlaceholderView.swift in Sources */,
 				6F8496F92A8FAF1200A3F46A /* Project.swift in Sources */,
 				6FFF79D22ADD4C3C00630013 /* ProjectRowPlaceolderView.swift in Sources */,
+				6FD91F4D2B0E50F400E3CE48 /* AuthenticationInteractor.swift in Sources */,
 				6FD0152E29DAB67F009F2A77 /* TextButton.swift in Sources */,
 				6FE517A22A9A435A001A5EDF /* URL+Extension.swift in Sources */,
 				6F895BFE2A949C110026438D /* Auth.swift in Sources */,
@@ -937,6 +977,8 @@
 				6FD91F3A2B0E34C900E3CE48 /* AuthenticationInterceptor.swift in Sources */,
 				6F5F9D5C2A129B0D00F51B8E /* SignInViewModel.swift in Sources */,
 				6F895BFC2A949BCC0026438D /* KeychainManager.swift in Sources */,
+				6FD91F5B2B0E5F2C00E3CE48 /* RemoteIssueRepository.swift in Sources */,
+				6FD91F592B0E5F1D00E3CE48 /* RemoteSprintRepository.swift in Sources */,
 				6FD008B82A026E6E00D3B760 /* FormRowView.swift in Sources */,
 				6FE1E0F42AAB6977009136A2 /* ProjectsViewModel.swift in Sources */,
 				6F59AEE22AAC8C570020977E /* Client.swift in Sources */,
@@ -949,10 +991,13 @@
 				6F8497052A8FAF1200A3F46A /* SignIn.swift in Sources */,
 				6FFF79D82ADD557800630013 /* IssuePlaceholderView.swift in Sources */,
 				6FD91F2E2B0CB85700E3CE48 /* AuthInterceptor.swift in Sources */,
+				6FD91F5F2B0E646C00E3CE48 /* ProjectInteractor.swift in Sources */,
 				6FE1E0EE2AAB5633009136A2 /* Container.swift in Sources */,
 				6F4FA1052AE13AB7002297C9 /* TagPickerView.swift in Sources */,
 				6F5F5EE929DC472100B9BCE6 /* NetworkManager.swift in Sources */,
-				6FD91F342B0D467200E3CE48 /* ProjectDTORepository.swift in Sources */,
+				6FD91F572B0E5E8600E3CE48 /* RemoteCommentRepository.swift in Sources */,
+				6FD91F532B0E5A4E00E3CE48 /* RealRemoteSprintRepository.swift in Sources */,
+				6FD91F342B0D467200E3CE48 /* RemoteProjectRepository.swift in Sources */,
 				6FFF79BE2ADB5F3200630013 /* IssuePriority.swift in Sources */,
 				6FAF71502AD723F900ECCB30 /* IssueDetailedView.swift in Sources */,
 				6F895C202A9501770026438D /* Auth+Extension.swift in Sources */,
@@ -962,10 +1007,11 @@
 				6FD91F432B0E4B2300E3CE48 /* AppState.swift in Sources */,
 				6FF702332AC559EF002A03B5 /* BoardsViewModel.swift in Sources */,
 				6FE1E0F82AAB69AA009136A2 /* ProjectRowView.swift in Sources */,
-				6FD91F322B0CBBE100E3CE48 /* RemoteProjectRepository.swift in Sources */,
+				6FD91F322B0CBBE100E3CE48 /* RealRemoteProjectRepository.swift in Sources */,
 				6FEDB9B42AD06F6200D44B49 /* SideMenu.swift in Sources */,
 				6FD91F302B0CB89A00E3CE48 /* RequestInterceptor.swift in Sources */,
 				6F4FA1032AE13A8F002297C9 /* IssueDetailedFormViewModel.swift in Sources */,
+				6FD91F662B0E72BB00E3CE48 /* RealUserInteractor.swift in Sources */,
 				6FE517A02A9A42D4001A5EDF /* CacheManager+Subscript.swift in Sources */,
 				6FD91F452B0E4B3400E3CE48 /* AppAction.swift in Sources */,
 				6F63307D2A71A60600719862 /* SprintDropDelegate.swift in Sources */,
@@ -973,8 +1019,9 @@
 				6FD0150E29DAAC8E009F2A77 /* IssueRowView.swift in Sources */,
 				6F434EF12A9B814100D13BB6 /* NSCache+Subscript.swift in Sources */,
 				6FD0151829DAADDE009F2A77 /* BoardView.swift in Sources */,
-				6FD91F2C2B0CB83C00E3CE48 /* RemoteAuthRepositoryProtocol.swift in Sources */,
+				6FD91F2C2B0CB83C00E3CE48 /* RemoteAuthRepository.swift in Sources */,
 				6F8497042A8FAF1200A3F46A /* Sprint.swift in Sources */,
+				6FD91F622B0E70FF00E3CE48 /* RemoteUserRepository.swift in Sources */,
 				6FD0152329DAB0D9009F2A77 /* SignInView.swift in Sources */,
 				6FC3DA2E2B0BAD9F009877F9 /* IssueGeneralDTO.swift in Sources */,
 				6FEDB9AF2AD0225700D44B49 /* Date+Extension.swift in Sources */,
@@ -985,7 +1032,9 @@
 				6FD008B22A0266AE00D3B760 /* Checkbox.swift in Sources */,
 				6FC3DA2B2B0BAD76009877F9 /* IssueDTO.swift in Sources */,
 				6FC3DA222B0BA9AA009877F9 /* EndpointProtocol.swift in Sources */,
+				6FD91F682B0E738E00E3CE48 /* UserInteractor.swift in Sources */,
 				6FD91F3D2B0E415000E3CE48 /* Store.swift in Sources */,
+				6FD91F5D2B0E62F200E3CE48 /* RealProjectInteractor.swift in Sources */,
 				6FD0153729DAED26009F2A77 /* BacklogView.swift in Sources */,
 				6F895C232A9512850026438D /* CacheManager.swift in Sources */,
 				6FEC168E2AC86BD8006C7604 /* SprintView.swift in Sources */,
@@ -997,6 +1046,7 @@
 				6F4FA1172AE6DB9A002297C9 /* CommentRowView.swift in Sources */,
 				6F4FA1092AE18D9F002297C9 /* Binding+Extension.swift in Sources */,
 				6FC3DA332B0BAF7A009877F9 /* Array+Extension.swift in Sources */,
+				6FD91F642B0E723B00E3CE48 /* RealRemoteUserRepository.swift in Sources */,
 				6FF149C22AA8CB07005CDBF6 /* Colors+Extension.swift in Sources */,
 				6F5F9D8E2A139B2600F51B8E /* UserGreetingMessange.swift in Sources */,
 				6F5F9D872A13871D00F51B8E /* SignUpViewModel.swift in Sources */,
@@ -1007,6 +1057,7 @@
 				6F8496FF2A8FAF1200A3F46A /* Issue.swift in Sources */,
 				6FFF79C92ADD293100630013 /* AsyncContentViewV2.swift in Sources */,
 				6F291EB92AC594CB004C9A54 /* IssueFormViewModel.swift in Sources */,
+				6FD91F502B0E516700E3CE48 /* RealRemoteIssueRepository.swift in Sources */,
 				6FD014F529DAA6DC009F2A77 /* SusieApp.swift in Sources */,
 				6FFF79D02ADD4BF300630013 /* String+Extension.swift in Sources */,
 				6FD91F292B0CB55100E3CE48 /* NetworkService.swift in Sources */,
@@ -1022,13 +1073,14 @@
 				6F291EBF2AC6A841004C9A54 /* ProjectFormView.swift in Sources */,
 				6F908B102A9791D10012463A /* Endpoint+Extension.swift in Sources */,
 				6F8496FA2A8FAF1200A3F46A /* Comment.swift in Sources */,
-				6FD91F382B0D474400E3CE48 /* AuthInteractor.swift in Sources */,
+				6FD91F382B0D474400E3CE48 /* RealAuthInteractor.swift in Sources */,
 				6FFF798A2AD9AEAE00630013 /* TextFieldModifier.swift in Sources */,
 				6FEDB9C42AD1C7B800D44B49 /* HomeViewModel.swift in Sources */,
 				6FC3DA292B0BAD39009877F9 /* CommentDTO.swift in Sources */,
 				6F5F5F0F29E07E4800B9BCE6 /* CustomNavigationView.swift in Sources */,
 				6FFF79B12ADB34BF00630013 /* LoadableProtocol.swift in Sources */,
 				6F4FA1152AE6D831002297C9 /* CommentTextInputView.swift in Sources */,
+				6FD91F552B0E5D6E00E3CE48 /* RealRemoteCommentRepository.swift in Sources */,
 				6FD0151029DAACA0009F2A77 /* TagView.swift in Sources */,
 				6F5F5EEB29DC88BB00B9BCE6 /* AuthenticatedUserView.swift in Sources */,
 			);

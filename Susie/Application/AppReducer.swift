@@ -14,6 +14,10 @@ struct AppReducer: Reducer {
             state.isAuthenticated = true
         case .deauthenticate:
             state.isAuthenticated = false
+        case let .setUser(user):
+            state.user = user
+        case let .setUserVisibilityScope(scope):
+            state.scope = scope
         }
     }
 }

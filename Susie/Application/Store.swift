@@ -7,6 +7,8 @@
 
 import Foundation
 
+typealias AppStore = Store<AppState, AppAction>
+
 final class Store<State, Action>: ObservableObject {
     @Published private(set) var state: State
     

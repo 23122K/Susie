@@ -9,4 +9,6 @@ import Foundation
 
 struct AppState: Equatable {
     var isAuthenticated: Bool = false
+    var user: User?
+    var scope: UserScope = .none
 }

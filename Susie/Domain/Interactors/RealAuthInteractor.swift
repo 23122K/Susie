@@ -8,16 +8,12 @@
 import Foundation
 import Factory
 
-protocol AuthenticationInteractor {
-    var authenticationRepository: any RemoteAuthRepository { get }
-}
-
 class RealAuthenticationInteractor: AuthenticationInteractor {
-    var authenticationRepository: RemoteAuthRepository
+    var repository: RemoteAuthRepository
     @Injected(\.keychainManager) var keychain
     
     func signIn(_ request: SignInRequest) async throws {
-        let response = try await authenticationRepository.signIn(request)
+        let response = try await repository.signIn(request)
         
         keychain[.accessAuth] = Auth(token: response.accessToken, expiresIn: response.expiresIn)
         keychain[.refreshAuth] = Auth(token: response.refreshToken, expiresIn: response.refreshExpiresIn)
@@ -25,17 +21,17 @@ class RealAuthenticationInteractor: AuthenticationInteractor {
     }
     
     func signUp(_ request: SignUpRequest) async throws {
-        let _ = try await authenticationRepository.signUp(request)
+        let _ = try await repository.signUp(request)
     }
     
     func refreshAuth(_ auth: Auth) async throws {
-        let response = try await authenticationRepository.refreshAuth(auth)
+        let response = try await repository.refreshAuth(auth)
         
         keychain[.accessAuth] = Auth(token: response.accessToken, expiresIn: response.expiresIn)
         keychain[.refreshAuth] = Auth(token: response.refreshToken, expiresIn: response.refreshExpiresIn)
     }
     
-    init(authenticationRepository: some RemoteAuthRepository) {
-        self.authenticationRepository = authenticationRepository
+    init(repository: some RemoteAuthRepository) {
+        self.repository = repository
     }
 }

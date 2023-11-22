@@ -3,7 +3,7 @@ import Factory
 
 @main
 struct Susie: App {
-    @StateObject private var store: Store<AppState, AppAction> = Container.shared.store.resolve()
+    @StateObject private var store: Store<AppState, AppAction> = Container.shared.appStore.resolve()
     
     var body: some Scene {
         WindowGroup {

@@ -9,18 +9,18 @@ import SwiftUI
 import SwipeActions
 
 struct ProjectsView: View {
-    @StateObject private var projectsViewModel = ProjectsViewModel()
+    @ObservedObject private var vm = ViewModel()
     @State private var isShown = false
     
     var body: some View {
         NavigationStack {
             HStack(alignment: .lastTextBaseline) {
-                ScreenHeader(user: projectsViewModel.user, screenTitle: "Projects", action: {
+                ScreenHeader(user: vm.appStore.state.user, screenTitle: "Projects", action: {
                     isShown.toggle()
                 }, content: {
                     NavigationLink(destination: {
                         ProjectFormView()
-                            .onDisappear { projectsViewModel.fetch() }
+                            .onDisappear { vm.fetch() }
                     }, label: {
                         Image(systemName: "plus")
                             .scaleEffect(1.1)
@@ -30,13 +30,13 @@ struct ProjectsView: View {
             
             
             ScrollView {
-                AsyncContentView(state: $projectsViewModel.projects, { projects in
+                AsyncContentView(state: $vm.projects, { projects in
                     ForEach(projects) { project in
                         SwipeView(label: {
                             ProjectRowView(project: project)
                         }, leadingActions: { _ in
                             SwipeAction(action: {
-                                projectsViewModel.delete(project: project)
+                                vm.delete(project: project)
                             }, label: { _ in
                                 HStack {
                                     Text("Delete")
@@ -56,20 +56,20 @@ struct ProjectsView: View {
                         .swipeActionsMaskCornerRadius(9)
                         .swipeActionCornerRadius(9)
                         .padding(.horizontal)
-                        .onTapGesture { projectsViewModel.project = project }
+                        .onTapGesture { vm.project = project }
                 }
                 }, placeholder: ProjectPlaceholderView(), onAppear: {
-                    projectsViewModel.fetch()
+                    vm.fetch()
                 })
             }
             .refreshable {
-                projectsViewModel.fetch()
+                vm.fetch()
             }
         }
         .sideMenu(isPresented: $isShown, menuContent: {
             VStack(alignment: .leading) {
                 HStack {
-                    Text(projectsViewModel.user?.fullName ?? "User full name")
+                    Text(vm.appStore.state.user?.fullName ?? "User full name")
                 }
                 
                 Text("Settings")
@@ -78,7 +78,7 @@ struct ProjectsView: View {
             .padding()
             .frame(maxWidth: .infinity, alignment: .leading)
         })
-        .fullScreenCover(item: $projectsViewModel.project) { project in
+        .fullScreenCover(item: $vm.project) { project in
             AuthenticatedUserView(project: project)
         }
     }

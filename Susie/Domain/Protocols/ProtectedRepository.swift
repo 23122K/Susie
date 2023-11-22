@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+protocol ProtectedRepository {
+    var authenticationInterceptor: any AuthenticationInterceptor { get }
+}

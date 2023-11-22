@@ -10,8 +10,8 @@ import Factory
 
 @MainActor
 class SignInViewModel: ObservableObject {
-    @Injected (\.authenticationInteractor) var authenticationInteractor
-    @Injected (\.store) var store
+    @Injected (\.authenticationInteractor) private var authenticationInteractor
+    @Injected (\.appStore) private var appStore
     
     @Published var email = String()
     @Published var password = String()
@@ -30,7 +30,7 @@ class SignInViewModel: ObservableObject {
         let credentials = SignInRequest(email: email, password: password)
         Task {
             try await authenticationInteractor.signIn(credentials)
-            store.dispatch(.authenticate)
+            appStore.dispatch(.authenticate)
         }
     }
     
