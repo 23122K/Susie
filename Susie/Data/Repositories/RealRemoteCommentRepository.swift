@@ -8,24 +8,26 @@
 import Foundation
 
 class RealRemoteCommentRepository: RemoteCommentRepository, ProtectedRepository {
+    var session: URLSession
     var authenticationInterceptor: AuthenticationInterceptor
     
     func create(comment: CommentDTO) async throws {
         let endpoint = Endpoints.CommentEndpoint.post(comment: comment)
-        try await NetworkService.request(request: endpoint.request, interceptor: authenticationInterceptor)
+        return try await data(for: endpoint.request, interceptor: authenticationInterceptor)
     }
     
     func update(comment: CommentDTO) async throws -> Comment {
         let endpoint = Endpoints.CommentEndpoint.update(comment: comment)
-        return try await NetworkService.request(request: endpoint.request, interceptor: authenticationInterceptor)
+        return try await data(for: endpoint.request, interceptor: authenticationInterceptor).decode(Comment.self)
     }
     
     func delete(comment: Comment) async throws {
         let endpoint = Endpoints.CommentEndpoint.delete(comment: comment)
-        try await NetworkService.request(request: endpoint.request, interceptor: authenticationInterceptor)
+        return try await data(for: endpoint.request, interceptor: authenticationInterceptor)
     }
     
-    init(authenticationInterceptor: some AuthenticationInterceptor) {
+    init(session: URLSession = URLSession.shared, authenticationInterceptor: some AuthenticationInterceptor) {
+        self.session = session
         self.authenticationInterceptor = authenticationInterceptor
     }
 }

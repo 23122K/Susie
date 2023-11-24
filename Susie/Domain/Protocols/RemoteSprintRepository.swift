@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol RemoteSprintRepository {
+protocol RemoteSprintRepository: RemoteRepository {
     func update(sprint: Sprint) async throws -> Sprint
     func create(sprint: Sprint) async throws -> Sprint
     func delete(sprint: Sprint) async throws

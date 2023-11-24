@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol RemoteIssueRepository {
+protocol RemoteIssueRepository: RemoteRepository {
     func fetchIssuesFromSprint(_ sprint: Sprint) async throws -> IssueGeneralDTO
     func fetchIssuesAssignedToSignedUser() async throws -> IssueGeneralDTO
     func fetchIssuesFromProductBacklog(project: any ProjectEntity) async throws -> IssueGeneralDTO

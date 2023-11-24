@@ -16,8 +16,6 @@
 		6F291EBF2AC6A841004C9A54 /* ProjectFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EBE2AC6A841004C9A54 /* ProjectFormView.swift */; };
 		6F291EC12AC6A965004C9A54 /* ProjectFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EC02AC6A965004C9A54 /* ProjectFormViewModel.swift */; };
 		6F291EC32AC6BE34004C9A54 /* ScreenHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F291EC22AC6BE34004C9A54 /* ScreenHeader.swift */; };
-		6F32B7842AC1D2FE00D5F4E8 /* ModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F32B7832AC1D2FE00D5F4E8 /* ModelsTests.swift */; };
-		6F32B7862AC1D33E00D5F4E8 /* Mockup Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F32B7852AC1D33E00D5F4E8 /* Mockup Data.swift */; };
 		6F3667D32AD6E4D900FE17F3 /* CreateSprintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3667D22AD6E4D900FE17F3 /* CreateSprintView.swift */; };
 		6F42A3A62AEA9C86000983AD /* Refresh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F42A3A52AEA9C86000983AD /* Refresh.swift */; };
 		6F42A3A92AEB0145000983AD /* CommentFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F42A3A82AEB0145000983AD /* CommentFormView.swift */; };
@@ -85,7 +83,6 @@
 		6FD0152329DAB0D9009F2A77 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0152229DAB0D9009F2A77 /* SignInView.swift */; };
 		6FD0152E29DAB67F009F2A77 /* TextButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0152D29DAB67F009F2A77 /* TextButton.swift */; };
 		6FD0153729DAED26009F2A77 /* BacklogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD0153629DAED26009F2A77 /* BacklogView.swift */; };
-		6FD91F292B0CB55100E3CE48 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F282B0CB55100E3CE48 /* NetworkService.swift */; };
 		6FD91F2C2B0CB83C00E3CE48 /* RemoteAuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F2B2B0CB83C00E3CE48 /* RemoteAuthRepository.swift */; };
 		6FD91F2E2B0CB85700E3CE48 /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F2D2B0CB85700E3CE48 /* AuthInterceptor.swift */; };
 		6FD91F302B0CB89A00E3CE48 /* RequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F2F2B0CB89A00E3CE48 /* RequestInterceptor.swift */; };
@@ -112,6 +109,7 @@
 		6FD91F642B0E723B00E3CE48 /* RealRemoteUserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F632B0E723B00E3CE48 /* RealRemoteUserRepository.swift */; };
 		6FD91F662B0E72BB00E3CE48 /* RealUserInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F652B0E72BB00E3CE48 /* RealUserInteractor.swift */; };
 		6FD91F682B0E738E00E3CE48 /* UserInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F672B0E738E00E3CE48 /* UserInteractor.swift */; };
+		6FD91F6C2B10E64C00E3CE48 /* RemoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F6B2B10E64C00E3CE48 /* RemoteRepository.swift */; };
 		6FE1E0EC2AAB5505009136A2 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 6FE1E0EB2AAB5505009136A2 /* Factory */; };
 		6FE1E0EE2AAB5633009136A2 /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE1E0ED2AAB5633009136A2 /* Container.swift */; };
 		6FE1E0F42AAB6977009136A2 /* ProjectsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE1E0F32AAB6977009136A2 /* ProjectsViewModel.swift */; };
@@ -174,8 +172,6 @@
 		6F291EBE2AC6A841004C9A54 /* ProjectFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFormView.swift; sourceTree = "<group>"; };
 		6F291EC02AC6A965004C9A54 /* ProjectFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectFormViewModel.swift; sourceTree = "<group>"; };
 		6F291EC22AC6BE34004C9A54 /* ScreenHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenHeader.swift; sourceTree = "<group>"; };
-		6F32B7832AC1D2FE00D5F4E8 /* ModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsTests.swift; sourceTree = "<group>"; };
-		6F32B7852AC1D33E00D5F4E8 /* Mockup Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mockup Data.swift"; sourceTree = "<group>"; };
 		6F3667D22AD6E4D900FE17F3 /* CreateSprintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSprintView.swift; sourceTree = "<group>"; };
 		6F42A3A52AEA9C86000983AD /* Refresh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Refresh.swift; sourceTree = "<group>"; };
 		6F42A3A82AEB0145000983AD /* CommentFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentFormView.swift; sourceTree = "<group>"; };
@@ -244,7 +240,6 @@
 		6FD0152229DAB0D9009F2A77 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		6FD0152D29DAB67F009F2A77 /* TextButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextButton.swift; sourceTree = "<group>"; };
 		6FD0153629DAED26009F2A77 /* BacklogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BacklogView.swift; sourceTree = "<group>"; };
-		6FD91F282B0CB55100E3CE48 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		6FD91F2B2B0CB83C00E3CE48 /* RemoteAuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteAuthRepository.swift; sourceTree = "<group>"; };
 		6FD91F2D2B0CB85700E3CE48 /* AuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInterceptor.swift; sourceTree = "<group>"; };
 		6FD91F2F2B0CB89A00E3CE48 /* RequestInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptor.swift; sourceTree = "<group>"; };
@@ -271,6 +266,7 @@
 		6FD91F632B0E723B00E3CE48 /* RealRemoteUserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealRemoteUserRepository.swift; sourceTree = "<group>"; };
 		6FD91F652B0E72BB00E3CE48 /* RealUserInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealUserInteractor.swift; sourceTree = "<group>"; };
 		6FD91F672B0E738E00E3CE48 /* UserInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInteractor.swift; sourceTree = "<group>"; };
+		6FD91F6B2B10E64C00E3CE48 /* RemoteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteRepository.swift; sourceTree = "<group>"; };
 		6FE1E0ED2AAB5633009136A2 /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
 		6FE1E0F32AAB6977009136A2 /* ProjectsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsViewModel.swift; sourceTree = "<group>"; };
 		6FE1E0F52AAB6980009136A2 /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
@@ -372,8 +368,6 @@
 		6FBF22A52AC0BECB000A4612 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				6F32B7852AC1D33E00D5F4E8 /* Mockup Data.swift */,
-				6F32B7832AC1D2FE00D5F4E8 /* ModelsTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -432,6 +426,7 @@
 				6FD91F582B0E5F1D00E3CE48 /* RemoteSprintRepository.swift */,
 				6FD91F5A2B0E5F2C00E3CE48 /* RemoteIssueRepository.swift */,
 				6FD91F612B0E70FF00E3CE48 /* RemoteUserRepository.swift */,
+				6FD91F6B2B10E64C00E3CE48 /* RemoteRepository.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -674,7 +669,6 @@
 				6F5F5EE829DC472100B9BCE6 /* NetworkManager.swift */,
 				6F895BFB2A949BCC0026438D /* KeychainManager.swift */,
 				6F895C222A9512850026438D /* CacheManager.swift */,
-				6FD91F282B0CB55100E3CE48 /* NetworkService.swift */,
 				6FD91F2D2B0CB85700E3CE48 /* AuthInterceptor.swift */,
 			);
 			path = Services;
@@ -937,8 +931,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F32B7862AC1D33E00D5F4E8 /* Mockup Data.swift in Sources */,
-				6F32B7842AC1D2FE00D5F4E8 /* ModelsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -977,6 +969,7 @@
 				6FD91F3A2B0E34C900E3CE48 /* AuthenticationInterceptor.swift in Sources */,
 				6F5F9D5C2A129B0D00F51B8E /* SignInViewModel.swift in Sources */,
 				6F895BFC2A949BCC0026438D /* KeychainManager.swift in Sources */,
+				6FD91F6C2B10E64C00E3CE48 /* RemoteRepository.swift in Sources */,
 				6FD91F5B2B0E5F2C00E3CE48 /* RemoteIssueRepository.swift in Sources */,
 				6FD91F592B0E5F1D00E3CE48 /* RemoteSprintRepository.swift in Sources */,
 				6FD008B82A026E6E00D3B760 /* FormRowView.swift in Sources */,
@@ -1060,7 +1053,6 @@
 				6FD91F502B0E516700E3CE48 /* RealRemoteIssueRepository.swift in Sources */,
 				6FD014F529DAA6DC009F2A77 /* SusieApp.swift in Sources */,
 				6FFF79D02ADD4BF300630013 /* String+Extension.swift in Sources */,
-				6FD91F292B0CB55100E3CE48 /* NetworkService.swift in Sources */,
 				6F291EBB2AC5A3F9004C9A54 /* BoardViewModel.swift in Sources */,
 				6FD0151A29DAAE48009F2A77 /* BoardsView.swift in Sources */,
 				6F3667D32AD6E4D900FE17F3 /* CreateSprintView.swift in Sources */,

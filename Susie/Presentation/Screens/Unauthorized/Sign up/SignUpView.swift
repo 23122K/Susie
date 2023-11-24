@@ -2,55 +2,44 @@ import SwiftUI
 
 struct SignUpView: View {
     @StateObject private var vm = SignUpViewModel()
-    @FocusState private var focusedField: FocusedField?
-    @State private var isPresented: Bool = false
+    @FocusState private var focus: SignUpViewModel.Field?
     
     private let personImage = Image(systemName: "person")
     private let envelopeImage = Image(systemName: "envelope")
-    
-    private enum FocusedField: Hashable {
-        case fistName
-        case lastName
-        case email
-    }
     
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading){
                 FormTitleView(title: "Create your", highlighted: "accout")
                 
-                CustomTextField(title: "First name", text: $vm.firstName, keyboard: .default, focusedField: $focusedField, equals: .fistName) { personImage }
-                    .onSubmit { focusedField = .lastName }
+                CustomTextField(title: "First name", text: $vm.credentials.firstName, keyboard: .default, focusedField: $focus, equals: .firstName) { personImage }
+                    .onSubmit { focus = .lastName }
                 
                 Divider()
 
-                CustomTextField(title: "Last name", text: $vm.lastName, keyboard: .default, focusedField: $focusedField, equals: .lastName) { personImage }
-                    .onSubmit { focusedField = .email }
+                CustomTextField(title: "Last name", text: $vm.credentials.lastName, keyboard: .default, focusedField: $focus, equals: .lastName) { personImage }
+                    .onSubmit { focus = .email }
                 
                 Divider()
                 
-                CustomTextField(title: "Email address", text: $vm.emial, keyboard: .emailAddress, focusedField: $focusedField, equals: .email) { envelopeImage }
-                    .onSubmit { if !vm.areCrendentailsValid { isPresented.toggle() } }
+                CustomTextField(title: "Email address", text: $vm.credentials.email, keyboard: .emailAddress, focusedField: $focus, equals: .email) { envelopeImage }
+//                    .onSubmit { if !vm.areCrendentailsValid { isPresented.toggle() } }
                 
             }
             .padding()
             
-            Button("Next") { isPresented.toggle() }
-                .buttonStyle(.secondary)
-                .disabled(vm.areCrendentailsValid)
-
+            NavigationLink("Next", destination: {
+                SignUpFinalisationView(vm: vm)
+                    .custom(title: "Back")
+            })
+            .buttonStyle(.secondary)
+    
             Spacer()
             
-            Checkbox(title: "Register as a scrum master", isSelected: $vm.isScrumMaster)
+            Checkbox(title: "Register as a scrum master", isSelected: $vm.credentials.isScrumMaster)
                 .padding()
         }
-        .navigationDestination(isPresented: $isPresented) {
-            SignUpFinalisationView(vm: vm)
-                .custom(title: "Back")
-        }
-        .onAppear {
-            focusedField = .fistName
-        }
+        .onAppear { focus = .firstName }
     }
 }
 
@@ -60,4 +49,3 @@ struct SignUpView_Previews: PreviewProvider {
         SignUpView()
     }
 }
-

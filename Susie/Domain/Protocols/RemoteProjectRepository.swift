@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol RemoteProjectRepository {
+protocol RemoteProjectRepository: RemoteRepository {
     func fetch() async throws -> Array<ProjectDTO>
     func update(project: ProjectDTO) async throws
     func create(project: ProjectDTO) async throws

@@ -8,14 +8,16 @@
 import Foundation
 
 class RealRemoteUserRepository: RemoteUserRepository, ProtectedRepository {
+    var session: URLSession
     var authenticationInterceptor: AuthenticationInterceptor
     
     func signedUserInfo() async throws -> User {
         let endpoint = Endpoints.AuthEndpoint.info
-        return try await NetworkService.request(request: endpoint.request, interceptor: authenticationInterceptor)
+        return try await data(for: endpoint.request, interceptor: authenticationInterceptor).decode(User.self)
     }
     
-    init(authenticationInterceptor: some AuthenticationInterceptor) {
+    init(session: URLSession = URLSession.shared, authenticationInterceptor: some AuthenticationInterceptor) {
+        self.session = session
         self.authenticationInterceptor = authenticationInterceptor
     }
 }

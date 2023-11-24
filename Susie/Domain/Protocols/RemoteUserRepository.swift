@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol RemoteUserRepository {
+protocol RemoteUserRepository: RemoteRepository {
     func signedUserInfo() async throws -> User
 
     //TODO: - implement
