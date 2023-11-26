@@ -14,6 +14,6 @@ protocol RemoteProjectRepository: RemoteRepository {
     func delete(project: ProjectDTO) async throws
     
     func details(of project: ProjectDTO) async throws -> Project
-    func invite(user: User, to project: ProjectDTO) async throws
+    func invite(invitation: InviteRequest) async throws
     func remove(user: User, from project: ProjectDTO) async throws
 }

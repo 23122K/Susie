@@ -10,19 +10,20 @@ import Factory
 
 @MainActor
 class SprintViewModel: ObservableObject {
-    private var client: Client
-    private(set) var project: ProjectDTO
-    private(set) var sprint: Sprint
+    let sprint: Sprint
+    let project: Project
+    
+    let issueInteractor: RealIssueInteractor
+    let sprintInteractor: RealSprintInteractor
     
     @Published var issue: IssueGeneralDTO?
     @Published var issues: Loadable<[IssueGeneralDTO]> = .idle
     
-    func fetch() {
-        self.issues = .idle
+    func fetchSprints() {
         Task {
             do {
                 self.issues = .loading
-                let issues = try await client.issues(sprint: sprint)
+                let issues = try await issueInteractor.fetchIssuesFromSprint(sprint)
                 self.issues = .loaded(issues)
             } catch {
                 self.issues = .failed(error)
@@ -30,29 +31,38 @@ class SprintViewModel: ObservableObject {
         }
     }
     
-    func start() {
+    func startSprintButtonTapped() {
         Task {
             do {
-                try await client.start(sprint: sprint)
+                try await sprintInteractor.startSprint(sprint: sprint)
             } catch {
                 print(error.localizedDescription)
             }
         }
     }
     
-    func delete() {
+    func deleteSprintButtonTapped() {
         Task {
             do {
-                try await client.delete(sprint: sprint) 
+                try await sprintInteractor.delete(sprint: sprint)
             } catch {
                 print(error.localizedDescription)
             }
         }
     }
     
-    init(sprint: Sprint, project: ProjectDTO, container: Container = Container.shared) {
-        self.client = container.client()
+    init(container: Container = Container.shared,
+         sprint: Sprint,
+         project: Project,
+         issue: IssueGeneralDTO? = .none,
+         issues: Loadable<[IssueGeneralDTO]> = .idle
+    ) {
+        self.issueInteractor = container.issueInteractor.resolve()
+        self.sprintInteractor = container.sprintInteractor.resolve()
+        
         self.sprint = sprint
         self.project = project
+        self.issues = issues
+        self.issues = issues
     }
 }

@@ -5,7 +5,7 @@
 //  Created by Patryk Maciąg on 20/11/2023.
 //
 
-class ProjectDTO: ProjectEntity, Identifiable, Codable {
+struct ProjectDTO: ProjectEntity, Identifiable, Codable, Equatable {
     var id: Int32
     var name: String
     var description: String

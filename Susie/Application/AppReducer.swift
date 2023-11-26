@@ -10,14 +10,12 @@ import Foundation
 struct AppReducer: Reducer {
     func reduce(state: inout AppState, with action: AppAction) {
         switch action {
-        case .authenticate:
-            state.isAuthenticated = true
-        case .deauthenticate:
-            state.isAuthenticated = false
         case let .setUser(user):
             state.user = user
         case let .setUserVisibilityScope(scope):
             state.scope = scope
+        case let .setUserProject(project):
+            state.project = project
         }
     }
 }

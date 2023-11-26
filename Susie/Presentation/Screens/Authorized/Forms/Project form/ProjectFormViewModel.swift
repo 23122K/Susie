@@ -30,9 +30,9 @@ class ProjectViewModel: ObservableObject {
         Task { let _ = try await client.update(project: project) }
     }
     
-    private func delete() {
-        Task { let _ = try await client.delete(project: project) }
-    }
+//    private func delete() {
+//        Task { let _ = try await client.delete(project: project) }
+//    }
     
     init(project: ProjectDTO? = nil, container: Container = Container.shared) {
         self.client = container.client()

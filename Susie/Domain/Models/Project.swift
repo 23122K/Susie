@@ -11,7 +11,7 @@ protocol ProjectEntity {
     var id: Int32 { get set }
 }
 
-class Project: ProjectEntity, Identifiable, Codable {
+struct Project: ProjectEntity, Identifiable, Codable, Equatable {
     var id: Int32
     var name: String
     var description: String

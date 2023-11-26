@@ -38,14 +38,19 @@ extension User {
     }
 }
 
-class InviteRequest: Codable {
+struct InviteRequest: Codable {
     var email: String
     var projectID: Int32
     
-    required init(email: String = "", project: any ProjectEntity) {
+    init(email: String, projectID: Int32) {
         self.email = email
-        self.projectID = project.id
+        self.projectID = projectID
     }
+}
+
+extension InviteRequest {
+    init() { self.init(email: String(), projectID: Int32()) }
+    init(project: any ProjectEntity) { self.init(email: String(), projectID: project.id)}
 }
 
 struct UserRemovalDTO: Codable {

@@ -10,44 +10,29 @@ import Foundation
 
 @MainActor
 class DashboardViewModel: ObservableObject {
-    private var client: Client
+    let project: Project
+    let user: User
     
-    private(set) var project: ProjectDTO
-    private(set) var user: User?
+    let projectInteractor: RealProjectInteractor
     
     @Published var invitation: InviteRequest
-    @Published var projectDetials: Loadable<Project> = .idle
     
-    func invite() {
+    func inviteButtonTapped() {
         Task {
-            do {
-                try await client.invite(invitation: invitation)
-                self.invitation.email = ""
-            } catch {
-                print(error)
-            }
+            try await projectInteractor.sendInvitation(invitation: invitation)
+            self.invitation = .init()
         }
     }
     
-    func fetch() {
-        projectDetials = .idle
-        Task {
-            do {
-                projectDetials = .loading
-                let project = try await client.details(project: project)
-                projectDetials = .loaded(project)
-            } catch {
-                projectDetials = .failed(error)
-            }
-        }
+    func fetchProjectDetails() {
+        Task { try await projectInteractor.details(of: project.toDTO()) }
     }
     
-    
-    
-    init(project: ProjectDTO, container: Container = Container.shared) {
-        self.client = container.client()
-        self.user = client.user
+    init(container: Container = Container.shared, project: Project, user: User) {
         self.project = project
+        self.user = user
+        self.projectInteractor = container.projectInteractor.resolve()
+        
         self.invitation = InviteRequest(project: project)
     }
 }

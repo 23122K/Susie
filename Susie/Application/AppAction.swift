@@ -10,6 +10,5 @@ import Foundation
 enum AppAction {
     case setUser(User)
     case setUserVisibilityScope(UserScope)
-    case authenticate
-    case deauthenticate
+    case setUserProject(Project)
 }

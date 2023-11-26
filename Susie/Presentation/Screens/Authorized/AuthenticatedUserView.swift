@@ -2,32 +2,33 @@ import SwiftUI
 import PartialSheet
 
 struct AuthenticatedUserView: View {
-    let project: ProjectDTO
+    let project: Project
+    let user: User
     
     var body: some View {
         TabView{
-            HomeView(project: project)
+            HomeView(project: project, user: user)
                 .attachPartialSheetToRoot()
                 .tabItem{
                     Image(systemName: "house.fill")
                     Text("Home")
                 }
             
-            BoardsView(project: project)
+            BoardsView(project: project, user: user)
                 .attachPartialSheetToRoot()
                 .tabItem{
                     Image(systemName: "chart.bar.doc.horizontal.fill")
                     Text("Boards")
                 }
 
-            BacklogView(project: project)
+            BacklogView(project: project, user: user)
                 .attachPartialSheetToRoot()
                 .tabItem{
                     Image(systemName: "doc.plaintext.fill")
                     Text("Backlog")
                 }
 
-            DashboardView(project: project)
+            DashboardView(project: project, user: user)
                 .tabItem{
                     Image(systemName: "chart.bar.xaxis")
                     Text("Dashboard")
@@ -36,6 +37,6 @@ struct AuthenticatedUserView: View {
     }
 }
 
-#Preview {
-    AuthenticatedUserView(project: ProjectDTO(name: "", description: "", goal: ""))
-}
+//#Preview {
+//    AuthenticatedUserView(project: ProjectDTO(name: "", description: "", goal: ""))
+//}

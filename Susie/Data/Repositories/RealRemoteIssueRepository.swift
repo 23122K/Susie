@@ -12,24 +12,24 @@ class RealRemoteIssueRepository: RemoteIssueRepository, ProtectedRepository {
     
     var authenticationInterceptor: AuthenticationInterceptor
     
-    func fetchIssuesFromSprint(_ sprint: Sprint) async throws -> IssueGeneralDTO {
+    func fetchIssuesFromSprint(_ sprint: Sprint) async throws -> Array<IssueGeneralDTO> {
         let endpoint = Endpoints.IssueEndpoint.assignedTo(sprint: sprint)
-        return try await data(for: endpoint.request, interceptor: authenticationInterceptor).decode(IssueGeneralDTO.self)
+        return try await data(for: endpoint.request, interceptor: authenticationInterceptor).decode([IssueGeneralDTO].self)
     }
     
-    func fetchIssuesAssignedToSignedUser() async throws -> IssueGeneralDTO {
+    func fetchIssuesAssignedToSignedUser() async throws -> Array<IssueGeneralDTO> {
         let endpoint = Endpoints.IssueEndpoint.userAssigned
-        return try await data(for: endpoint.request, interceptor: authenticationInterceptor).decode(IssueGeneralDTO.self)
+        return try await data(for: endpoint.request, interceptor: authenticationInterceptor).decode([IssueGeneralDTO].self)
     }
     
-    func fetchIssuesFromProductBacklog(project: any ProjectEntity) async throws -> IssueGeneralDTO {
+    func fetchIssuesFromProductBacklog(project: any ProjectEntity) async throws -> Array<IssueGeneralDTO> {
         let endpoint = Endpoints.IssueEndpoint.backlog(project: project)
-        return try await data(for: endpoint.request, interceptor: authenticationInterceptor).decode(IssueGeneralDTO.self)
+        return try await data(for: endpoint.request, interceptor: authenticationInterceptor).decode([IssueGeneralDTO].self)
     }
     
-    func fetchArchivalIssuesFromProductBacklog(project: any ProjectEntity) async throws -> IssueGeneralDTO {
+    func fetchArchivalIssuesFromProductBacklog(project: any ProjectEntity) async throws -> Array<IssueGeneralDTO> {
         let endpoint = Endpoints.IssueEndpoint.history(project: project)
-        return try await data(for: endpoint.request, interceptor: authenticationInterceptor).decode(IssueGeneralDTO.self)
+        return try await data(for: endpoint.request, interceptor: authenticationInterceptor).decode([IssueGeneralDTO].self)
     }
     
     func update(_ issue: IssueDTO) async throws -> Issue {

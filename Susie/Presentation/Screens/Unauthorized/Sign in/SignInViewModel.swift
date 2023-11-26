@@ -10,15 +10,19 @@ import Factory
 
 @MainActor
 class SignInViewModel: ObservableObject {
-    @Injected (\.authenticationInteractor) private var authenticationInteractor
-    @Injected (\.appStore) private var appStore
+    let userInteractor: RealUserInteractor
+    let authenticationInteractor: RealAuthenticationInteractor
     
-    @Published var email = String()
-    @Published var password = String()
+    @Published var credentials: SignInRequest
+    
+    internal enum Field: Hashable {
+        case email
+        case password
+    }
     
     //TODO: Add real validation here
     var isValid: Bool {
-        guard email.isEmpty || password.isEmpty else {
+        guard credentials.email.isEmpty || credentials.password.isEmpty else {
             return true
         }
         
@@ -26,16 +30,17 @@ class SignInViewModel: ObservableObject {
     }
     
     func signIn() {
-        defer { clean() }
-        let credentials = SignInRequest(email: email, password: password)
         Task {
             try await authenticationInteractor.signIn(credentials)
-            appStore.dispatch(.authenticate)
+            try await userInteractor.signedUserInfo()
+            
+            credentials = .init()
         }
     }
     
-    func clean() {
-        email = .init()
-        password = .init()
+    init(container: Container = Container.shared, crendentials: SignInRequest = SignInRequest()) {
+        self.userInteractor = container.userInteractor.resolve()
+        self.authenticationInteractor = container.authenticationInteractor.resolve()
+        self.credentials = crendentials
     }
 }

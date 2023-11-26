@@ -7,11 +7,13 @@ struct Susie: App {
     
     var body: some Scene {
         WindowGroup {
-            switch store.state.isAuthenticated {
-            case true:
-                ProjectsView()
-            case false:
-                WelcomePageView()
+            switch store.state.user {
+            case .none: WelcomePageView()
+            case let .some(user):
+                switch store.state.project {
+                case .none: ProjectSelectionView(user: user)
+                case let .some(project): AuthenticatedUserView(project: project, user: user)
+                }
             }
         }
     }

@@ -8,7 +8,7 @@
 import Foundation
 
 struct AppState: Equatable {
-    var isAuthenticated: Bool = false
     var user: User?
+    var project: Project?
     var scope: UserScope = .none
 }

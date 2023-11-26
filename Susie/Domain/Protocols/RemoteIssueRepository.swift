@@ -8,10 +8,10 @@
 import Foundation
 
 protocol RemoteIssueRepository: RemoteRepository {
-    func fetchIssuesFromSprint(_ sprint: Sprint) async throws -> IssueGeneralDTO
-    func fetchIssuesAssignedToSignedUser() async throws -> IssueGeneralDTO
-    func fetchIssuesFromProductBacklog(project: any ProjectEntity) async throws -> IssueGeneralDTO
-    func fetchArchivalIssuesFromProductBacklog(project: any ProjectEntity) async throws -> IssueGeneralDTO
+    func fetchIssuesFromSprint(_ sprint: Sprint) async throws -> Array<IssueGeneralDTO>
+    func fetchIssuesAssignedToSignedUser() async throws -> Array<IssueGeneralDTO>
+    func fetchIssuesFromProductBacklog(project: any ProjectEntity) async throws -> Array<IssueGeneralDTO>
+    func fetchArchivalIssuesFromProductBacklog(project: any ProjectEntity) async throws -> Array<IssueGeneralDTO>
     func update(_ issue: IssueDTO) async throws -> Issue
     func create(_ issue: IssueDTO) async throws -> Issue
     func delete(_ issue: IssueGeneralDTO) async throws

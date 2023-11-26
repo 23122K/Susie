@@ -2,25 +2,20 @@ import SwiftUI
 
 struct SignInView: View {
     @StateObject private var vm = SignInViewModel()
-    @FocusState private var focusedField: Field?
+    @FocusState private var focus: SignInViewModel.Field?
     
     private let envelopeImage = Image(systemName: "envelope")
-    
-    private enum Field: Hashable {
-        case email
-        case password
-    }
     
     var body : some View {
         VStack(alignment: .leading){
             FormTitleView(title: "Log in to", highlighted: "Susie")
             
-            CustomTextField(title: "Email address", text: $vm.email, keyboard: .emailAddress, focusedField: $focusedField, equals: .email) { envelopeImage }
-                .onSubmit { focusedField = .password }
+            CustomTextField(title: "Email address", text: $vm.credentials.email , keyboard: .emailAddress, focusedField: $focus, equals: .email) { envelopeImage }
+                .onSubmit { focus = .password }
             
             Divider()
             
-            PasswordField(title: "Password", text: $vm.password, focusedField: $focusedField, equals: .password)
+            PasswordField(title: "Password", text: $vm.credentials.password, focusedField: $focus, equals: .password)
                 .onSubmit { if vm.isValid { vm.signIn() } }
             
             Button("Sign in") {
@@ -32,9 +27,7 @@ struct SignInView: View {
             Spacer()
         }
         .padding()
-        .onAppear {
-            focusedField = .email
-        }
+        .onAppear { focus = .email }
     }
 }
 

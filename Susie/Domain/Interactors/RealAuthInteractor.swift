@@ -10,6 +10,7 @@ import Factory
 
 class RealAuthenticationInteractor: AuthenticationInteractor {
     var repository: RemoteAuthRepository
+    
     @Injected(\.appStore) var store
     @Injected(\.keychainManager) var keychain
     
@@ -18,8 +19,6 @@ class RealAuthenticationInteractor: AuthenticationInteractor {
         
         keychain[.accessAuth] = Auth(token: response.accessToken, expiresIn: response.expiresIn)
         keychain[.refreshAuth] = Auth(token: response.refreshToken, expiresIn: response.refreshExpiresIn)
-        
-        store.dispatch(.authenticate)
     }
     
     func signUp(_ request: SignUpRequest) async throws {

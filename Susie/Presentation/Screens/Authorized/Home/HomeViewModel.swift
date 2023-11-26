@@ -10,16 +10,15 @@ import Factory
 
 @MainActor
 class HomeViewModel: ObservableObject {
-    private(set) var user: User?
+    let user: User
+    let project: Project
     
-    private var client: Client
-    private var project: ProjectDTO
+    let issueInteractor: RealIssueInteractor
     
-    
-    init(project: ProjectDTO, container: Container = Container.shared) {
-        self.client = container.client()
-        self.user = client.user
+    init(container: Container = Container.shared, project: Project, user: User) {
         self.project = project
+        self.user = user
+        self.issueInteractor = container.issueInteractor.resolve()
     }
 }
 

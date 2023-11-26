@@ -9,8 +9,7 @@ import SwiftUI
 
 struct SprintRowView: View {
     let sprint: Sprint
-    
-    @Binding var status: DropStatus
+    @Binding var status: BacklogViewModel.DropStatus
     
     var body: some View {
         GeometryReader { reader in
@@ -32,9 +31,3 @@ struct SprintRowView: View {
     }
     
 }
-
-//struct SprintRowView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SprintRowView(sprint: Sprint(name: "Test", projectID: 2))
-//    }
-//}

@@ -36,9 +36,8 @@ class RealRemoteProjectRepository: RemoteProjectRepository, ProtectedRepository 
         return try await data(for: endpoint.request, interceptor: authenticationInterceptor).decode(Project.self)
     }
     
-    func invite(user: User, to project: ProjectDTO) async throws {
-        let inviteRequest = InviteRequest(email: user.email, project: project)
-        let endpoint = Endpoints.ProjectEndpoint.invite(request: inviteRequest)
+    func invite(invitation: InviteRequest) async throws {
+        let endpoint = Endpoints.ProjectEndpoint.invite(request: invitation)
         return try await data(for: endpoint.request, interceptor: authenticationInterceptor)
     }
     

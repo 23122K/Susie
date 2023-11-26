@@ -79,4 +79,16 @@ extension Container {
         self { RealUserInteractor(repository: self.remoteUserRepository.resolve()) }
             .singleton
     }
+    
+    var issueInteractor: Factory<RealIssueInteractor> {
+        self { RealIssueInteractor(repository: self.remoteIssueRepository.resolve() )}
+    }
+    
+    var sprintInteractor: Factory<RealSprintInteractor> {
+        self { RealSprintInteractor(repository: self.remoteSprintRepository.resolve() )}
+    }
+    
+    var commentInteractor: Factory<RealCommentInteractor> {
+        self { RealCommentInteractor(repository: self.remoteCommentRepository.resolve() )}
+    }
 }

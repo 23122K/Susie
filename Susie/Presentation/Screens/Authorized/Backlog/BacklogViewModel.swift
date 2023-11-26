@@ -10,9 +10,11 @@ import Factory
 
 @MainActor
 class BacklogViewModel: ObservableObject {
-    private var client: Client
-    private(set) var project: ProjectDTO
-    private(set) var user: User?
+    let project: Project
+    let user: User
+    
+    let issueInteractor: RealIssueInteractor
+    let sprintInteractor: RealSprintInteractor
     
     @Published var sprint: Sprint?
     @Published var issue: IssueGeneralDTO?
@@ -21,61 +23,61 @@ class BacklogViewModel: ObservableObject {
     @Published var sprints: Loadable<[Sprint]> = .idle
     @Published var issues: Loadable<[IssueGeneralDTO]> = .idle
     
-    func fetch() {
-        issues = .idle
-        sprints = .idle
-        
-        Task(priority: .high) {
-            do {
-                issues = .loading
-                try await Task.sleep(nanoseconds: 500_000_000)
-                let issues = try await client.issues(backlog: project)
-                self.issues = .loaded(issues)
-            } catch {
-                issues = .failed(error)
-            }
-        }
-        
-        Task(priority: .high) {
-            do {
-                sprints = .loading
-                try await Task.sleep(nanoseconds: 500_000_000)
-                let sprints = try await client.sprints(project: project)
-                self.sprints = .loaded(sprints)
-            } catch {
-                sprints = .failed(error)
-            }
+    @Published var dropStatus: DropStatus = .exited
+    
+    enum DropStatus {
+        case entered
+        case exited
+    }
+    
+    func onDragIssueGesture(issue: IssueGeneralDTO) -> NSItemProvider {
+        draggedIssue = issue
+        return NSItemProvider()
+    }
+
+    func fetchInactiveSprints(project: Project) async {
+        do {
+            sprints = .loading
+            let sprints = try await sprintInteractor.fetchInactiveSprints(project: project.toDTO())
+            self.sprints = .loaded(sprints)
+        } catch { sprints = .failed(error) }
+    }
+    
+    func fetchInactiveIssues(project: Project) async {
+        do {
+            issues = .loading
+            let issues = try await issueInteractor.fetchIssuesFromProductBacklog(project: project.toDTO())
+            self.issues = .loaded(issues)
+        } catch { issues = .failed(error) }
+    }
+    
+    func fetchInactiveSprintsAndIssues() {
+        Task {
+            await fetchInactiveSprints(project: project)
+            await fetchInactiveIssues(project: project)
         }
     }
     
-    func assign(to sprint: Sprint) -> Bool {
-        defer { draggedIssue = nil }
-        
-        guard let issue = draggedIssue else {
-            return false
-        }
+    func assignIssue(to sprint: Sprint) -> Bool {
+        guard let issue = draggedIssue else { return false }
         
         Task {
-            try await client.assign(issue: issue, to: sprint)
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.fetch()
+            try await sprintInteractor.assignIssueToSprint(issue: issue, sprint: sprint)
+            self.draggedIssue = nil
         }
         
         return true
     }
     
-    func delete(issue: IssueGeneralDTO) {
-        Task { try await client.delete(issue: issue) }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
-            fetch()
-        }
+    func deleteIssueButtonTapped(issue: IssueGeneralDTO) {
+        Task { try await issueInteractor.delete(issue) }
     }
     
-    init(project: ProjectDTO, container: Container = Container.shared) {
-        self.client = container.client()
-        self.user = client.user
+    
+    init(project: Project, user: User, container: Container = Container.shared) {
         self.project = project
+        self.user = user
+        self.issueInteractor = container.issueInteractor.resolve()
+        self.sprintInteractor = container.sprintInteractor.resolve()
     }
 }
