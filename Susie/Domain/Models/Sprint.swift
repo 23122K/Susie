@@ -48,7 +48,7 @@ struct Sprint: Identifiable, Codable {
 }
 
 extension Sprint {
-    init(project: ProjectDTO) { self.init(id: .default, name: .default, goal: .default, projectID: project.id, active: .deafult) }
+    init(project: Project) { self.init(id: .default, name: .default, goal: .default, projectID: project.id, active: .deafult) }
     
     var hasStartDate: Bool {
         self.startTime == nil ? false : true

@@ -24,6 +24,10 @@ class DashboardViewModel: ObservableObject {
         }
     }
     
+    func deleteProjectButtonTapped() {
+        Task { try await projectInteractor.delete(project: project.toDTO()) }
+    }
+    
     func fetchProjectDetails() {
         Task { try await projectInteractor.details(of: project.toDTO()) }
     }

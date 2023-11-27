@@ -11,7 +11,7 @@ import PartialSheet
 struct IssueFormView: View {
     @Environment (\.dismiss) var dismiss
     
-    @StateObject private var vm: IssueFormViewModel
+    @ObservedObject private var vm: IssueFormViewModel
     @FocusState private var focusedField: FocusedField?
     
     @State private var isEstimationPresented: Bool = false
@@ -75,15 +75,15 @@ struct IssueFormView: View {
         .toolbar(.hidden, for: .tabBar)
         .toolbar{
             Button("Save") {
-                vm.create()
+                vm.createIssueButtonTapped()
                 dismiss()
             }
         }
         .onAppear{ focusedField = .title }
     }
     
-    init(project: ProjectDTO) {
-        _vm = StateObject(wrappedValue: IssueFormViewModel(project: project))
+    init(project: Project) {
+        _vm = ObservedObject(initialValue: IssueFormViewModel(project: project))
     }
 }
 

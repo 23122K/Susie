@@ -9,11 +9,6 @@ import Foundation
 import Factory
 
 extension Container {
-    var client: Factory<Client> {
-        self { Client() }
-            .singleton
-    }
-    
     //MARK: - app state
     
     var appStore: Factory<AppStore> {
@@ -66,17 +61,17 @@ extension Container {
     //MARK: - interactors
     
     var authenticationInteractor: Factory<RealAuthenticationInteractor> {
-        self { RealAuthenticationInteractor(repository: self.remoteAuthRepository.resolve()) }
+        self { RealAuthenticationInteractor(repository: self.remoteAuthRepository.resolve(), store: self.appStore.resolve()) }
             .singleton
     }
     
     var projectInteractor: Factory<RealProjectInteractor> {
-        self { RealProjectInteractor(repository: self.remoteProjectRepository.resolve()) }
+        self { RealProjectInteractor(repository: self.remoteProjectRepository.resolve(), store: self.appStore.resolve()) }
             .singleton
     }
     
     var userInteractor: Factory<RealUserInteractor> {
-        self { RealUserInteractor(repository: self.remoteUserRepository.resolve()) }
+        self { RealUserInteractor(repository: self.remoteUserRepository.resolve(), store: self.appStore.resolve()) }
             .singleton
     }
     

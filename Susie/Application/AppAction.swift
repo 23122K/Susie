@@ -11,4 +11,6 @@ enum AppAction {
     case setUser(User)
     case setUserVisibilityScope(UserScope)
     case setUserProject(Project)
+    case setUserToNil
+    case setUserProjectToNil
 }

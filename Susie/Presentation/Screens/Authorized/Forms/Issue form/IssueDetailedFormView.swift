@@ -9,7 +9,7 @@ import SwiftUI
 import PartialSheet
 
 struct IssueDetailedFormView: View {
-    @StateObject private var vm: IssueDetailedFormViewModel
+    @ObservedObject private var vm: IssueDetailedFormViewModel
     
     @State private var isPriorityPresented: Bool = false
     @State private var isStatusPresented: Bool = false
@@ -66,7 +66,7 @@ struct IssueDetailedFormView: View {
                 
                 ToggableSectionRowView(title: "Asignee", divider: false) {
                     Button(action: {
-                        vm.assign()
+                        vm.assignToIssueButtonTapped()
                     }, label: {
                         HStack{
                             InitialsView(user: vm.issue.assignee, size: 30)
@@ -81,7 +81,7 @@ struct IssueDetailedFormView: View {
         .toolbar{
             ToolbarItem(placement: .topBarTrailing, content: {
                 Button("Save") {
-                    vm.save()
+                    vm.updateIssueDetailsButtonTapped()
                 }
             })
         }
@@ -106,6 +106,6 @@ struct IssueDetailedFormView: View {
     }
     
     init(issue: Issue) {
-        _vm = StateObject(wrappedValue: IssueDetailedFormViewModel(issue: issue))
+        _vm = ObservedObject(initialValue: IssueDetailedFormViewModel(issue: issue))
     }
 }

@@ -16,6 +16,10 @@ struct AppReducer: Reducer {
             state.scope = scope
         case let .setUserProject(project):
             state.project = project
+        case .setUserToNil:
+            state.user = nil
+        case .setUserProjectToNil:
+            state.project = nil
         }
     }
 }

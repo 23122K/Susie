@@ -14,7 +14,7 @@ struct DashboardView: View {
                         Button("Add new member") { isPresented.toggle() }
                         
                         NavigationLink("Edit project", destination: {
-                            ProjectFormView(project: vm.project.toDTO())
+                            ProjectFormView(project: vm.project)
                         })
                         
                         Section {

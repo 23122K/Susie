@@ -11,21 +11,39 @@ import Factory
 
 @MainActor
 class IssueDetailsViewModel: ObservableObject {
-    private var client: Client
-    private var issue: IssueGeneralDTO
+    var issue: IssueGeneralDTO
     
+    var commentInteractor: RealCommentInteractor
+    var issueInteractor: RealIssueInteractor
     
     @Published var commentToEdit: Comment?
-    
     @Published var comment: CommentDTO
     @Published var issueDetails: Loadable<Issue> = .idle
     
-    func fetch() {
+    func postCommentButtonTapped() {
+        Task {
+            do { try await commentInteractor.create(comment: comment) }
+            catch { print(error) }
+        }
+    }
+    
+    func editCommentButtonTapped(comment: Comment) {
+        self.comment.body = comment.body
+    }
+    
+    func deleteCommentButtonTapped(comment: Comment) {
+        Task {
+            do { try await commentInteractor.delete(comment: comment) }
+            catch { print(error) }
+        }
+    }
+    
+    func onAppear() {
         Task(priority: .high, operation: {
             do {
                 try await Task.sleep(nanoseconds: 500_000_000)
                 issueDetails = .loading
-                let issue = try await self.client.details(issue: issue)
+                let issue = try await issueInteractor.details(issue)
                 issueDetails = .loaded(issue)
             } catch {
                 issueDetails = .failed(error)
@@ -33,33 +51,11 @@ class IssueDetailsViewModel: ObservableObject {
         })
     }
     
-    func post() {
-        Task {
-            do {
-                try await client.post(comment: comment)
-                self.fetch()
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
-    func delete(comment: Comment) {
-        Task {
-            do {
-                try await client.delete(comment: comment)
-                self.fetch()
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
-    
-    
-    init(issue: IssueGeneralDTO, container: Container = Container.shared) {
-        self.client = container.client()
+    init(container: Container = Container.shared, issue: IssueGeneralDTO) {
+        self.commentInteractor = container.commentInteractor.resolve()
+        self.issueInteractor = container.issueInteractor.resolve()
+        
         self.issue = issue
-        self.comment = CommentDTO(issue: issue, body: String())
+        self.comment = CommentDTO(issue: issue)
     }
 }

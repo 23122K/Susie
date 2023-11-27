@@ -9,11 +9,11 @@ struct BacklogView: View {
             ScreenHeader(user: vm.user, screenTitle: "Backlog") {
                 Menu(content: {
                     NavigationLink("Create sprint") {
-                        SprintFormView(project: vm.project.toDTO())
+                        SprintFormView(project: vm.project)
                     }
                
                     NavigationLink("Create issue") {
-                        IssueFormView(project: vm.project.toDTO())
+                        IssueFormView(project: vm.project)
                     }
                     
                 }, label: { Image(systemName: "ellipsis").fontWeight(.bold) })
@@ -23,7 +23,7 @@ struct BacklogView: View {
                 switch sprints.isEmpty {
                 case true:
                     NavigationLink(destination: {
-                        SprintFormView(project: vm.project.toDTO())
+                        SprintFormView(project: vm.project)
                     }, label: { CreateSprintView() })
                 case false:
                     Carousel(sprints, type: .unbounded) { sprint in
@@ -50,7 +50,7 @@ struct BacklogView: View {
                 }, placeholder: IssuePlaceholderView())
                 
                 NavigationLink("Create issue", destination: {
-                    IssueFormView(project: vm.project.toDTO())
+                    IssueFormView(project: vm.project)
                 })
                 .buttonStyle(.issueCreation)
                 .offset(y: -15)
@@ -58,9 +58,7 @@ struct BacklogView: View {
             .scrollIndicators(.hidden)
         }
         .navigationTitle("Backlog")
-        .onAppear { 
-            print("Executed")
-            vm.fetchInactiveSprintsAndIssues() }
+        .onAppear { vm.fetchInactiveSprintsAndIssues() }
         .refreshable { vm.fetchInactiveSprintsAndIssues() }
     }
     

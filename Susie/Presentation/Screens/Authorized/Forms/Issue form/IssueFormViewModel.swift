@@ -10,21 +10,17 @@ import Factory
 
 @MainActor
 class IssueFormViewModel: ObservableObject {
-    private var client: Client
+    let issueInteractor: RealIssueInteractor
+    
     @Published var issue: IssueDTO
     
-    func create() {
-        Task {
-            do {
-                let _ = try await client.create(issue: issue)
-            } catch {
-                print(#function)
-            }
-        }
+    func createIssueButtonTapped() {
+        Task { try await issueInteractor.create(issue) }
     }
     
-    init(project: ProjectDTO, container: Container = Container.shared) {
-        self.client = container.client()
+    init(container: Container = Container.shared, project: Project) {
+        self.issueInteractor = container.issueInteractor.resolve()
+        
         self.issue = IssueDTO(project: project)
     }
 }

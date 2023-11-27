@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProjectFormView: View {
     @Environment (\.dismiss) var dismiss
-    @StateObject private var projectViewModel: ProjectViewModel
+    @ObservedObject private var vm: ProjectFormViewModel
     @FocusState private var focusedField: FocusedField?
     
     private enum FocusedField: Hashable {
@@ -20,13 +20,13 @@ struct ProjectFormView: View {
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            TextField("Project name", text: $projectViewModel.project.name)
+            TextField("Project name", text: $vm.project.name)
                 .textFieldStyle(.susiePrimaryTextField)
                 .focused($focusedField, equals: .name)
                 .onSubmit { focusedField = .description }
             
             ToggableSection(title: "Description", isToggled: true) {
-                TextField("Project description", text: $projectViewModel.project.description, axis: .vertical)
+                TextField("Project description", text: $vm.project.description, axis: .vertical)
                     .lineLimit(4...)
                     .textFieldStyle(.susieSecondaryTextField)
                     .focused($focusedField, equals: .description)
@@ -35,29 +35,29 @@ struct ProjectFormView: View {
             }
             
             ToggableSection(title: "Goal", isToggled: true) {
-                TextField("Project goal", text: $projectViewModel.project.goal, axis: .vertical)
+                TextField("Project goal", text: $vm.project.goal, axis: .vertical)
                     .lineLimit(4...)
                     .textFieldStyle(.susieSecondaryTextField)
                     .focused($focusedField, equals: .goal)
                     .padding(.top)
-                    .onSubmit{ projectViewModel.save(); dismiss() }
+                    .onSubmit{ vm.saveProjectButtonTapped(); dismiss() }
             }
             
         }
         .toolbar(.hidden, for: .tabBar)
         .toolbar {
             Button("Save") {
-                projectViewModel.save()
+                vm.saveProjectButtonTapped()
                 dismiss()
             }
         }
         .padding()
-        .navigationTitle(projectViewModel.project.name.isEmpty ? "New project" : projectViewModel.project.name)
+        .navigationTitle(vm.project.name.isEmpty ? "New project" : vm.project.name)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear{ focusedField = .name }
     }
     
-    init(project: ProjectDTO? = nil) {
-        _projectViewModel = StateObject(wrappedValue: ProjectViewModel(project: project))
+    init(project: Project? = nil) {
+        self._vm = ObservedObject(initialValue: ProjectFormViewModel(project: project))
     }
 }

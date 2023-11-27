@@ -9,9 +9,8 @@ import Foundation
 import Factory
 
 class RealProjectInteractor: ProjectInteractor {
-    @Injected(\.appStore) private var store
-    
     var repository: RemoteProjectRepository
+    var store: AppStore
     
     func fetch() async throws -> Array<ProjectDTO> {
         return try await repository.fetch()
@@ -43,7 +42,8 @@ class RealProjectInteractor: ProjectInteractor {
         
     }
     
-    init(repository: some RemoteProjectRepository) {
+    init(repository: some RemoteProjectRepository, store: AppStore) {
+        self.store = store
         self.repository = repository
     }
 }

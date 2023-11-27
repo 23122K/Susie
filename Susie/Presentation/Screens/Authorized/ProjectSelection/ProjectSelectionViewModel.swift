@@ -11,11 +11,9 @@ import Factory
 @MainActor
 class ProjectSelectionViewModel: ObservableObject {
     let user: User
-    
     let projectInteractor: RealProjectInteractor
     
     @Published var projects: Loadable<[ProjectDTO]> = .idle
-    
     
     func selectProjectButtonTapped(project: ProjectDTO) {
         Task { try await projectInteractor.details(of: project) }

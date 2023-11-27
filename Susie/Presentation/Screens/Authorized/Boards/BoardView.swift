@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct BoardView: View {
+    //TODO: TO be removed
     @State private var issue: IssueGeneralDTO?
     
     private let issues: Array<IssueGeneralDTO>

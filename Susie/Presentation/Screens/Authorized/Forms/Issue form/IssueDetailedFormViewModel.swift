@@ -10,57 +10,32 @@ import Foundation
 
 @MainActor
 class IssueDetailedFormViewModel: ObservableObject {
-    private var client: Client
-    private var status: IssueStatus
+    var status: IssueStatus
     
+    let issueInteractor: RealIssueInteractor
     
-    @Published var error: NetworkError?
+    @Published var issue: Issue { didSet { changeStatusActionInitated() } }
     
-    @Published var issue: Issue {
-        didSet { changeStatus() }
-    }
-    
-    private func changeStatus() {
+    private func changeStatusActionInitated() {
         guard issue.status != status else { return }
+        Task { try await issueInteractor.updateIssueStatus(issue: issue.toDTO(), new: issue.status) }
+    }
+    
+    func updateIssueDetailsButtonTapped() {
+        Task { try await issueInteractor.update(issue.toDTO()) }
+    }
+    
+    func assignToIssueButtonTapped() {
+        Task { try await issueInteractor.assignSignedUserToIssue(issue.toDTO()) }
+    }
+    
+    func unassignFromIssueButtonTapped() {
+        Task { try await issueInteractor.unassignSignedUserFromIssue(issue.toDTO()) }
+    }
+    
+    init(container: Container = Container.shared, issue: Issue) {
+        self.issueInteractor = container.issueInteractor.resolve()
         
-        Task {
-            do {
-                try await client.status(of: issue.toDTO(), to: issue.status)
-            } catch { print(error) }
-        }
-    }
-    
-    func save() {
-        Task {
-            do {
-                let _  = try await client.update(issue: issue.toDTO())
-            } catch { print(error) }
-        }
-    }
-    
-    
-    func assign() {
-        Task {
-            do {
-                try await client.assign(to: issue.toDTO())
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
-    private func unassign() {
-        Task {
-            do {
-                try await client.unassign(from: issue.toDTO())
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
-    init(issue: Issue, container: Container = Container.shared) {
-        self.client = container.client()
         self.status = issue.status
         _issue = Published(initialValue: issue)
     }

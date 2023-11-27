@@ -9,10 +9,10 @@ import SwiftUI
 
 struct CommentFormView: View {
     @Environment (\.dismiss) private var dismiss
-    @FocusState private var focusState: FocusedField?
+    @FocusState private var focus: Field?
     @Binding var comment: Comment
     
-    private enum FocusedField: Hashable {
+    private enum Field: Hashable {
         case message
     }
     
@@ -21,7 +21,7 @@ struct CommentFormView: View {
     var body: some View {
         VStack{
             TextField(comment.body, text: $comment.body, axis: .vertical)
-                .focused($focusState, equals: .message)
+                .focused($focus, equals: .message)
                 .textFieldStyle(.susieSecondaryTextField)
                 .lineLimit(4...)
                 .onSubmit { save() }

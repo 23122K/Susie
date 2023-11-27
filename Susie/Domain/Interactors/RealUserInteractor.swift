@@ -9,16 +9,16 @@ import Foundation
 import Factory
 
 class RealUserInteractor: UserInteractor {
-    @Injected (\.appStore) private var store
-    
     var repository: RemoteUserRepository
+    var store: AppStore
     
     func signedUserInfo() async throws {
         let user = try await repository.signedUserInfo()
         store.dispatch(.setUser(user))
     }
     
-    init(repository: some RemoteUserRepository) {
+    init(repository: some RemoteUserRepository, store: AppStore) {
+        self.store = store
         self.repository = repository
     }
 }

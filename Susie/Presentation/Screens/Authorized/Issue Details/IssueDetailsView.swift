@@ -18,9 +18,7 @@ struct IssueDetailsView: View {
             ScrollView {
                 AsyncContentView(state: $vm.issueDetails, { issue in
                     IssueDetailedFormView(issue: issue)
-                }, placeholder: EmptyView(), onAppear: {
-                    vm.fetch()
-                })
+                }, placeholder: EmptyView())
                 
                 AsyncContentView(state: $vm.issueDetails, { issue in
                     ScrollView {
@@ -47,9 +45,9 @@ struct IssueDetailsView: View {
                                 SwipeContent({
                                     CommentRowView(comment: comment)
                                 }, onDelete: {
-                                    vm.delete(comment: comment)
+                                    vm.deleteCommentButtonTapped(comment: comment)
                                 }, onEdit: {
-                                    vm.comment.body = comment.body
+                                    vm.editCommentButtonTapped(comment: comment)
                                 })
                             }
                         }
@@ -58,7 +56,7 @@ struct IssueDetailsView: View {
                 })
                 
             }
-            .refreshable { vm.fetch() }
+            .refreshable { vm.onAppear() }
             .scrollIndicators(.hidden)
             .toolbar{
                 ToolbarItem(placement: .topBarLeading, content: {
@@ -69,7 +67,7 @@ struct IssueDetailsView: View {
                 
                 ToolbarItem(placement: .keyboard) {
                     CommentTextInputView(text: $vm.comment.body, onSubmit: {
-                        vm.post()
+                        vm.postCommentButtonTapped()
                     })
                 }
                 

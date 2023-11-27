@@ -9,9 +9,10 @@ import SwiftUI
 import Factory
 
 @MainActor
-class ProjectViewModel: ObservableObject {
-    private var client: Client
-    private var doesExist: Bool = false
+class ProjectFormViewModel: ObservableObject {
+    let doesExist: Bool
+    
+    let projectInteractor: RealProjectInteractor
     
     @Published var project: ProjectDTO
     
@@ -20,28 +21,26 @@ class ProjectViewModel: ObservableObject {
         !(project.name.isEmpty && project.description.isEmpty)
     }
     
-    func save() { doesExist ? update() : create() }
+    func saveProjectButtonTapped() { doesExist ? updateProjectActionInitiated() : createProjectActionInitiated() }
     
-    private func create() {
-        Task { let _ = try await client.create(project: project) }
+    func createProjectActionInitiated() {
+        Task { try await projectInteractor.create(project: project) }
     }
     
-    private func update() {
-        Task { let _ = try await client.update(project: project) }
+    func updateProjectActionInitiated() {
+        Task { try await projectInteractor.update(project: project) }
     }
     
-//    private func delete() {
-//        Task { let _ = try await client.delete(project: project) }
-//    }
-    
-    init(project: ProjectDTO? = nil, container: Container = Container.shared) {
-        self.client = container.client()
+    init(container: Container = Container.shared, project: Project? = nil) {
+        self.projectInteractor = container.projectInteractor.resolve()
         
-        if let project {
+        switch project {
+        case .none:
+            self.doesExist = false
+            self.project = ProjectDTO()
+        case let .some(project):
             self.doesExist = true
-            self.project = project
-        } else {
-            self.project = ProjectDTO(name: "", description: "", goal: "")
+            self.project = project.toDTO()
         }
     }
 }

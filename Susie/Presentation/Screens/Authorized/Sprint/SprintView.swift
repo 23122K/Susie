@@ -42,7 +42,7 @@ struct SprintView: View {
                         })
                         
                         NavigationLink(destination: {
-                            SprintFormView(sprint: vm.sprint, project: vm.project.toDTO())
+                            SprintFormView(sprint: vm.sprint, project: vm.project)
                         }, label: {
                             Text("Edit")
                             Image(systemName: "pencil")

@@ -26,5 +26,5 @@ struct IssueDTO: Identifiable, Codable {
 }
 
 extension IssueDTO {
-    init(project: ProjectDTO) { self.init(id: .default, name: .default, description: .default, estimation: .default, projectID: project.id, type: .toDo, priority: .medium) }
+    init(project: Project) { self.init(id: .default, name: .default, description: .default, estimation: .default, projectID: project.id, type: .toDo, priority: .medium) }
 }
