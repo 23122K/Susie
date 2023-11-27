@@ -11,24 +11,10 @@ struct SignUpRequest: Codable {
     var firstName: String
     var lastName: String
     var isScrumMaster: Bool
-    
-    init(firstName: String, lastName: String, email: String, password: String, isScrumMaster: Bool) {
-        self.firstName = firstName
-        self.lastName = lastName
-        self.email = email
-        self.password = password
-        self.isScrumMaster = isScrumMaster
-    }
 }
 
 extension SignUpRequest {
-    struct Confirm {
-        var password: String
-    }
-}
-
-extension SignUpRequest {
-    init() { self.init(firstName: String(), lastName: String(), email: String(), password: String(), isScrumMaster: Bool()) }
+    init() { self.init(email: .default, password: .default, firstName: .default, lastName: .default, isScrumMaster: .deafult) }
 }
 
 struct SignUpResponse: Codable {

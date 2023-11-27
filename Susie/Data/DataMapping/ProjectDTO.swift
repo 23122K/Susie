@@ -6,6 +6,7 @@
 //
 
 struct ProjectDTO: ProjectEntity, Identifiable, Codable, Equatable {
+    //TODO: Change id property to let
     var id: Int32
     var name: String
     var description: String
@@ -17,11 +18,14 @@ struct ProjectDTO: ProjectEntity, Identifiable, Codable, Equatable {
         case description
         case goal = "projectGoal"
     }
-    
-    init(id: Int32 = -1, name: String, description: String, goal: String) {
-        self.id = id
-        self.name = name
-        self.description = description
-        self.goal = goal
+}
+
+extension ProjectDTO {
+    init() { self.init(id: .default, name: .default, description: .default, goal: .default) }
+}
+
+extension ProjectDTO {
+    static var mock: ProjectDTO {
+        ProjectDTO(id: .default, name: "Mock name", description: "Mock description", goal: "Mock goal")
     }
 }

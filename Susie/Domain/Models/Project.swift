@@ -19,7 +19,7 @@ struct Project: ProjectEntity, Identifiable, Codable, Equatable {
     var members: Array<User>
     var owner: User
     
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case id = "projectID"
         case name
         case description

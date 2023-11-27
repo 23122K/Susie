@@ -5,7 +5,7 @@
 //  Created by Patryk Maciąg on 16/08/2023.
 //
 
-class Comment: Identifiable, Codable {
+struct Comment: Identifiable, Codable {
     let id: Int32
     var body: String
     var author: User

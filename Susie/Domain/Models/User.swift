@@ -11,18 +11,17 @@ struct User: Identifiable, Codable, Equatable {
     let firstName: String
     let lastName: String
     
-    init(email: String, firstName: String, lastName: String) {
-        self.id = String()
-        self.email = email
-        self.firstName = firstName
-        self.lastName = lastName
-    }
-    
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case id = "uuid"
         case email
         case firstName
         case lastName
+    }
+}
+
+extension User {
+    static var mock: User {
+        User(id: .default, email: "Joe@example.com", firstName: "Joe", lastName: "Doe")
     }
 }
 
