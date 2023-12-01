@@ -9,13 +9,13 @@ import Foundation
 import Factory
 
 actor RealAuthenticationInterceptor: AuthenticationInterceptor {
-    @Injected (\.keychainManager) var keychain
-    @Injected (\.authenticationInteractor) var authenticationInteractor
+    var authenticationInteractor: RealAuthenticationInteractor
+    var authStore: any AuthStore
     
     private var refreshTask: Task<Void, Error>?
   
     func intercept(request: URLRequest) async throws -> URLRequest {
-        guard let accessAuth = keychain[.accessAuth] else {
+        guard let accessAuth = authStore[.accessAuth] else {
             throw AuthError.authObjectIsMissing
         }
         
@@ -32,7 +32,7 @@ actor RealAuthenticationInterceptor: AuthenticationInterceptor {
             try await refreshTask.value
         }
         
-        guard let refreshAuth = keychain[.refreshAuth] else {
+        guard let refreshAuth = authStore[.refreshAuth] else {
             throw AuthError.authObjectIsMissing
         }
         
@@ -45,6 +45,11 @@ actor RealAuthenticationInterceptor: AuthenticationInterceptor {
         
         refreshTask = task
         return try await task.value
+    }
+    
+    init(authenticationInteractor: RealAuthenticationInteractor, authStore: some AuthStore) {
+        self.authStore = authStore
+        self.authenticationInteractor = authenticationInteractor
     }
     
 }

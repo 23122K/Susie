@@ -12,31 +12,26 @@ struct IssueFormView: View {
     @Environment (\.dismiss) var dismiss
     
     @ObservedObject private var vm: IssueFormViewModel
-    @FocusState private var focusedField: FocusedField?
+    @FocusState private var focus: IssueFormViewModel.Field?
     
     @State private var isEstimationPresented: Bool = false
     @State private var isPriorityPresented: Bool = false
     @State private var isTypePresented: Bool = false
     
-    private enum FocusedField: Hashable {
-        case title
-        case description
-    }
-    
     var body: some View {
         ScrollView(showsIndicators: false) {
             TextField("Issue title", text: $vm.issue.name)
                 .textFieldStyle(.susiePrimaryTextField)
-                .focused($focusedField, equals: .title)
-                .onSubmit { focusedField = .description }
+                .focused($focus, equals: .title)
+                .onSubmit { vm.onSumbitOf(field: .title) }
             
             
             ToggableSection(title: "Description", isToggled: true) {
                 TextField("Description", text: $vm.issue.description, axis: .vertical)
                     .lineLimit(2...)
                     .textFieldStyle(.susieSecondaryTextField)
-                    .focused($focusedField, equals: .description)
-                    .onSubmit { focusedField = .description }
+                    .focused($focus, equals: .description)
+                    .onSubmit { vm.onSumbitOf(field: .description) }
             }
             
             ToggableSection(title: "Details", isToggled: true) {
@@ -60,6 +55,7 @@ struct IssueFormView: View {
                 
             }
         }
+        .bind($vm.focus, to: $focus)
         .partialSheet(isPresented: $isPriorityPresented) {
             TagPickerView(enum: $vm.issue.priority, onSelect: {
                 isPriorityPresented.toggle()
@@ -74,12 +70,9 @@ struct IssueFormView: View {
         .navigationTitle(vm.issue.name)
         .toolbar(.hidden, for: .tabBar)
         .toolbar{
-            Button("Save") {
-                vm.createIssueButtonTapped()
-                dismiss()
-            }
+            Button("Save") { vm.createIssueButtonTapped() }
         }
-        .onAppear{ focusedField = .title }
+        .onChange(of: vm.shouldDismiss) { shouldDismiss in if shouldDismiss { dismiss() } }
     }
     
     init(project: Project) {

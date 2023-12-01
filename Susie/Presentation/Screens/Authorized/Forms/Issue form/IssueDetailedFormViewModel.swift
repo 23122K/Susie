@@ -12,7 +12,7 @@ import Foundation
 class IssueDetailedFormViewModel: ObservableObject {
     var status: IssueStatus
     
-    let issueInteractor: RealIssueInteractor
+    let issueInteractor: any IssueInteractor
     
     @Published var issue: Issue { didSet { changeStatusActionInitated() } }
     

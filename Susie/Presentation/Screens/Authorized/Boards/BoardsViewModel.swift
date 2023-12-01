@@ -13,9 +13,9 @@ class BoardsViewModel: ObservableObject {
     let user: User
     let project: Project
     
-    let projectInteractor: RealProjectInteractor
-    let issueInteractor: RealIssueInteractor
-    let sprintInteractor: RealSprintInteractor
+    let projectInteractor: any ProjectInteractor
+    let issueInteractor: any IssueInteractor
+    let sprintInteractor: any SprintInteractor
     
     @Published var issues: Loadable<[IssueGeneralDTO]>
     @Published var sprint: Sprint?

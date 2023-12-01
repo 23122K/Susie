@@ -8,29 +8,23 @@
 import SwiftUI
 
 struct ProjectFormView: View {
-    @Environment (\.dismiss) var dismiss
+    @Environment (\.dismiss) private var dismiss
     @ObservedObject private var vm: ProjectFormViewModel
-    @FocusState private var focusedField: FocusedField?
-    
-    private enum FocusedField: Hashable {
-        case name
-        case description
-        case goal
-    }
+    @FocusState private var focus: ProjectFormViewModel.Field?
     
     var body: some View {
         ScrollView(showsIndicators: false) {
             TextField("Project name", text: $vm.project.name)
                 .textFieldStyle(.susiePrimaryTextField)
-                .focused($focusedField, equals: .name)
-                .onSubmit { focusedField = .description }
+                .focused($focus, equals: .name)
+                .onSubmit { vm.onSumbitOf(field: .name) }
             
             ToggableSection(title: "Description", isToggled: true) {
                 TextField("Project description", text: $vm.project.description, axis: .vertical)
                     .lineLimit(4...)
                     .textFieldStyle(.susieSecondaryTextField)
-                    .focused($focusedField, equals: .description)
-                    .onSubmit{ focusedField = .goal }
+                    .focused($focus, equals: .description)
+                    .onSubmit { vm.onSumbitOf(field: .description) }
                     .padding(.top)
             }
             
@@ -38,9 +32,9 @@ struct ProjectFormView: View {
                 TextField("Project goal", text: $vm.project.goal, axis: .vertical)
                     .lineLimit(4...)
                     .textFieldStyle(.susieSecondaryTextField)
-                    .focused($focusedField, equals: .goal)
+                    .focused($focus, equals: .goal)
+                    .onSubmit { vm.onSumbitOf(field: .goal) }
                     .padding(.top)
-                    .onSubmit{ vm.saveProjectButtonTapped(); dismiss() }
             }
             
         }
@@ -48,13 +42,13 @@ struct ProjectFormView: View {
         .toolbar {
             Button("Save") {
                 vm.saveProjectButtonTapped()
-                dismiss()
             }
         }
+        .bind($vm.focus, to: $focus)
         .padding()
         .navigationTitle(vm.project.name.isEmpty ? "New project" : vm.project.name)
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear{ focusedField = .name }
+        .onChange(of: vm.shouldDismiss) { shouldDismiss in if shouldDismiss { dismiss() } }
     }
     
     init(project: Project? = nil) {

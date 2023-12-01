@@ -8,17 +8,17 @@
 import Foundation
 import Factory
 
+
 class RealAuthenticationInteractor: AuthenticationInteractor {
     var repository: RemoteAuthRepository
-    var store: AppStore
-    
-    @Injected(\.keychainManager) var keychain
+    var appStore: AppStore
+    var authStore: AuthStore
     
     func signIn(_ request: SignInRequest) async throws {
         let response = try await repository.signIn(request)
         
-        keychain[.accessAuth] = Auth(token: response.accessToken, expiresIn: response.expiresIn)
-        keychain[.refreshAuth] = Auth(token: response.refreshToken, expiresIn: response.refreshExpiresIn)
+        authStore[.accessAuth] = Auth(token: response.accessToken, expiresIn: response.expiresIn)
+        authStore[.refreshAuth] = Auth(token: response.refreshToken, expiresIn: response.refreshExpiresIn)
     }
     
     func signUp(_ request: SignUpRequest) async throws {
@@ -31,12 +31,13 @@ class RealAuthenticationInteractor: AuthenticationInteractor {
     func refreshAuth(_ auth: Auth) async throws {
         let response = try await repository.refreshAuth(auth)
         
-        keychain[.accessAuth] = Auth(token: response.accessToken, expiresIn: response.expiresIn)
-        keychain[.refreshAuth] = Auth(token: response.refreshToken, expiresIn: response.refreshExpiresIn)
+        authStore[.accessAuth] = Auth(token: response.accessToken, expiresIn: response.expiresIn)
+        authStore[.refreshAuth] = Auth(token: response.refreshToken, expiresIn: response.refreshExpiresIn)
     }
     
-    init(repository: some RemoteAuthRepository, store: AppStore) {
-        self.store = store
+    init(repository: some RemoteAuthRepository, appStore: AppStore, authStore: some AuthStore) {
+        self.appStore = appStore
+        self.authStore = authStore
         self.repository = repository
     }
 }

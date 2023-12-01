@@ -10,13 +10,14 @@ import Factory
 
 @MainActor
 class SignUpViewModel: ObservableObject {
-    let userInteractor: RealUserInteractor
-    let authInteractor: RealAuthenticationInteractor
+    let userInteractor: any UserInteractor
+    let authInteractor: any AuthenticationInteractor
     
     @Published var credentials: SignUpRequest
     @Published var confirmPassword: String
+    @Published var focus: Field?
     
-    internal enum Field {
+    enum Field {
         case firstName
         case lastName
         case email
@@ -24,10 +25,25 @@ class SignUpViewModel: ObservableObject {
         case confirmPassword
     }
     
+    func onSubmitOf(field: Field) {
+        switch field {
+        case .firstName:
+            focus = .lastName
+        case .lastName:
+            focus = .email
+        case .email:
+            focus = .password
+        case .password:
+            focus = .confirmPassword
+        case .confirmPassword:
+            focus = .none
+        }
+    }
+    
     //TODO: Add validation
     
-    func signUp() {
-        Task { 
+    func onSignUpButtonTapped() {
+        Task {
             try await authInteractor.signUp(credentials)
             try await userInteractor.signedUserInfo()
             
@@ -36,10 +52,12 @@ class SignUpViewModel: ObservableObject {
         }
     }
     
-    init(container: Container = Container.shared, credentials: SignUpRequest = SignUpRequest(), confirmPassword: String = String()) {
+    init(container: Container = Container.shared, credentials: SignUpRequest = SignUpRequest(), confirmPassword: String = String(), focus: Field? = .firstName) {
         self.userInteractor = container.userInteractor.resolve()
         self.authInteractor = container.authenticationInteractor.resolve()
+        
         self.credentials = credentials
         self.confirmPassword = confirmPassword
+        self.focus = focus
     }
 }

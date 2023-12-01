@@ -1,7 +1,7 @@
 import SwiftUI
 import PartialSheet
 
-struct AuthenticatedUserView: View {
+struct AuthenticatedRootView: View {
     let project: Project
     let user: User
     
@@ -37,6 +37,6 @@ struct AuthenticatedUserView: View {
     }
 }
 
-//#Preview {
-//    AuthenticatedUserView(project: ProjectDTO(name: "", description: "", goal: ""))
-//}
+#Preview {
+    AuthenticatedRootView(project: .mock, user: .mock)
+}

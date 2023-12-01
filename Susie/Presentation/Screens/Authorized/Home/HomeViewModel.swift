@@ -13,7 +13,7 @@ class HomeViewModel: ObservableObject {
     let user: User
     let project: Project
     
-    let issueInteractor: RealIssueInteractor
+    let issueInteractor: any IssueInteractor
     
     init(container: Container = Container.shared, project: Project, user: User) {
         self.project = project

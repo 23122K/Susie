@@ -11,7 +11,7 @@ import Factory
 @MainActor
 class ProjectSelectionViewModel: ObservableObject {
     let user: User
-    let projectInteractor: RealProjectInteractor
+    let projectInteractor: any ProjectInteractor
     
     @Published var projects: Loadable<[ProjectDTO]> = .idle
     

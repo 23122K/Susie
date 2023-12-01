@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct WelcomePageView: View {
+struct UnauthenticatedRootView: View {
     var body: some View {
         NavigationStack {
             ScrollView{
@@ -25,9 +25,6 @@ struct WelcomePageView: View {
     }
 }
 
-struct WelcomePageView_Previews: PreviewProvider {
-    static var previews: some View {
-        WelcomePageView()
-    }
+#Preview {
+    UnauthenticatedRootView()
 }
-

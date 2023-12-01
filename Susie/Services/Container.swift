@@ -16,13 +16,15 @@ extension Container {
             .shared
     }
     
-    var keychainManager: Factory<KeychainManager> {
-        self { KeychainManager() }
+    var authStore: Factory<KeychainStore> {
+        self { KeychainStore() }
             .singleton
     }
     
+    //MARK: - interceptors
+    
     var authenticationInterceptor: Factory<RealAuthenticationInterceptor> {
-        self { RealAuthenticationInterceptor() }
+        self { RealAuthenticationInterceptor(authenticationInteractor: self.authenticationInteractor.resolve(), authStore: self.authStore.resolve()) }
             .singleton
     }
     
@@ -61,7 +63,7 @@ extension Container {
     //MARK: - interactors
     
     var authenticationInteractor: Factory<RealAuthenticationInteractor> {
-        self { RealAuthenticationInteractor(repository: self.remoteAuthRepository.resolve(), store: self.appStore.resolve()) }
+        self { RealAuthenticationInteractor(repository: self.remoteAuthRepository.resolve(), appStore: self.appStore.resolve(), authStore: self.authStore.resolve()) }
             .singleton
     }
     

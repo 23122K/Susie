@@ -17,12 +17,13 @@ struct SprintFormView: View {
             TextField("Sprint name", text: $vm.sprint.name)
                 .padding(.horizontal)
                 .focused($focus, equals: .name)
-//                .onSubmit { $focus = SprintFromViewModel.Field.goal }
+                .onSubmit { vm.onSubmitOf(field: .name) }
                 .textFieldStyle(.susiePrimaryTextField)
             
             TextField("Goal", text: $vm.sprint.goal)
                 .padding(.horizontal)
-//                .focused($focus, equals: .goal)
+                .focused($focus, equals: .goal)
+                .onSubmit { vm.onSubmitOf(field: .goal) }
                 .textFieldStyle(.susieSecondaryTextField)
             
             Toggle("Start date", isOn: $vm.shouldHaveStartDate)
@@ -37,15 +38,13 @@ struct SprintFormView: View {
                 .animation(.spring, value: vm.shouldHaveStartDate)
         }
         .toolbar {
-            Button("Save") {
-                vm.saveSprintButtonTapped()
-                dismiss()
-            }
+            Button("Save") { vm.saveSprintButtonTapped() }
         }
+        .bind($vm.focus, to: $focus)
         .padding(.vertical)
-        .onAppear{ focus = .name }
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(vm.sprint.name.isEmpty ? "New sprint" : vm.sprint.name)
+        .onChange(of: vm.shouldDismiss) { shouldDismiss in if shouldDismiss { dismiss() } }
     }
     
     init(sprint: Sprint? = nil, project: Project) {

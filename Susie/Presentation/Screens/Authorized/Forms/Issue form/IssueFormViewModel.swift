@@ -10,17 +10,38 @@ import Factory
 
 @MainActor
 class IssueFormViewModel: ObservableObject {
-    let issueInteractor: RealIssueInteractor
+    let issueInteractor: any IssueInteractor
     
     @Published var issue: IssueDTO
+    @Published var focus: Field?
+    @Published var shouldDismiss: Bool = .deafult
     
-    func createIssueButtonTapped() {
-        Task { try await issueInteractor.create(issue) }
+    enum Field: Hashable {
+        case title
+        case description
     }
     
-    init(container: Container = Container.shared, project: Project) {
+    func createIssueButtonTapped() {
+        Task {
+            try await issueInteractor.create(issue)
+            shouldDismiss.toggle()
+        }
+    }
+    
+    func onSumbitOf(field: Field) {
+        switch field {
+        case .title:
+            focus = .description
+        case .description:
+            focus = .none
+        }
+    }
+    
+    
+    init(container: Container = Container.shared, project: Project, focus: Field? = .title) {
         self.issueInteractor = container.issueInteractor.resolve()
         
         self.issue = IssueDTO(project: project)
+        self.focus = focus
     }
 }

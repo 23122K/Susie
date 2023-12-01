@@ -10,14 +10,25 @@ import Factory
 
 @MainActor
 class SignInViewModel: ObservableObject {
-    let userInteractor: RealUserInteractor
-    let authenticationInteractor: RealAuthenticationInteractor
+    let userInteractor: any UserInteractor
+    let authenticationInteractor: any AuthenticationInteractor
     
     @Published var credentials: SignInRequest
+    @Published var focus: Field? = nil
     
-    internal enum Field: Hashable {
+    enum Field: Hashable {
         case email
         case password
+    }
+    
+    func onSubmitOf(field: Field) {
+        switch field {
+        case .email:
+            focus = .password
+        case .password:
+            focus = .none
+            onSignInButtonTapped()
+        }
     }
     
     //TODO: Add real validation here
@@ -29,7 +40,7 @@ class SignInViewModel: ObservableObject {
         return false
     }
     
-    func signIn() {
+    func onSignInButtonTapped() {
         Task {
             try await authenticationInteractor.signIn(credentials)
             try await userInteractor.signedUserInfo()
@@ -38,9 +49,11 @@ class SignInViewModel: ObservableObject {
         }
     }
     
-    init(container: Container = Container.shared, crendentials: SignInRequest = SignInRequest()) {
+    init(container: Container = Container.shared, crendentials: SignInRequest = SignInRequest(), focus: Field? = .email) {
         self.userInteractor = container.userInteractor.resolve()
         self.authenticationInteractor = container.authenticationInteractor.resolve()
+        
         self.credentials = crendentials
+        self.focus = focus
     }
 }

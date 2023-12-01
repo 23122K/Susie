@@ -9,17 +9,28 @@ import Foundation
 import Factory
 
 class SprintFromViewModel: ObservableObject {
-    let sprintInteractor: RealSprintInteractor
+    let sprintInteractor: any SprintInteractor
     
     let doesExist: Bool
     
     @Published var sprint: Sprint
     @Published var startDate: Date
     @Published var shouldHaveStartDate: Bool
+    @Published var shouldDismiss: Bool = false
+    @Published var focus: Field?
     
     enum Field: Hashable {
         case name
         case goal
+    }
+    
+    func onSubmitOf(field: Field) {
+        switch field {
+        case .name:
+            self.focus = .goal
+        case .goal:
+            self.focus = .none
+        }
     }
     
     func createSprintRequestSent(){
@@ -32,16 +43,16 @@ class SprintFromViewModel: ObservableObject {
     
     func saveSprintButtonTapped() {
         shouldHaveStartDate ? (sprint.startTime = startDate) : (sprint.startTime = nil)
+        doesExist ? updateSprintRequestSent() : createSprintRequestSent()
         
-        switch doesExist {
-        case true: updateSprintRequestSent()
-        case false: createSprintRequestSent()
-        }
+        shouldDismiss.toggle()
     }
     
-    init(container: Container = Container.shared, sprint: Sprint?, project: Project, startDate: Date = Date()) {
+    init(container: Container = Container.shared, sprint: Sprint?, project: Project, startDate: Date = Date(), focus: Field? = .name) {
         self.sprintInteractor = container.sprintInteractor.resolve()
+        
         self.startDate = startDate
+        self.focus = focus
         
         switch sprint {
         case .none:

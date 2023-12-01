@@ -1,14 +1,28 @@
 //
-//  Endpoint+Extension.swift
+//  Ednpoint.swift
 //  Susie
 //
-//  Created by Patryk Maciąg on 24/08/2023.
+//  Created by Patryk Maciąg on 20/11/2023.
 //
 
 import Foundation
 
+protocol Endpoint {
+    var path: String { get }
+    var method: HTTPMethod { get }
+    var queries: [String: String]? { get }
+    var headers: [String: String] { get }
+    var body: Data? { get }
+    
+    var schema: String { get }
+    var host: String { get }
+    var port: Int { get }
+
+    var version: String { get }
+}
+
 extension Endpoint {
-    private var baseUrl: URL {
+    var baseUrl: URL {
         var components = URLComponents()
         components.scheme = self.schema
         components.host = self.host
@@ -17,7 +31,7 @@ extension Endpoint {
         return components.url.unsafelyUnwrapped
     }
     
-    public var url: URL {
+    var url: URL {
         var url = self.baseUrl
         url.append(path: self.version)
         url.append(path: self.path)
@@ -31,7 +45,7 @@ extension Endpoint {
         return url
     }
     
-    public var request: URLRequest {
+    var request: URLRequest {
         var request = URLRequest(url: self.url)
         request.httpMethod = self.method.rawValue
         request.allHTTPHeaderFields = self.headers
@@ -45,8 +59,8 @@ extension Endpoint {
     
     //self.request.hash or Hasher() usese random seed so result difer every time app is relunched
     ///Returns a unique Endpoint identifier consisting of its `path` and `http method`
-    public var uid: String {
+    var uid: String {
         return String.init(self.method.rawValue + self.path)
     }
-
 }
+

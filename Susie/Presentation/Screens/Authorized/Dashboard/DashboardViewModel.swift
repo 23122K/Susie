@@ -12,8 +12,13 @@ import Foundation
 class DashboardViewModel: ObservableObject {
     let project: Project
     let user: User
+    var destintation: Destination?
     
-    let projectInteractor: RealProjectInteractor
+    let projectInteractor: any ProjectInteractor
+    
+    enum Destination {
+        case invite
+    }
     
     @Published var invitation: InviteRequest
     
@@ -32,9 +37,10 @@ class DashboardViewModel: ObservableObject {
         Task { try await projectInteractor.details(of: project.toDTO()) }
     }
     
-    init(container: Container = Container.shared, project: Project, user: User) {
+    init(container: Container = Container.shared, project: Project, user: User, destination: Destination? = nil) {
         self.project = project
         self.user = user
+        self.destintation = destination
         self.projectInteractor = container.projectInteractor.resolve()
         
         self.invitation = InviteRequest(project: project)

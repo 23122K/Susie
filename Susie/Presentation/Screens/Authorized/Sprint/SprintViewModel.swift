@@ -13,8 +13,8 @@ class SprintViewModel: ObservableObject {
     let sprint: Sprint
     let project: Project
     
-    let issueInteractor: RealIssueInteractor
-    let sprintInteractor: RealSprintInteractor
+    let issueInteractor: any IssueInteractor
+    let sprintInteractor: any SprintInteractor
     
     @Published var issue: IssueGeneralDTO?
     @Published var issues: Loadable<[IssueGeneralDTO]> = .idle

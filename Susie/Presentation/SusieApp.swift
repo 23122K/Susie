@@ -8,11 +8,11 @@ struct Susie: App {
     var body: some Scene {
         WindowGroup {
             switch store.state.user {
-            case .none: WelcomePageView()
+            case .none: UnauthenticatedRootView()
             case let .some(user):
                 switch store.state.project {
                 case .none: ProjectSelectionView(user: user)
-                case let .some(project): AuthenticatedUserView(project: project, user: user)
+                case let .some(project): AuthenticatedRootView(project: project, user: user)
                 }
             }
         }

@@ -13,8 +13,8 @@ import Factory
 class IssueDetailsViewModel: ObservableObject {
     var issue: IssueGeneralDTO
     
-    var commentInteractor: RealCommentInteractor
-    var issueInteractor: RealIssueInteractor
+    var commentInteractor: any CommentInteractor
+    var issueInteractor: any IssueInteractor
     
     @Published var commentToEdit: Comment?
     @Published var comment: CommentDTO

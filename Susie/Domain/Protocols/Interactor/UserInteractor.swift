@@ -9,4 +9,6 @@ import Foundation
 
 protocol UserInteractor {
     var repository: any RemoteUserRepository { get }
+    
+    func signedUserInfo() async throws
 }

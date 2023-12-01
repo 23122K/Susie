@@ -8,13 +8,8 @@
 import Foundation
 import Security
 
-final class KeychainManager {
-    internal enum AuthKey: String {
-        case accessAuth
-        case refreshAuth
-    }
-    
-    private func encode(_ auth: Auth) throws -> Data {
+final class KeychainStore: AuthStore {
+    func encode(_ auth: Auth) throws -> Data {
         guard let data = try? JSONEncoder().encode(auth) else {
             throw KeychainError.couldNotDecodeAuthObject
         }
@@ -22,7 +17,7 @@ final class KeychainManager {
         return data
     }
     
-    private func decode(_ data: Data) throws -> Auth {
+    func decode(_ data: Data) throws -> Auth {
         guard let object = try? JSONDecoder().decode(Auth.self, from: data) else {
             throw KeychainError.couldNotEncodeAuthObject
         }

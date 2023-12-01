@@ -11,23 +11,21 @@ struct SignInView: View {
             FormTitleView(title: "Log in to", highlighted: "Susie")
             
             CustomTextField(title: "Email address", text: $vm.credentials.email , keyboard: .emailAddress, focusedField: $focus, equals: .email) { envelopeImage }
-                .onSubmit { focus = .password }
+                .onSubmit { vm.onSubmitOf(field: .email) }
             
             Divider()
             
             PasswordField(title: "Password", text: $vm.credentials.password, focusedField: $focus, equals: .password)
-                .onSubmit { if vm.isValid { vm.signIn() } }
+                .onSubmit { vm.onSubmitOf(field: .password) }
             
-            Button("Sign in") {
-                vm.signIn()
-            }
+            Button("Sign in") { vm.onSignInButtonTapped() }
             .buttonStyle(.secondary)
             .disabled(!vm.isValid)
 
             Spacer()
         }
         .padding()
-        .onAppear { focus = .email }
+        .bind($vm.focus, to: $focus)
     }
 }
 

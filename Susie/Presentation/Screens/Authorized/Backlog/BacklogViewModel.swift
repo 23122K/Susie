@@ -13,8 +13,8 @@ class BacklogViewModel: ObservableObject {
     let project: Project
     let user: User
     
-    let issueInteractor: RealIssueInteractor
-    let sprintInteractor: RealSprintInteractor
+    let issueInteractor: any IssueInteractor
+    let sprintInteractor: any SprintInteractor
     
     @Published var sprint: Sprint?
     @Published var issue: IssueGeneralDTO?

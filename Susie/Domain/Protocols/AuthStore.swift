@@ -1,13 +1,28 @@
 //
-//  KeychainManager+Subscript.swift
+//  AuthStore.swift
 //  Susie
 //
-//  Created by Patryk Maciąg on 24/08/2023.
+//  Created by Patryk Maciąg on 27/11/2023.
 //
 
 import Foundation
 
-extension KeychainManager {
+enum AuthKey: String {
+    case accessAuth
+    case refreshAuth
+}
+
+protocol AuthStore {
+    func encode(_ auth: Auth) throws -> Data
+    func decode(_ data: Data) throws -> Auth
+    
+    func insert(_ auth: Auth, for key: AuthKey) throws
+    func fetch(key: AuthKey) throws -> Auth
+    func update(key: AuthKey, with auth: Auth) throws
+    func delete(key: AuthKey) throws
+}
+
+extension AuthStore {
     subscript(_ key: AuthKey) -> Auth? {
         get { try? self.fetch(key: key) }
         set {
@@ -25,10 +40,5 @@ extension KeychainManager {
                 }
             }
         }
-    }
-    
-    func flush() {
-        self[.accessAuth] = nil
-        self[.refreshAuth] = nil
     }
 }

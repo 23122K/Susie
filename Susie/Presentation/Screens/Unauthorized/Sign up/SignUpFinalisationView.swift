@@ -9,33 +9,27 @@ import SwiftUI
 
 struct SignUpFinalisationView: View {
     @ObservedObject var vm: SignUpViewModel
-    @FocusState private var focusedField: FocusedField?
-    
-    private enum FocusedField: Hashable {
-        case password
-        case confirmPassword
-    }
+    @FocusState private var focus: SignUpViewModel.Field?
     
     var body: some View {
         VStack(alignment: .leading){
             FormTitleView(title: "Create", highlighted: "password")
-            PasswordField(title: "Password", text: $vm.credentials.password, focusedField: $focusedField, equals: .password)
-                .onSubmit { focusedField = .confirmPassword }
+            PasswordField(title: "Password", text: $vm.credentials.password, focusedField: $focus, equals: .password)
+                .onSubmit { vm.onSubmitOf(field: .password) }
             
             Divider()
-            PasswordField(title: "Confirm password", text: $vm.confirmPassword, focusedField: $focusedField, equals: .confirmPassword)
-//                .onSubmit { if vm.doesPasswordsMatch { vm.signUp() } }
+            PasswordField(title: "Confirm password", text: $vm.confirmPassword, focusedField: $focus, equals: .confirmPassword)
+                .onSubmit { vm.onSubmitOf(field: .confirmPassword) }
             
             Button("Sign up") {
-                vm.signUp()
+                vm.onSignUpButtonTapped()
             }
             .buttonStyle(.secondary)
-//            .disabled(!vm.doesPasswordsMatch)
             
             Spacer()
         }
         .padding()
-        .onAppear { focusedField = .password }
+        .bind($vm.focus, to: $focus)
     }
     
 }

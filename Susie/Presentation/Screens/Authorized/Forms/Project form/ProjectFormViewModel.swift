@@ -11,17 +11,27 @@ import Factory
 @MainActor
 class ProjectFormViewModel: ObservableObject {
     let doesExist: Bool
-    
-    let projectInteractor: RealProjectInteractor
+    let projectInteractor: any ProjectInteractor
     
     @Published var project: ProjectDTO
+    @Published var focus: Field?
+    @Published var shouldDismiss: Bool = .deafult
+    
+    enum Field: Hashable {
+        case name
+        case description
+        case goal
+    }
     
     //TODO: Remove it later, create central validation class
     private var isValid: Bool {
         !(project.name.isEmpty && project.description.isEmpty)
     }
     
-    func saveProjectButtonTapped() { doesExist ? updateProjectActionInitiated() : createProjectActionInitiated() }
+    func saveProjectButtonTapped() {
+        doesExist ? updateProjectActionInitiated() : createProjectActionInitiated()
+        shouldDismiss.toggle()
+    }
     
     func createProjectActionInitiated() {
         Task { try await projectInteractor.create(project: project) }
@@ -31,8 +41,20 @@ class ProjectFormViewModel: ObservableObject {
         Task { try await projectInteractor.update(project: project) }
     }
     
-    init(container: Container = Container.shared, project: Project? = nil) {
+    func onSumbitOf(field: Field) {
+        switch field {
+        case .name:
+            focus = .description
+        case .description:
+            focus = .goal
+        case .goal:
+            focus = .none
+        }
+    }
+    
+    init(container: Container = Container.shared, project: Project? = nil, focus: Field? = .name) {
         self.projectInteractor = container.projectInteractor.resolve()
+        self.focus = focus
         
         switch project {
         case .none:

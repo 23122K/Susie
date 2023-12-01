@@ -12,18 +12,18 @@ struct SignUpView: View {
             VStack(alignment: .leading){
                 FormTitleView(title: "Create your", highlighted: "accout")
                 
-                CustomTextField(title: "First name", text: $vm.credentials.firstName, keyboard: .default, focusedField: $focus, equals: .firstName) { personImage }
-                    .onSubmit { focus = .lastName }
+                CustomTextField(title: "First name", text: $vm.credentials.firstName, keyboard: .default, focusedField: $focus, equals: .firstName) { personImage } 
+                    .onSubmit { vm.onSubmitOf(field: .firstName) }
                 
                 Divider()
 
                 CustomTextField(title: "Last name", text: $vm.credentials.lastName, keyboard: .default, focusedField: $focus, equals: .lastName) { personImage }
-                    .onSubmit { focus = .email }
+                    .onSubmit { vm.onSubmitOf(field: .lastName) }
                 
                 Divider()
                 
                 CustomTextField(title: "Email address", text: $vm.credentials.email, keyboard: .emailAddress, focusedField: $focus, equals: .email) { envelopeImage }
-//                    .onSubmit { if !vm.areCrendentailsValid { isPresented.toggle() } }
+                    .onSubmit { vm.onSubmitOf(field: .email) }
                 
             }
             .padding()
@@ -39,7 +39,7 @@ struct SignUpView: View {
             Checkbox(title: "Register as a scrum master", isSelected: $vm.credentials.isScrumMaster)
                 .padding()
         }
-        .onAppear { focus = .firstName }
+        .bind($vm.focus, to: $focus)
     }
 }
 

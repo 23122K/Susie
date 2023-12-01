@@ -30,3 +30,5 @@ struct IssueGeneralDTO: Identifiable, Codable {
 extension IssueGeneralDTO {
     init() { self.init(id: .default, name: .default, status: .toDo, type: .toDo, priority: .medium, projectID: .default) }
 }
+
+
