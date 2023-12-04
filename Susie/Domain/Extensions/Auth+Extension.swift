@@ -13,3 +13,8 @@ extension Auth {
     }
 }
 
+enum AuthError: Error {
+    case authObjectIsMissing
+    case couldNotRefreshAuthObject
+}
+

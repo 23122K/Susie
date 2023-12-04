@@ -5,9 +5,8 @@
 //  Created by Patryk Maciąg on 20/11/2023.
 //
 
-struct ProjectDTO: ProjectEntity, Identifiable, Codable, Equatable {
-    //TODO: Change id property to let
-    var id: Int32
+struct ProjectDTO: Identifiable, Codable, Equatable {
+    let id: Int32
     var name: String
     var description: String
     var goal: String

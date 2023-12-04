@@ -7,11 +7,7 @@
 
 import Foundation
 
-protocol ProjectEntity {
-    var id: Int32 { get set }
-}
-
-struct Project: ProjectEntity, Identifiable, Codable, Equatable {
+struct Project: Identifiable, Codable, Equatable {
     var id: Int32
     var name: String
     var description: String

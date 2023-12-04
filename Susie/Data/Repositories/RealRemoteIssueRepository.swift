@@ -22,12 +22,12 @@ class RealRemoteIssueRepository: RemoteIssueRepository, ProtectedRepository {
         return try await data(for: endpoint.request, interceptor: authenticationInterceptor).decode([IssueGeneralDTO].self)
     }
     
-    func fetchIssuesFromProductBacklog(project: any ProjectEntity) async throws -> Array<IssueGeneralDTO> {
+    func fetchIssuesFromProductBacklog(project: Project) async throws -> Array<IssueGeneralDTO> {
         let endpoint = Endpoints.IssueEndpoint.backlog(project: project)
         return try await data(for: endpoint.request, interceptor: authenticationInterceptor).decode([IssueGeneralDTO].self)
     }
     
-    func fetchArchivalIssuesFromProductBacklog(project: any ProjectEntity) async throws -> Array<IssueGeneralDTO> {
+    func fetchArchivalIssuesFromProductBacklog(project: Project) async throws -> Array<IssueGeneralDTO> {
         let endpoint = Endpoints.IssueEndpoint.history(project: project)
         return try await data(for: endpoint.request, interceptor: authenticationInterceptor).decode([IssueGeneralDTO].self)
     }

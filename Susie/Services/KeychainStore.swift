@@ -11,7 +11,7 @@ import Security
 final class KeychainStore: AuthStore {
     func encode(_ auth: Auth) throws -> Data {
         guard let data = try? JSONEncoder().encode(auth) else {
-            throw KeychainError.couldNotDecodeAuthObject
+            throw AuthStoreError.authObjectcouldNotBeEncoded
         }
         
         return data
@@ -19,7 +19,7 @@ final class KeychainStore: AuthStore {
     
     func decode(_ data: Data) throws -> Auth {
         guard let object = try? JSONDecoder().decode(Auth.self, from: data) else {
-            throw KeychainError.couldNotEncodeAuthObject
+            throw AuthStoreError.authObjectcouldNotBeDecoded
         }
         
         return object
@@ -36,9 +36,9 @@ final class KeychainStore: AuthStore {
         let status = SecItemAdd(insertQuery, nil)
         guard status == errSecSuccess else {
             if status == errSecDuplicateItem {
-                throw KeychainError.authObjectExists
+                throw AuthStoreError.authObjectExists
             }
-            throw KeychainError.unexpectedStatus(status)
+            throw AuthStoreError.unexpectedStatus(status)
         }
     }
     
@@ -54,12 +54,12 @@ final class KeychainStore: AuthStore {
         let status = SecItemCopyMatching(fetchQuery, &data)
         
         guard status == errSecSuccess else {
-            if status == errSecItemNotFound { throw KeychainError.authObjectNotFound }
-            throw KeychainError.unexpectedStatus(status)
+            if status == errSecItemNotFound { throw AuthStoreError.authObjectNotFound }
+            throw AuthStoreError.unexpectedStatus(status)
         }
         
         guard let object = try? decode(data as! Data) else {
-            throw KeychainError.couldNotDecodeAuthObject
+            throw AuthStoreError.authObjectcouldNotBeDecoded
         }
         
         return object
@@ -79,9 +79,9 @@ final class KeychainStore: AuthStore {
         let status = SecItemUpdate(updateQuery, newValue)
         guard status == errSecSuccess else {
             if status == errSecItemNotFound {
-                throw KeychainError.authObjectNotFound
+                throw AuthStoreError.authObjectNotFound
             }
-            throw KeychainError.unexpectedStatus(status)
+            throw AuthStoreError.unexpectedStatus(status)
         }
     }
     
@@ -93,7 +93,7 @@ final class KeychainStore: AuthStore {
         
         let status = SecItemDelete(deleteQuery)
         guard status == errSecSuccess || status == errSecItemNotFound else {
-            throw KeychainError.unexpectedStatus(status)
+            throw AuthStoreError.unexpectedStatus(status)
         }
     }
 }

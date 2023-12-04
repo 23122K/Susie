@@ -49,7 +49,7 @@ struct InviteRequest: Codable {
 
 extension InviteRequest {
     init() { self.init(email: String(), projectID: Int32()) }
-    init(project: any ProjectEntity) { self.init(email: String(), projectID: project.id)}
+    init(project: Project) { self.init(email: String(), projectID: project.id)}
 }
 
 struct UserRemovalDTO: Codable {

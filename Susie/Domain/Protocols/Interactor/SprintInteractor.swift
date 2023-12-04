@@ -16,7 +16,7 @@ protocol SprintInteractor {
     func assignIssueToSprint(issue: IssueGeneralDTO, sprint: Sprint) async throws
     func removeIssueFromSprint(issue: IssueGeneralDTO, sprint: Sprint) async throws
     func startSprint(sprint: Sprint) async throws
-    func stopSprint(project: ProjectDTO) async throws
-    func fetchInactiveSprints(project: ProjectDTO) async throws -> Array<Sprint>
-    func fetchActiveSprint(project: ProjectDTO) async throws -> Sprint? 
+    func stopSprint(project: Project) async throws
+    func fetchInactiveSprints(project: Project) async throws -> Array<Sprint>
+    func fetchActiveSprint(project: Project) async throws -> Sprint? 
 }

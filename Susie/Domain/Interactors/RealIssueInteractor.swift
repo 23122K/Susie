@@ -18,11 +18,11 @@ class RealIssueInteractor: IssueInteractor {
         return try await repository.fetchIssuesAssignedToSignedUser()
     }
     
-    func fetchIssuesFromProductBacklog(project: any ProjectEntity) async throws -> Array<IssueGeneralDTO>{
+    func fetchIssuesFromProductBacklog(project: Project) async throws -> Array<IssueGeneralDTO>{
         return try await repository.fetchIssuesFromProductBacklog(project: project)
     }
     
-    func fetchArchivalIssuesFromProductBacklog(project: any ProjectEntity) async throws -> Array<IssueGeneralDTO> {
+    func fetchArchivalIssuesFromProductBacklog(project: Project) async throws -> Array<IssueGeneralDTO> {
         return try await repository.fetchArchivalIssuesFromProductBacklog(project: project)
     }
     

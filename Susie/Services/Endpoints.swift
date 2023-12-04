@@ -89,10 +89,10 @@ enum Endpoints {
         case create(issue: IssueDTO)
         case update(issue: IssueDTO)
         case delete(issue: IssueGeneralDTO)
-        case fetch(project: any ProjectEntity)
+        case fetch(project: Project)
         case details(issue: IssueGeneralDTO)
-        case backlog(project: any ProjectEntity)
-        case history(project: any ProjectEntity)
+        case backlog(project: Project)
+        case history(project: Project)
         case assignTo(issue: IssueDTO)
         case unassignFrom(issue: IssueDTO)
         case assignedTo(sprint: Sprint)
@@ -177,9 +177,9 @@ enum Endpoints {
         case assign(issue: IssueGeneralDTO, to: Sprint)
         case unassign(issue: IssueGeneralDTO, from: Sprint)
         case start(sprint: Sprint)
-        case stop(project: any ProjectEntity)
-        case ongoing(project: any ProjectEntity)
-        case unbegun(project: any ProjectEntity)
+        case stop(project: Project)
+        case ongoing(project: Project)
+        case unbegun(project: Project)
         
         var schema: String { "http" }
         var host: String { "127.0.0.1" }

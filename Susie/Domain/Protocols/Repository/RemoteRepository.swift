@@ -11,17 +11,22 @@ protocol RemoteRepository {
     var session: URLSession { get }
 }
 
+enum RemoteRepositoryError: Error {
+    case invalidHTTPResponse
+    case failedWithStatusCode(Int)
+}
+
 extension RemoteRepository {
     func data(for request: URLRequest, interceptor: (any RequestInterceptor)? = nil) async throws -> Data {
         let request = try await interceptor?.intercept(request: request) ?? request
     
         let task = Task<Data, Error> {
             guard let (data, response) = try await session.data(for: request) as? (Data, HTTPURLResponse) else {
-                throw NetworkError.invalidHTTPResponse
+                throw RemoteRepositoryError.invalidHTTPResponse
             }
             
             guard (200...299).contains(response.statusCode) else {
-                throw NetworkError.failedWithStatusCode(response.statusCode)
+                throw RemoteRepositoryError.failedWithStatusCode(response.statusCode)
             }
             
             return data
@@ -35,11 +40,11 @@ extension RemoteRepository {
     
         let task = Task<Void, Error> {
             guard let (_, response) = try await session.data(for: request) as? (Data, HTTPURLResponse) else {
-                throw NetworkError.invalidHTTPResponse
+                throw RemoteRepositoryError.invalidHTTPResponse
             }
             
             guard (200...299).contains(response.statusCode) else {
-                throw NetworkError.failedWithStatusCode(response.statusCode)
+                throw RemoteRepositoryError.failedWithStatusCode(response.statusCode)
             }
         }
         

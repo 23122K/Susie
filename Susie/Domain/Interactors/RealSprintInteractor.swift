@@ -34,15 +34,15 @@ class RealSprintInteractor: SprintInteractor {
         try await repository.startSprint(sprint: sprint)
     }
     
-    func stopSprint(project: ProjectDTO) async throws {
+    func stopSprint(project: Project) async throws {
         try await repository.stopSprint(project: project)
     }
     
-    func fetchInactiveSprints(project: ProjectDTO) async throws -> Array<Sprint> {
+    func fetchInactiveSprints(project: Project) async throws -> Array<Sprint> {
         return try await repository.fetchInactiveSprints(project: project)
     }
     
-    func fetchActiveSprint(project: ProjectDTO) async throws -> Sprint? {
+    func fetchActiveSprint(project: Project) async throws -> Sprint? {
         return try await repository.fetchActiveSprint(project: project)
     }
     

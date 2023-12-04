@@ -41,17 +41,17 @@ class RealRemoteSprintRepository: RemoteSprintRepository, ProtectedRepository {
         return try await data(for: endpoint.request, interceptor: authenticationInterceptor)
     }
     
-    func stopSprint(project: ProjectDTO) async throws {
+    func stopSprint(project: Project) async throws {
         let endpoint = Endpoints.SprintEndpoint.stop(project: project)
         return try await data(for: endpoint.request, interceptor: authenticationInterceptor)
     }
     
-    func fetchInactiveSprints(project: ProjectDTO) async throws -> Array<Sprint> {
+    func fetchInactiveSprints(project: Project) async throws -> Array<Sprint> {
         let endpoint = Endpoints.SprintEndpoint.unbegun(project: project)
         return try await data(for: endpoint.request, interceptor: authenticationInterceptor).decode([Sprint].self)
     }
     
-    func fetchActiveSprint(project: ProjectDTO) async throws -> Sprint? {
+    func fetchActiveSprint(project: Project) async throws -> Sprint? {
         let endpoint = Endpoints.SprintEndpoint.ongoing(project: project)
         return try await data(for: endpoint.request, interceptor: authenticationInterceptor).decode(Sprint?.self)
     }

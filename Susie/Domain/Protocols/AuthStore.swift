@@ -13,13 +13,21 @@ enum AuthKey: String {
 }
 
 protocol AuthStore {
-    func encode(_ auth: Auth) throws -> Data
-    func decode(_ data: Data) throws -> Auth
-    
     func insert(_ auth: Auth, for key: AuthKey) throws
     func fetch(key: AuthKey) throws -> Auth
     func update(key: AuthKey, with auth: Auth) throws
     func delete(key: AuthKey) throws
+}
+
+enum AuthStoreError: Error {
+    case authObjectNotFound
+    case authObjectExists
+    
+    case authObjectcouldNotBeEncoded
+    case authObjectcouldNotBeDecoded
+    case unexpectedStatus(OSStatus)
+    
+    case authObjectCouldNotBeUpdated
 }
 
 extension AuthStore {
@@ -27,7 +35,7 @@ extension AuthStore {
         get { try? self.fetch(key: key) }
         set {
             if let auth = newValue {
-                do { try insert(auth, for: key) } catch KeychainError.authObjectExists {
+                do { try insert(auth, for: key) } catch AuthStoreError.authObjectExists {
                     do { try update(key: key, with: auth) } catch {
                         print("\(error) occured while updating keychain value for key \(key)")
                     }
