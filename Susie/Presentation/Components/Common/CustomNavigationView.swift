@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CustomNavigationViewModifier: ViewModifier {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
-    let title: String
+    let title: LocalizedStringResource
     
     func body(content: Content) -> some View {
         content
@@ -30,7 +30,7 @@ struct CustomNavigationViewModifier: ViewModifier {
 }
 
 extension View {
-    func custom(title: String) -> some View {
+    func custom(title: LocalizedStringResource) -> some View {
         self.modifier(CustomNavigationViewModifier(title: title))
     }
 }

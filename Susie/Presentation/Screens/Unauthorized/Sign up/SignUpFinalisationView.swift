@@ -13,15 +13,19 @@ struct SignUpFinalisationView: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            FormTitleView(title: "Create", highlighted: "password")
-            PasswordField(title: "Password", text: $vm.credentials.password, focusedField: $focus, equals: .password)
+//            Text(LocalizedStringResource("Create password").fill(words: ["password"], with: .susieBluePriamry))
+            Text(.localized.createPassword)
+            .font(.title)
+            .bold()
+            
+            PasswordField(title: .localized.password, text: $vm.credentials.password, focusedField: $focus, equals: .password)
                 .onSubmit { vm.onSubmitOf(field: .password) }
             
             Divider()
-            PasswordField(title: "Confirm password", text: $vm.confirmPassword, focusedField: $focus, equals: .confirmPassword)
+            PasswordField(title: .localized.confirmPassword, text: $vm.confirmPassword, focusedField: $focus, equals: .confirmPassword)
                 .onSubmit { vm.onSubmitOf(field: .confirmPassword) }
             
-            Button("Sign up") {
+            Button("\(.localized.signUp)") {
                 vm.onSignUpButtonTapped()
             }
             .buttonStyle(.secondary)

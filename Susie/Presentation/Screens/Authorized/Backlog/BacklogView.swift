@@ -6,13 +6,13 @@ struct BacklogView: View {
     
     var body: some View {
         NavigationStack {
-            ScreenHeader(user: vm.user, screenTitle: "Backlog") {
+            ScreenHeader(user: vm.user, title: "\(LocalizedStringResource.localized.backlog)") {
                 Menu(content: {
-                    NavigationLink("Create sprint") {
+                    NavigationLink("\(.localized.createSprint)") {
                         SprintFormView(project: vm.project)
                     }
                
-                    NavigationLink("Create issue") {
+                    NavigationLink("\(.localized.createIssue)") {
                         IssueFormView(project: vm.project)
                     }
                     
@@ -49,15 +49,15 @@ struct BacklogView: View {
                     }
                 }, placeholder: IssuePlaceholderView())
                 
-                NavigationLink("Create issue", destination: {
+                NavigationLink("\(.localized.createIssue)") {
                     IssueFormView(project: vm.project)
-                })
+                }
                 .buttonStyle(.issueCreation)
                 .offset(y: -15)
             }
             .scrollIndicators(.hidden)
         }
-        .navigationTitle("Backlog")
+        .navigationTitle("\(LocalizedStringResource.localized.backlog)")
         .onAppear { vm.fetchInactiveSprintsAndIssues() }
         .refreshable { vm.fetchInactiveSprintsAndIssues() }
     }

@@ -26,7 +26,7 @@ struct SprintView: View {
             .refreshable { vm.fetchSprints() }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") {
+                    Button("\(.localized.close)") {
                         dismiss()
                     }
                 }
@@ -37,14 +37,14 @@ struct SprintView: View {
                             vm.startSprintButtonTapped()
                             dismiss()
                         }, label: {
-                            Text("Start")
+                            Text(.localized.start)
                             Image(systemName: "play.fill")
                         })
                         
                         NavigationLink(destination: {
                             SprintFormView(sprint: vm.sprint, project: vm.project)
                         }, label: {
-                            Text("Edit")
+                            Text(.localized.edit)
                             Image(systemName: "pencil")
                         })
                         
@@ -53,7 +53,7 @@ struct SprintView: View {
                                 vm.deleteSprintButtonTapped()
                                 dismiss()
                             }, label: {
-                                Text("Delete")
+                                Text(.localized.delete)
                                     .foregroundColor(.red)
                                 Image(systemName: "trash.fill")
                                     .foregroundStyle(.red)

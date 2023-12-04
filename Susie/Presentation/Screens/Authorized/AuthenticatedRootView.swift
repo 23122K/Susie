@@ -11,27 +11,27 @@ struct AuthenticatedRootView: View {
                 .attachPartialSheetToRoot()
                 .tabItem{
                     Image(systemName: "house.fill")
-                    Text("Home")
+                    Text(verbatim: "Home")
                 }
             
             BoardsView(project: project, user: user)
                 .attachPartialSheetToRoot()
                 .tabItem{
                     Image(systemName: "chart.bar.doc.horizontal.fill")
-                    Text("Boards")
+                    Text(verbatim: "Boards")
                 }
 
             BacklogView(project: project, user: user)
                 .attachPartialSheetToRoot()
                 .tabItem{
                     Image(systemName: "doc.plaintext.fill")
-                    Text("Backlog")
+                    Text(verbatim: "Backlog")
                 }
 
             DashboardView(project: project, user: user)
                 .tabItem{
                     Image(systemName: "chart.bar.xaxis")
-                    Text("Dashboard")
+                    Text(verbatim: "Dashboard")
                 }
         }
     }

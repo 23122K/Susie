@@ -13,7 +13,7 @@ struct CustomDivider: View {
             Rectangle()
                 .frame(height: 1)
                 .opacity(0.6)
-            Text("or")
+            Text(.localized.or)
                 .font(.caption)
                 .opacity(0.7)
                 .padding(.horizontal)

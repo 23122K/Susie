@@ -9,7 +9,7 @@ import SwiftUI
 
 struct Checkbox: View {
     @Binding private var isSelected: Bool
-    private let title: String
+    private let title: LocalizedStringResource
     
     var body: some View {
         HStack(alignment: .lastTextBaseline) {
@@ -39,7 +39,7 @@ struct Checkbox: View {
         }
     }
     
-    init(title: String, isSelected: Binding<Bool>) {
+    init(title: LocalizedStringResource, isSelected: Binding<Bool>) {
         _isSelected = isSelected
         self.title = title
     }

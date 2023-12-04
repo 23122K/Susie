@@ -8,17 +8,20 @@ struct SignInView: View {
     
     var body : some View {
         VStack(alignment: .leading){
-            FormTitleView(title: "Log in to", highlighted: "Susie")
+//            Text(localized.logInToSusie.fill(words: [.localized.susie], with: .susieBluePriamry))")
+            Text(.localized.logInToSusie)
+            .font(.title)
+            .bold()
             
-            CustomTextField(title: "Email address", text: $vm.credentials.email , keyboard: .emailAddress, focusedField: $focus, equals: .email) { envelopeImage }
+            CustomTextField(title: .localized.email, text: $vm.credentials.email , keyboard: .emailAddress, focus: $focus, equals: .email) { envelopeImage }
                 .onSubmit { vm.onSubmitOf(field: .email) }
             
             Divider()
             
-            PasswordField(title: "Password", text: $vm.credentials.password, focusedField: $focus, equals: .password)
+            PasswordField(title: .localized.password, text: $vm.credentials.password, focusedField: $focus, equals: .password)
                 .onSubmit { vm.onSubmitOf(field: .password) }
             
-            Button("Sign in") { vm.onSignInButtonTapped() }
+            Button("\(.localized.signIn)") { vm.onSignInButtonTapped() }
             .buttonStyle(.secondary)
             .disabled(!vm.isValid)
 

@@ -13,10 +13,10 @@ struct HomeView: View {
 
     var body: some View {
         NavigationStack {
-            ScreenHeader(user: vm.user, screenTitle: "Home") {
+            ScreenHeader(user: vm.user, title: "Home") {
                Menu(content: {
-                   Button("Create sprint") {}
-                   Button("Create issue") {}
+                   Button("\(.localized.createSprint)") {}
+                   Button("\(.localized.createIssue)") {}
                }, label: {
                    Image(systemName: "ellipsis")
                        .scaleEffect(1.1)

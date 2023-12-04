@@ -11,7 +11,7 @@ struct ToggableSection<Content: View> : View {
     @State private var isToggled: Bool
     @State private var angle: Double = 0
     
-    var title: String
+    var title: LocalizedStringResource
     var content: () -> Content
     
     var body: some View {
@@ -42,7 +42,7 @@ struct ToggableSection<Content: View> : View {
         .animation(.spring(response: 0.2), value: isToggled)
     }
     
-    init(title: String, isToggled: Bool = false, @ViewBuilder _ content: @escaping () -> Content){
+    init(title: LocalizedStringResource, isToggled: Bool = false, @ViewBuilder _ content: @escaping () -> Content){
         self.title = title
         self.content = content
         _isToggled = State(initialValue: isToggled)

@@ -12,12 +12,12 @@ struct BoardsView: View {
     
     var body: some View {
         NavigationStack{
-            ScreenHeader(user: vm.user, screenTitle: vm.sprint?.name ?? "Boards") {
+            ScreenHeader(user: vm.user, title: vm.sprint?.name ?? "\(LocalizedStringResource.localized.boards)") {
                 Menu(content: {
                     Button(role: .destructive, action: {
                         vm.stopSprintButtonTapped()
                     }, label: {
-                        Text("Stop sprint")
+                        Text(.localized.stopSprint)
                             .foregroundColor(.red)
                         Image(systemName: "pause.fill")
                             .foregroundStyle(.red)

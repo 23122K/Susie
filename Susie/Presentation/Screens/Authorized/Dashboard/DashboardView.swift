@@ -8,11 +8,11 @@ struct DashboardView: View {
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
-                ScreenHeader(user: vm.user, screenTitle: "Dashboard") {
+                ScreenHeader(user: vm.user, title: "\(LocalizedStringResource.localized.dashboard)") {
                     Menu(content: {
-                        Button("Add new member") { isPresented.toggle() }
+                        Button("\(.localized.addNewMember)") { isPresented.toggle() }
                         
-                        NavigationLink("Edit project", destination: {
+                        NavigationLink("\(.localized.editProject)", destination: {
                             ProjectFormView(project: vm.project)
                         })
                         
@@ -20,7 +20,7 @@ struct DashboardView: View {
                             Button(role: .destructive, action: {
                                 print("DELETED")
                             }, label: {
-                                Text("Delete project")
+                                Text(.localized.deleteProject)
                             })
                         }
                     }, label: {
@@ -29,7 +29,7 @@ struct DashboardView: View {
                     })
                 }
                 
-                ToggableSection(title: "Members", isToggled: true) {
+                ToggableSection(title: .localized.members, isToggled: true) {
                     MembersView(users: vm.project.members)
                 }
                 .padding()
@@ -38,10 +38,10 @@ struct DashboardView: View {
             }
             .refreshable { vm.fetchProjectDetails() }
             .alert("Invite request", isPresented: $isPresented, actions: {
-                TextField("email address", text: $vm.invitation.email)
-                Button("Cancel") { } //After any action alert is dissmised automaticly
-                Button("Invite", action: { vm.inviteButtonTapped() })
-            }, message: { Text("Invite member to your project") })
+                TextField("\(.localized.email)", text: $vm.invitation.email)
+                Button("\(.localized.cancel)") { } //After any action alert is dissmised automaticly
+                Button("\(.localized.invite)", action: { vm.inviteButtonTapped() })
+            }, message: { Text(verbatim: "Invite member to your project") })
         }
     }
 

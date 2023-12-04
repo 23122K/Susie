@@ -28,11 +28,11 @@ struct CommentFormView: View {
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button("Dismiss") { dismiss() }
+                Button("\(.localized.dissmis)") { dismiss() }
             }
             
             ToolbarItem(placement: .primaryAction) {
-                Button("Save") { save() }
+                Button("\(.localized.save)") { save() }
             }
         }
     }

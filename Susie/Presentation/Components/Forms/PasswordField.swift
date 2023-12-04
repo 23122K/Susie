@@ -7,7 +7,7 @@ struct PasswordField<T: Hashable>: View{
     private var focusedField: FocusState<T>.Binding
     private var field: T
     
-    private let title: String
+    private let title: LocalizedStringResource
     
     var body: some View {
         HStack{
@@ -22,11 +22,11 @@ struct PasswordField<T: Hashable>: View{
             ZStack(alignment: .trailing){
                 switch(isHidden){
                 case true:
-                    SecureField(title, text: $text)
+                    SecureField("\(title)", text: $text)
                         .focused(focusedField, equals: field)
                         .animation(.easeInOut(duration: 0.2), value: isHidden)
                 case false:
-                    TextField(title, text: $text)
+                    TextField("\(title)", text: $text)
                         .keyboardType(.default)
                         .autocorrectionDisabled(true)
                         .textInputAutocapitalization(.never)
@@ -44,7 +44,7 @@ struct PasswordField<T: Hashable>: View{
         }.frame(height: 50)
     }
     
-    init(title: String, text: Binding<String>, focusedField: FocusState<T>.Binding, equals field: T) {
+    init(title: LocalizedStringResource, text: Binding<String>, focusedField: FocusState<T>.Binding, equals field: T) {
         _text = text
         self.focusedField = focusedField
         self.field = field

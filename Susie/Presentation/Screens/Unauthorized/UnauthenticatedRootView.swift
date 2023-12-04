@@ -6,19 +6,22 @@ struct UnauthenticatedRootView: View {
             ScrollView{
                 VStack{
                     UserGreetingMessange()
-                                   
-                    NavigationLink("Sign in") {
-                        SignInView().custom(title: "Cancel")
-                    }.buttonStyle(.primary)
+                    
+                    NavigationLink("\(.localized.signIn)") {
+                        SignInView().custom(title: .localized.cancel)
+                    }
+                    .buttonStyle(.primary)
                     
                     CustomDivider()
                         .padding(.vertical,1)
                     
-                    NavigationLink("Let's get started") {
-                        SignUpView().custom(title: "Cancel")
+                    NavigationLink("\(.localized.letsGetStarted)") {
+                        SignUpView().custom(title: .localized.cancel)
                     }.buttonStyle(.primary)
                     
-                    TermsOfService()
+                    Text(.localized.fullTermsOfServiceAndPrivacyPolies)
+                    .font(.caption)
+                    .padding(.horizontal, 33)
                 }
             }
         }

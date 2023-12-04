@@ -14,13 +14,13 @@ struct ProjectFormView: View {
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            TextField("Project name", text: $vm.project.name)
+            TextField("\(.localized.projectTitle)", text: $vm.project.name)
                 .textFieldStyle(.susiePrimaryTextField)
                 .focused($focus, equals: .name)
                 .onSubmit { vm.onSumbitOf(field: .name) }
             
-            ToggableSection(title: "Description", isToggled: true) {
-                TextField("Project description", text: $vm.project.description, axis: .vertical)
+            ToggableSection(title: .localized.description, isToggled: true) {
+                TextField("\(.localized.projectDescription)", text: $vm.project.description, axis: .vertical)
                     .lineLimit(4...)
                     .textFieldStyle(.susieSecondaryTextField)
                     .focused($focus, equals: .description)
@@ -28,8 +28,8 @@ struct ProjectFormView: View {
                     .padding(.top)
             }
             
-            ToggableSection(title: "Goal", isToggled: true) {
-                TextField("Project goal", text: $vm.project.goal, axis: .vertical)
+            ToggableSection(title: .localized.projectGoal, isToggled: true) {
+                TextField("\(.localized.projectGoal)", text: $vm.project.goal, axis: .vertical)
                     .lineLimit(4...)
                     .textFieldStyle(.susieSecondaryTextField)
                     .focused($focus, equals: .goal)
@@ -40,13 +40,13 @@ struct ProjectFormView: View {
         }
         .toolbar(.hidden, for: .tabBar)
         .toolbar {
-            Button("Save") {
+            Button("\(.localized.save)") {
                 vm.saveProjectButtonTapped()
             }
         }
         .bind($vm.focus, to: $focus)
         .padding()
-        .navigationTitle(vm.project.name.isEmpty ? "New project" : vm.project.name)
+        .navigationTitle(vm.project.name.isEmpty ? "\(LocalizedStringResource.localized.newProject)" : vm.project.name)
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: vm.shouldDismiss) { shouldDismiss in if shouldDismiss { dismiss() } }
     }

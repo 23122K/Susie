@@ -20,23 +20,23 @@ struct UserGreetingMessange: View {
             ZStack(alignment: .center){
                 VStack(alignment: .leading){
                     HStack{
-                        Text("Be")
-                        Text("agile.")
+                        Text(verbatim: "Be")
+                        Text(verbatim: "agile.")
                             .foregroundColor(.susieBluePriamry)
-                        Text("Get more done.")
+                        Text(verbatim: "Get more done.")
                     }
                     .font(.title)
                     .bold()
                     .padding(.bottom, 5)
                     
                     Group{
-                        Text("Get started today and see how")
+                        Text(verbatim: "Get started today and see how")
                         +
-                        Text(" Susie")
+                        Text(verbatim: " Susie")
                             .fontWeight(.bold)
                             .foregroundColor(.susieBluePriamry)
                         +
-                        Text(" can help you and your team achieve goals with ease.")
+                        Text(verbatim: " can help you and your team achieve goals with ease.")
                     }
                     .font(.title3)
                     

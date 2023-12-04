@@ -24,7 +24,7 @@ struct IssueDetailsView: View {
                     ScrollView {
                         VStack(alignment: .leading) {
                             HStack {
-                                Text("Comments")
+                                Text(.localized.comments)
                                     .foregroundStyle(Color.gray)
                                     .multilineTextAlignment(.leading)
                                 Text(issue.comments.count.description)
@@ -60,7 +60,7 @@ struct IssueDetailsView: View {
             .scrollIndicators(.hidden)
             .toolbar{
                 ToolbarItem(placement: .topBarLeading, content: {
-                    Button("Close") {
+                    Button("\(.localized.dissmis)") {
                         dismiss()
                     }
                 })
@@ -72,7 +72,7 @@ struct IssueDetailsView: View {
                 }
                 
                 ToolbarItem(placement: .bottomBar) {
-                    TextField("Add comment...", text: $vm.comment.body)
+                    TextField("\(.localized.addComment)", text: $vm.comment.body)
                         .textFieldStyle(.susieSecondaryTextField)
                 }
             }

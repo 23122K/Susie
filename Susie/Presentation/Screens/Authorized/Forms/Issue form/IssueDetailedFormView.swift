@@ -17,7 +17,7 @@ struct IssueDetailedFormView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            TextField("Issue title", text: $vm.issue.name)
+            TextField("\(.localized.issueTitle)", text: $vm.issue.name)
                 .textFieldStyle(.susiePrimaryTextField)
             
             Button(action: {
@@ -37,26 +37,26 @@ struct IssueDetailedFormView: View {
                 .transition(.move(edge: .trailing))
             })
             
-            ToggableSection(title: "Description", isToggled: true) {
-                TextField("Description", text: $vm.issue.description, axis: .vertical)
+            ToggableSection(title: .localized.description, isToggled: true) {
+                TextField("\(.localized.description)", text: $vm.issue.description, axis: .vertical)
                     .lineLimit(2...)
                     .textFieldStyle(.susieSecondaryTextField)
             }
             
-            ToggableSection(title: "Details", isToggled: false) {
-                ToggableSectionRowView(title: "Issue Priority") {
+            ToggableSection(title: .localized.details, isToggled: false) {
+                ToggableSectionRowView(title: .localized.issuePriority) {
                     Button(action: { isPriorityPresented.toggle() }, label: {
                         TagView(text: vm.issue.priority.description, color: vm.issue.priority.color)
                     })
                 }
                 
-                ToggableSectionRowView(title: "Issue Type") {
+                ToggableSectionRowView(title: .localized.issueType) {
                     Button(action: { isTypePresented.toggle() }, label: {
                         TagView(text: vm.issue.type.description, color: vm.issue.type.color)
                     })
                 }
                 
-                ToggableSectionRowView(title: "Issue Estimation") {
+                ToggableSectionRowView(title: .localized.issueEstimation) {
                     HStack {
                         Text(vm.issue.estimation.description)
                         Slider(value: .convert(from: $vm.issue.estimation), in: 1...20, step: 1)
@@ -64,13 +64,13 @@ struct IssueDetailedFormView: View {
                     }
                 }
                 
-                ToggableSectionRowView(title: "Asignee", divider: false) {
+                ToggableSectionRowView(title: .localized.asignee, divider: false) {
                     Button(action: {
                         vm.assignToIssueButtonTapped()
                     }, label: {
                         HStack{
                             InitialsView(user: vm.issue.assignee, size: 30)
-                            Text(vm.issue.assignee?.fullName ?? "Unassigned")
+                            Text(vm.issue.assignee?.fullName ?? "\(LocalizedStringResource.localized.unassigned)")
                         }
                     })
                 }
@@ -80,7 +80,7 @@ struct IssueDetailedFormView: View {
         }
         .toolbar{
             ToolbarItem(placement: .topBarTrailing, content: {
-                Button("Save") {
+                Button("\(.localized.save)") {
                     vm.updateIssueDetailsButtonTapped()
                 }
             })

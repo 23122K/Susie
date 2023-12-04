@@ -38,7 +38,7 @@ class BacklogViewModel: ObservableObject {
     func fetchInactiveSprints(project: Project) async {
         do {
             sprints = .loading
-            let sprints = try await sprintInteractor.fetchInactiveSprints(project: project.toDTO())
+            let sprints = try await sprintInteractor.fetchInactiveSprints(project: project)
             self.sprints = .loaded(sprints)
         } catch { sprints = .failed(error) }
     }
@@ -46,7 +46,7 @@ class BacklogViewModel: ObservableObject {
     func fetchInactiveIssues(project: Project) async {
         do {
             issues = .loading
-            let issues = try await issueInteractor.fetchIssuesFromProductBacklog(project: project.toDTO())
+            let issues = try await issueInteractor.fetchIssuesFromProductBacklog(project: project)
             self.issues = .loaded(issues)
         } catch { issues = .failed(error) }
     }

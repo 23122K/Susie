@@ -14,23 +14,23 @@ struct SprintFormView: View {
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            TextField("Sprint name", text: $vm.sprint.name)
+            TextField("\(.localized.sprintTitle)", text: $vm.sprint.name)
                 .padding(.horizontal)
                 .focused($focus, equals: .name)
                 .onSubmit { vm.onSubmitOf(field: .name) }
                 .textFieldStyle(.susiePrimaryTextField)
             
-            TextField("Goal", text: $vm.sprint.goal)
+            TextField("\(.localized.sprintGoal)", text: $vm.sprint.goal)
                 .padding(.horizontal)
                 .focused($focus, equals: .goal)
                 .onSubmit { vm.onSubmitOf(field: .goal) }
                 .textFieldStyle(.susieSecondaryTextField)
             
-            Toggle("Start date", isOn: $vm.shouldHaveStartDate)
+            Toggle("\(.localized.startDate)", isOn: $vm.shouldHaveStartDate)
                 .padding(.horizontal)
                 .tint(.susieBluePriamry)
             
-            DatePicker("Start date", selection: $vm.startDate)
+            DatePicker("\(.localized.startDate)", selection: $vm.startDate)
                 .padding(.horizontal)
                 .disabled(!vm.shouldHaveStartDate)
                 .opacity(vm.shouldHaveStartDate ? 1 : 0)
@@ -38,12 +38,12 @@ struct SprintFormView: View {
                 .animation(.spring, value: vm.shouldHaveStartDate)
         }
         .toolbar {
-            Button("Save") { vm.saveSprintButtonTapped() }
+            Button("\(.localized.save)") { vm.saveSprintButtonTapped() }
         }
         .bind($vm.focus, to: $focus)
         .padding(.vertical)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationTitle(vm.sprint.name.isEmpty ? "New sprint" : vm.sprint.name)
+        .navigationTitle(vm.sprint.name.isEmpty ? "\(LocalizedStringResource.localized.newSprint)" : vm.sprint.name)
         .onChange(of: vm.shouldDismiss) { shouldDismiss in if shouldDismiss { dismiss() } }
     }
     

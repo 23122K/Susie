@@ -14,7 +14,7 @@ struct ProjectSelectionView: View {
     var body: some View {
         NavigationStack {
             HStack(alignment: .lastTextBaseline) {
-                ScreenHeader(user: vm.user, screenTitle: "Projects", action: {
+                ScreenHeader(user: vm.user, title: "\(LocalizedStringResource.localized.projects)", action: {
                     //TODO: Toogle sometinh
                 }, content: {
                     NavigationLink(destination: {

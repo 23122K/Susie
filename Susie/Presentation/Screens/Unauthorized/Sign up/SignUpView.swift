@@ -10,33 +10,36 @@ struct SignUpView: View {
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading){
-                FormTitleView(title: "Create your", highlighted: "accout")
+//                Text(LocalizedStringResource("Crete your account").fill(words: [.localized.account], with: .susieBluePriamry))
+                Text(.localized.createYourAccount)
+                .font(.title)
+                .bold()
                 
-                CustomTextField(title: "First name", text: $vm.credentials.firstName, keyboard: .default, focusedField: $focus, equals: .firstName) { personImage } 
+                CustomTextField(title: .localized.fistName, text: $vm.credentials.firstName, keyboard: .default, focus: $focus, equals: .firstName) { personImage }
                     .onSubmit { vm.onSubmitOf(field: .firstName) }
                 
                 Divider()
 
-                CustomTextField(title: "Last name", text: $vm.credentials.lastName, keyboard: .default, focusedField: $focus, equals: .lastName) { personImage }
+                CustomTextField(title: .localized.lastName, text: $vm.credentials.lastName, keyboard: .default, focus: $focus, equals: .lastName) { personImage }
                     .onSubmit { vm.onSubmitOf(field: .lastName) }
                 
                 Divider()
                 
-                CustomTextField(title: "Email address", text: $vm.credentials.email, keyboard: .emailAddress, focusedField: $focus, equals: .email) { envelopeImage }
+                CustomTextField(title: .localized.email, text: $vm.credentials.email, keyboard: .emailAddress, focus: $focus, equals: .email) { envelopeImage }
                     .onSubmit { vm.onSubmitOf(field: .email) }
                 
             }
             .padding()
             
-            NavigationLink("Next", destination: {
+            NavigationLink("\(.localized.next)") {
                 SignUpFinalisationView(vm: vm)
-                    .custom(title: "Back")
-            })
+                    .custom(title: .localized.next)
+            }
             .buttonStyle(.secondary)
     
             Spacer()
             
-            Checkbox(title: "Register as a scrum master", isSelected: $vm.credentials.isScrumMaster)
+            Checkbox(title: .localized.registerAsAScrumMaster, isSelected: $vm.credentials.isScrumMaster)
                 .padding()
         }
         .bind($vm.focus, to: $focus)

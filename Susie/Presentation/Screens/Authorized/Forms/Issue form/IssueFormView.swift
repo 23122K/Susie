@@ -20,32 +20,32 @@ struct IssueFormView: View {
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            TextField("Issue title", text: $vm.issue.name)
+            TextField("\(.localized.issueTitle)", text: $vm.issue.name)
                 .textFieldStyle(.susiePrimaryTextField)
                 .focused($focus, equals: .title)
                 .onSubmit { vm.onSumbitOf(field: .title) }
             
             
-            ToggableSection(title: "Description", isToggled: true) {
-                TextField("Description", text: $vm.issue.description, axis: .vertical)
+            ToggableSection(title: .localized.description, isToggled: true) {
+                TextField("\(.localized.description)", text: $vm.issue.description, axis: .vertical)
                     .lineLimit(2...)
                     .textFieldStyle(.susieSecondaryTextField)
                     .focused($focus, equals: .description)
                     .onSubmit { vm.onSumbitOf(field: .description) }
             }
             
-            ToggableSection(title: "Details", isToggled: true) {
-                ToggableSectionRowView(title: "Issue Priority") {
+            ToggableSection(title: .localized.details, isToggled: true) {
+                ToggableSectionRowView(title: .localized.issuePriority) {
                     Button(action: { isPriorityPresented.toggle() }, label: {
                         TagView(text: vm.issue.priority.description, color: vm.issue.priority.color)
                     })
                 }
-                ToggableSectionRowView(title: "Issue Type") {
+                ToggableSectionRowView(title: .localized.issueTitle) {
                     Button(action: { isTypePresented.toggle() }, label: {
                         TagView(text: vm.issue.type.description, color: vm.issue.type.color)
                     })
                 }
-                ToggableSectionRowView(title: "Issue Estimation", divider: false) {
+                ToggableSectionRowView(title: .localized.issueEstimation, divider: false) {
                     HStack {
                         Text("\(vm.issue.estimation.description)")
                         Slider(value: .convert(from: $vm.issue.estimation), in: 1...20, step: 1)
@@ -70,7 +70,7 @@ struct IssueFormView: View {
         .navigationTitle(vm.issue.name)
         .toolbar(.hidden, for: .tabBar)
         .toolbar{
-            Button("Save") { vm.createIssueButtonTapped() }
+            Button("\(.localized.save)") { vm.createIssueButtonTapped() }
         }
         .onChange(of: vm.shouldDismiss) { shouldDismiss in if shouldDismiss { dismiss() } }
     }
@@ -82,7 +82,7 @@ struct IssueFormView: View {
 
 
 struct ToggableSectionRowView<Content: View>: View {
-    let title: String
+    let title: LocalizedStringResource
     let content: Content
     let divider: Bool
     
@@ -103,7 +103,7 @@ struct ToggableSectionRowView<Content: View>: View {
         }
     }
     
-    init(title: String, divider: Bool = true, @ViewBuilder content: @escaping () -> Content) {
+    init(title: LocalizedStringResource, divider: Bool = true, @ViewBuilder content: @escaping () -> Content) {
         self.title = title
         self.divider = divider
         self.content = content()

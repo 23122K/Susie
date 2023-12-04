@@ -9,10 +9,10 @@ import SwiftUI
 
 struct CustomTextField<T: Hashable, Content: View>: View {
     @Binding private var text: String
-    private var focusedField: FocusState<T>.Binding
+    private var focus: FocusState<T>.Binding
     private var field: T
     
-    private let title: String
+    private let title: LocalizedStringResource
     private let content: Content
     private let keyboardType: UIKeyboardType
     
@@ -23,8 +23,9 @@ struct CustomTextField<T: Hashable, Content: View>: View {
                     .foregroundColor(.susieBluePriamry)
             }
             .frame(width: 30)
-            TextField(title, text: $text)
-                .focused(focusedField, equals: field)
+            
+            TextField("\(title)", text: $text)
+                .focused(focus, equals: field)
                 .keyboardType(keyboardType)
                 .autocorrectionDisabled(true)
                 .textInputAutocapitalization(keyboardType == .emailAddress ? .never : .sentences)
@@ -33,10 +34,10 @@ struct CustomTextField<T: Hashable, Content: View>: View {
         
     }
     
-    init(title: String, text: Binding<String>, keyboard type: UIKeyboardType, focusedField: FocusState<T>.Binding, equals field: T,
+    init(title: LocalizedStringResource, text: Binding<String>, keyboard type: UIKeyboardType, focus: FocusState<T>.Binding, equals field: T,
          @ViewBuilder _ content: () -> Content) {
         _text = text
-        self.focusedField = focusedField
+        self.focus = focus
         self.field = field
         self.title = title
         self.content = content()

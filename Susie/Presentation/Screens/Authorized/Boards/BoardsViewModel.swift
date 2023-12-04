@@ -25,7 +25,7 @@ class BoardsViewModel: ObservableObject {
             do {
                 self.issues = .loading
                 try await Task.sleep(nanoseconds: 500_000_000)
-                if let sprint = try? await sprintInteractor.fetchActiveSprint(project: project.toDTO()) {
+                if let sprint = try? await sprintInteractor.fetchActiveSprint(project: project) {
                     self.sprint = sprint
                     let issues = try await issueInteractor.fetchIssuesFromSprint(sprint)
                     self.issues = .loaded(issues)
@@ -40,7 +40,7 @@ class BoardsViewModel: ObservableObject {
     }
     
     func stopSprintButtonTapped() {
-        Task { try await sprintInteractor.stopSprint(project: project.toDTO()) }
+        Task { try await sprintInteractor.stopSprint(project: project) }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.fetchIssuesAssignedToActiveSprint()
