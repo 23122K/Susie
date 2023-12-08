@@ -13,7 +13,7 @@ struct HomeView: View {
 
     var body: some View {
         NavigationStack {
-            ScreenHeader(user: vm.user, title: "Home") {
+            ScreenHeader(user: vm.user, title: .localized.home) {
                Menu(content: {
                    Button("\(.localized.createSprint)") {}
                    Button("\(.localized.createIssue)") {}
@@ -21,10 +21,16 @@ struct HomeView: View {
                    Image(systemName: "ellipsis")
                        .scaleEffect(1.1)
                })
-           }
+            }
             
+            AsyncContentView(state: $vm.issues) { issues in
+                BoardView(issues: issues)
+            }
+        
             Spacer()
         }
+        .task { await vm.onAppear() }
+        .refreshable{ await vm.onAppear() }
     }
     
     init(project: Project, user: User) { self._vm = ObservedObject(initialValue: HomeViewModel(project: project, user: user)) }

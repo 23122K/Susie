@@ -17,13 +17,13 @@ struct SprintView: View {
                 AsyncContentView(state: $vm.issues, { issues in
                     ForEach(issues) { issue in
                         IssueRowView(issue: issue)
+                            .onTapGesture { vm.issueDetailsButtonTapped(issue: issue) }
                     }
                 }, placeholder: EmptyView())
             }
             .padding()
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(vm.sprint.name)
-            .refreshable { vm.fetchSprints() }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("\(.localized.close)") {
@@ -65,10 +65,11 @@ struct SprintView: View {
                 }
             }
         }
-        .sheet(item: $vm.issue) { issue in
+        .refreshable { vm.onAppear() }
+        .onAppear{ vm.onAppear() }
+        .fullScreenCover(item: $vm.issue) { issue in
             IssueDetailsView(issue: issue)
         }
-        
     }
     
     init(sprint: Sprint, project: Project) { self._vm = ObservedObject(initialValue: SprintViewModel(sprint: sprint, project: project)) }

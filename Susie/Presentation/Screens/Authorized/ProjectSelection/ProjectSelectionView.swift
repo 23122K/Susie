@@ -19,7 +19,6 @@ struct ProjectSelectionView: View {
                 }, content: {
                     NavigationLink(destination: {
                         ProjectFormView()
-                            .onDisappear { vm.fetch() }
                     }, label: {
                         Image(systemName: "plus")
                             .scaleEffect(1.1)
@@ -37,9 +36,10 @@ struct ProjectSelectionView: View {
                         }
                         .onTapGesture { vm.selectProjectButtonTapped(project: project) }
                 }
-                }, placeholder: ProjectPlaceholderView(), onAppear: { vm.fetch() })
+                }, placeholder: ProjectPlaceholderView())
             }
-            .refreshable { vm.fetch() }
+            .onAppear { vm.onAppear() }
+            .refreshable { vm.onAppear() }
         }
     }
     

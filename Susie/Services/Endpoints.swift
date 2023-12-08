@@ -354,7 +354,63 @@ enum Endpoints {
                 return nil
             }
         }
+    }
+    
+    internal enum CommitmentRuleEndpoint: Endpoint {
+        case create(rule: Rule, project: Project)
+        case update(rule: Rule)
+        case fetch(project: Project)
+        case delete(rule: Rule, project: Project)
         
+        var schema: String { "http" }
+        var host: String { "127.0.0.1" }
+        var port: Int { 8081 }
+        var version: String { "/api" }
         
+        var headers: [String: String] {
+            [
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            ]
+        }
+        
+        var path: String {
+            switch self {
+            case .create(_, let project):
+                "commitment/dod/project/\(project.id)/rule"
+            case .update(let rule):
+                "commitment/dod/rule/\(rule.id)"
+            case .fetch(let project):
+                "commitment/dod/project/\(project.id)"
+            case .delete(let rule, let project):
+                "commitment/dod/project/\(project.id)/rule/\(rule.id)"
+            }
+        }
+        
+        var method: HTTPMethod {
+            switch self {
+            case .create:
+                return .post
+            case .update:
+                return .patch
+            case .fetch:
+                return .get
+            case .delete:
+                return .delete
+            }
+        }
+        
+        var queries: [String : String]? {
+            switch self {
+            case let .create(rule, _):
+                return ["rule": rule.definition]
+            case let .update(rule):
+                return ["rule": rule.definition]
+            default:
+                return nil
+            }
+        }
+        
+        var body: Data? { return nil }
     }
 }

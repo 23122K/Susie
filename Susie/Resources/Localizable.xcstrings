@@ -11,16 +11,6 @@
         }
       }
     },
-    "%lld" : {
-      "localizations" : {
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld"
-          }
-        }
-      }
-    },
     "account" : {
       "comment" : "e.g. bank account",
       "extractionState" : "extracted_with_value",
@@ -69,7 +59,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dodaj nowego członka zespołu"
+            "value" : "Dodaj do zespołu"
           }
         }
       }
@@ -123,7 +113,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Boards"
+            "value" : "Tablice"
           }
         }
       }
@@ -264,7 +254,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Stwórz Sprint"
+            "value" : "Stwórz sprint"
           }
         }
       }
@@ -298,7 +288,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dashbord"
+            "value" : "Pulpit"
           }
         }
       }
@@ -317,6 +307,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Szczegóły"
+          }
+        }
+      }
+    },
+    "definitionOfDone" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Definition of done"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Definicja gotowości"
           }
         }
       }
@@ -469,6 +476,30 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "By signing up, you agree to our Terms of Service and Privacy policies"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rejestrując się, zgadza się na nasze Warunki usług oraz Politykę prywtaności"
+          }
+        }
+      }
+    },
+    "home" : {
+      "comment" : "dont translate",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Home"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strona głowna"
           }
         }
       }
@@ -642,6 +673,23 @@
         }
       }
     },
+    "myIssues" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "My issues"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moje zgłoszenia"
+          }
+        }
+      }
+    },
     "newProject" : {
       "extractionState" : "extracted_with_value",
       "localizations" : {
@@ -649,6 +697,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "New project"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nowy projekt"
           }
         }
       }
@@ -665,7 +719,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nowy Sprint"
+            "value" : "Nowy sprint"
           }
         }
       }
@@ -905,7 +959,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Opis Sprintu"
+            "value" : "Opis sprintu"
           }
         }
       }
@@ -923,7 +977,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cel Sprintu"
+            "value" : "Cel sprintu"
           }
         }
       }
@@ -940,7 +994,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tytuł Sprintu"
+            "value" : "Tytuł sprintu"
           }
         }
       }
@@ -993,7 +1047,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zatrzymaj Sprint"
+            "value" : "Zatrzymaj sprint"
           }
         }
       }
@@ -1025,6 +1079,12 @@
             "state" : "new",
             "value" : "Terms of Service"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warunki usług"
+          }
         }
       }
     },
@@ -1036,6 +1096,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Unassigned"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie przypisano"
           }
         }
       }

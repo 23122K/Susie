@@ -85,6 +85,17 @@
 		6FD554AD2B1CE9250019B679 /* DateMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD554AC2B1CE9250019B679 /* DateMock.swift */; };
 		6FD554B12B1D25FD0019B679 /* LocalizedStringResource+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD554B02B1D25FD0019B679 /* LocalizedStringResource+Extension.swift */; };
 		6FD554B42B1D39140019B679 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 6FD554B32B1D39140019B679 /* Localizable.xcstrings */; };
+		6FD554B72B1E8BE00019B679 /* DefinitionOfDoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD554B62B1E8BE00019B679 /* DefinitionOfDoneView.swift */; };
+		6FD554B92B1E8BF20019B679 /* Rule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD554B82B1E8BF20019B679 /* Rule.swift */; };
+		6FD554BB2B1E8C0F0019B679 /* DefinitionOfDoneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD554BA2B1E8C0F0019B679 /* DefinitionOfDoneViewModel.swift */; };
+		6FD554BE2B1EC4070019B679 /* DefinitionOfDoneFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD554BD2B1EC4070019B679 /* DefinitionOfDoneFormView.swift */; };
+		6FD554C12B1EDA810019B679 /* RuleRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD554C02B1EDA810019B679 /* RuleRowView.swift */; };
+		6FD554C32B1EDAB60019B679 /* CountIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD554C22B1EDAB60019B679 /* CountIndicator.swift */; };
+		6FD554C62B1EDAEE0019B679 /* DefinitionOfDoneFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD554C52B1EDAEE0019B679 /* DefinitionOfDoneFormViewModel.swift */; };
+		6FD554C92B1EE4120019B679 /* RemoteCommitmentRuleRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD554C82B1EE4120019B679 /* RemoteCommitmentRuleRepository.swift */; };
+		6FD554CB2B1EE5150019B679 /* RealCommitmentRuleRemoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD554CA2B1EE5150019B679 /* RealCommitmentRuleRemoteRepository.swift */; };
+		6FD554CD2B1EE6500019B679 /* CommitmentRuleInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD554CC2B1EE6500019B679 /* CommitmentRuleInteractor.swift */; };
+		6FD554CF2B1EE6A70019B679 /* RealCommitmentRuleInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD554CE2B1EE6A70019B679 /* RealCommitmentRuleInteractor.swift */; };
 		6FD91F2C2B0CB83C00E3CE48 /* RemoteAuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F2B2B0CB83C00E3CE48 /* RemoteAuthRepository.swift */; };
 		6FD91F2E2B0CB85700E3CE48 /* AuthInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F2D2B0CB85700E3CE48 /* AuthInterceptor.swift */; };
 		6FD91F302B0CB89A00E3CE48 /* RequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91F2F2B0CB89A00E3CE48 /* RequestInterceptor.swift */; };
@@ -250,6 +261,17 @@
 		6FD554AC2B1CE9250019B679 /* DateMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateMock.swift; sourceTree = "<group>"; };
 		6FD554B02B1D25FD0019B679 /* LocalizedStringResource+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LocalizedStringResource+Extension.swift"; sourceTree = "<group>"; };
 		6FD554B32B1D39140019B679 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		6FD554B62B1E8BE00019B679 /* DefinitionOfDoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefinitionOfDoneView.swift; sourceTree = "<group>"; };
+		6FD554B82B1E8BF20019B679 /* Rule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rule.swift; sourceTree = "<group>"; };
+		6FD554BA2B1E8C0F0019B679 /* DefinitionOfDoneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefinitionOfDoneViewModel.swift; sourceTree = "<group>"; };
+		6FD554BD2B1EC4070019B679 /* DefinitionOfDoneFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefinitionOfDoneFormView.swift; sourceTree = "<group>"; };
+		6FD554C02B1EDA810019B679 /* RuleRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleRowView.swift; sourceTree = "<group>"; };
+		6FD554C22B1EDAB60019B679 /* CountIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountIndicator.swift; sourceTree = "<group>"; };
+		6FD554C52B1EDAEE0019B679 /* DefinitionOfDoneFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefinitionOfDoneFormViewModel.swift; sourceTree = "<group>"; };
+		6FD554C82B1EE4120019B679 /* RemoteCommitmentRuleRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCommitmentRuleRepository.swift; sourceTree = "<group>"; };
+		6FD554CA2B1EE5150019B679 /* RealCommitmentRuleRemoteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealCommitmentRuleRemoteRepository.swift; sourceTree = "<group>"; };
+		6FD554CC2B1EE6500019B679 /* CommitmentRuleInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommitmentRuleInteractor.swift; sourceTree = "<group>"; };
+		6FD554CE2B1EE6A70019B679 /* RealCommitmentRuleInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealCommitmentRuleInteractor.swift; sourceTree = "<group>"; };
 		6FD91F2B2B0CB83C00E3CE48 /* RemoteAuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteAuthRepository.swift; sourceTree = "<group>"; };
 		6FD91F2D2B0CB85700E3CE48 /* AuthInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthInterceptor.swift; sourceTree = "<group>"; };
 		6FD91F2F2B0CB89A00E3CE48 /* RequestInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptor.swift; sourceTree = "<group>"; };
@@ -412,6 +434,7 @@
 				6FD91F522B0E5A4E00E3CE48 /* RealRemoteSprintRepository.swift */,
 				6FD91F542B0E5D6E00E3CE48 /* RealRemoteCommentRepository.swift */,
 				6FD91F632B0E723B00E3CE48 /* RealRemoteUserRepository.swift */,
+				6FD554CA2B1EE5150019B679 /* RealCommitmentRuleRemoteRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -472,6 +495,7 @@
 				6FD91F762B1279FF00E3CE48 /* SprintInteractor.swift */,
 				6FD91F7A2B127A3800E3CE48 /* IssueInteractor.swift */,
 				6FD91F782B127A2200E3CE48 /* CommentInteractor.swift */,
+				6FD554CC2B1EE6500019B679 /* CommitmentRuleInteractor.swift */,
 			);
 			path = Interactor;
 			sourceTree = "<group>";
@@ -487,6 +511,7 @@
 				6FD91F582B0E5F1D00E3CE48 /* RemoteSprintRepository.swift */,
 				6FD91F5A2B0E5F2C00E3CE48 /* RemoteIssueRepository.swift */,
 				6FD91F612B0E70FF00E3CE48 /* RemoteUserRepository.swift */,
+				6FD554C82B1EE4120019B679 /* RemoteCommitmentRuleRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -533,7 +558,6 @@
 			isa = PBXGroup;
 			children = (
 				6FD0151929DAAE48009F2A77 /* BoardsView.swift */,
-				6FD0151729DAADDE009F2A77 /* BoardView.swift */,
 				6FF702322AC559EF002A03B5 /* BoardsViewModel.swift */,
 			);
 			path = Boards;
@@ -575,13 +599,41 @@
 				6FFF79BB2ADB5F2B00630013 /* IssueType.swift */,
 				6FFF79BD2ADB5F3200630013 /* IssuePriority.swift */,
 				6FFF79BF2ADB5F3B00630013 /* IssueStatus.swift */,
+				6FD554B82B1E8BF20019B679 /* Rule.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		6FD554B52B1E8BBE0019B679 /* Definition of Done form */ = {
+			isa = PBXGroup;
+			children = (
+				6FD554BD2B1EC4070019B679 /* DefinitionOfDoneFormView.swift */,
+				6FD554C52B1EDAEE0019B679 /* DefinitionOfDoneFormViewModel.swift */,
+			);
+			path = "Definition of Done form";
+			sourceTree = "<group>";
+		};
+		6FD554BF2B1EDA6D0019B679 /* Rules */ = {
+			isa = PBXGroup;
+			children = (
+				6FD554C02B1EDA810019B679 /* RuleRowView.swift */,
+			);
+			path = Rules;
+			sourceTree = "<group>";
+		};
+		6FD554C72B1EDC140019B679 /* Definition of Done */ = {
+			isa = PBXGroup;
+			children = (
+				6FD554B62B1E8BE00019B679 /* DefinitionOfDoneView.swift */,
+				6FD554BA2B1E8C0F0019B679 /* DefinitionOfDoneViewModel.swift */,
+			);
+			path = "Definition of Done";
 			sourceTree = "<group>";
 		};
 		6FD91F362B0D471900E3CE48 /* Interactors */ = {
 			isa = PBXGroup;
 			children = (
+				6FD554CE2B1EE6A70019B679 /* RealCommitmentRuleInteractor.swift */,
 				6FD91F372B0D474400E3CE48 /* RealAuthInteractor.swift */,
 				6FD91F5C2B0E62F200E3CE48 /* RealProjectInteractor.swift */,
 				6FD91F652B0E72BB00E3CE48 /* RealUserInteractor.swift */,
@@ -653,6 +705,7 @@
 				6FFF79C82ADD293100630013 /* AsyncContentView.swift */,
 				6F4FA1042AE13AB7002297C9 /* TagPickerView.swift */,
 				6F4FA10D2AE1EE79002297C9 /* MembersView.swift */,
+				6FD554C22B1EDAB60019B679 /* CountIndicator.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -729,6 +782,7 @@
 		6FF149B72AA8C53A005CDBF6 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				6FD554BF2B1EDA6D0019B679 /* Rules */,
 				6F4FA1132AE6D819002297C9 /* Comments */,
 				6FFF79D92ADD5AE900630013 /* Board */,
 				6FEDB9BC2AD1C5BA00D44B49 /* Issue */,
@@ -745,6 +799,7 @@
 			children = (
 				6F5F5EEA29DC88BB00B9BCE6 /* AuthenticatedRootView.swift */,
 				6FFF79C42ADB710900630013 /* Forms */,
+				6FD554C72B1EDC140019B679 /* Definition of Done */,
 				6FFF798B2AD9F9D200630013 /* Issue Details */,
 				6FEDB9A52ACFF36800D44B49 /* Sprint */,
 				6FE1E0F12AAB692C009136A2 /* ProjectSelection */,
@@ -798,6 +853,7 @@
 		6FFF79C42ADB710900630013 /* Forms */ = {
 			isa = PBXGroup;
 			children = (
+				6FD554B52B1E8BBE0019B679 /* Definition of Done form */,
 				6F42A3A72AEB0130000983AD /* Comment form */,
 				6FFF79C72ADB712800630013 /* Sprint form */,
 				6FFF79C62ADB712000630013 /* Project form */,
@@ -838,6 +894,7 @@
 		6FFF79D92ADD5AE900630013 /* Board */ = {
 			isa = PBXGroup;
 			children = (
+				6FD0151729DAADDE009F2A77 /* BoardView.swift */,
 				6FFF79DA2ADD5AF300630013 /* BoardPlaceholderView.swift */,
 			);
 			path = Board;
@@ -979,15 +1036,19 @@
 				6FD008C42A02C0D800D3B760 /* DashboardView.swift in Sources */,
 				6FD0151629DAACFA009F2A77 /* PriotiryIndicatorView.swift in Sources */,
 				6FFF79BC2ADB5F2B00630013 /* IssueType.swift in Sources */,
+				6FD554B92B1E8BF20019B679 /* Rule.swift in Sources */,
 				6FFF79DB2ADD5AF300630013 /* BoardPlaceholderView.swift in Sources */,
 				6FC3DA312B0BADBB009877F9 /* ProjectDTO.swift in Sources */,
 				6F5F5EF629DD82AB00B9BCE6 /* CustomDivider.swift in Sources */,
 				6F5F9D892A138A6300F51B8E /* SignUpFinalisationView.swift in Sources */,
 				6FE1E0F62AAB6980009136A2 /* ProjectSelectionView.swift in Sources */,
 				6FD91F492B0E4B9300E3CE48 /* Reducer.swift in Sources */,
+				6FD554C92B1EE4120019B679 /* RemoteCommitmentRuleRepository.swift in Sources */,
+				6FD554BB2B1E8C0F0019B679 /* DefinitionOfDoneViewModel.swift in Sources */,
 				6F0EFE242ACB331D00578330 /* SprintRowView.swift in Sources */,
 				6F291EBD2AC6A09F004C9A54 /* BacklogViewModel.swift in Sources */,
 				6FC3DA252B0BACA4009877F9 /* TagProtocol.swift in Sources */,
+				6FD554C62B1EDAEE0019B679 /* DefinitionOfDoneFormViewModel.swift in Sources */,
 				6F291EB72AC594B8004C9A54 /* IssueFormView.swift in Sources */,
 				6FFF79912ADAA1ED00630013 /* ToggableSection.swift in Sources */,
 				6FEC16902AC86DFA006C7604 /* SprintViewModel.swift in Sources */,
@@ -996,6 +1057,7 @@
 				6FFF79D22ADD4C3C00630013 /* ProjectRowPlaceolderView.swift in Sources */,
 				6FD91F4D2B0E50F400E3CE48 /* AuthenticationInteractor.swift in Sources */,
 				6FE517A22A9A435A001A5EDF /* URL+Extension.swift in Sources */,
+				6FD554C32B1EDAB60019B679 /* CountIndicator.swift in Sources */,
 				6F895BFE2A949C110026438D /* Auth.swift in Sources */,
 				6F291EC12AC6A965004C9A54 /* ProjectFormViewModel.swift in Sources */,
 				6F42A3A62AEA9C86000983AD /* Refresh.swift in Sources */,
@@ -1036,6 +1098,7 @@
 				6FD91F322B0CBBE100E3CE48 /* RealRemoteProjectRepository.swift in Sources */,
 				6FEDB9B42AD06F6200D44B49 /* SideMenu.swift in Sources */,
 				6FD91F302B0CB89A00E3CE48 /* RequestInterceptor.swift in Sources */,
+				6FD554CF2B1EE6A70019B679 /* RealCommitmentRuleInteractor.swift in Sources */,
 				6F4FA1032AE13A8F002297C9 /* IssueDetailedFormViewModel.swift in Sources */,
 				6FD91F662B0E72BB00E3CE48 /* RealUserInteractor.swift in Sources */,
 				6FE517A02A9A42D4001A5EDF /* CacheManager+Subscript.swift in Sources */,
@@ -1053,11 +1116,13 @@
 				6FC3DA2E2B0BAD9F009877F9 /* IssueGeneralDTO.swift in Sources */,
 				6FEDB9AF2AD0225700D44B49 /* Date+Extension.swift in Sources */,
 				6FD91F8B2B15079D00E3CE48 /* View+Extension.swift in Sources */,
+				6FD554CD2B1EE6500019B679 /* CommitmentRuleInteractor.swift in Sources */,
 				6F4FA1192AE6F8E5002297C9 /* SwipeView.swift in Sources */,
 				6FEDB9C22AD1C77C00D44B49 /* DashboardViewModel.swift in Sources */,
 				6F0EFE492ACEC2F400578330 /* Carousel.swift in Sources */,
 				6FFF798D2AD9F9E600630013 /* IssueDetailsView.swift in Sources */,
 				6FD008B22A0266AE00D3B760 /* Checkbox.swift in Sources */,
+				6FD554BE2B1EC4070019B679 /* DefinitionOfDoneFormView.swift in Sources */,
 				6FC3DA2B2B0BAD76009877F9 /* IssueDTO.swift in Sources */,
 				6FC3DA222B0BA9AA009877F9 /* Endpoint.swift in Sources */,
 				6FD91F682B0E738E00E3CE48 /* UserInteractor.swift in Sources */,
@@ -1068,10 +1133,12 @@
 				6F895C232A9512850026438D /* CacheManager.swift in Sources */,
 				6FEC168E2AC86BD8006C7604 /* SprintView.swift in Sources */,
 				6FD0152129DAB0D0009F2A77 /* SignUpView.swift in Sources */,
+				6FD554CB2B1EE5150019B679 /* RealCommitmentRuleRemoteRepository.swift in Sources */,
 				6FFF798F2AD9F9F300630013 /* IssueDetailsViewModel.swift in Sources */,
 				6FC766AC2B1A2C170080E471 /* AppReducer.swift in Sources */,
 				6F4FA10E2AE1EE79002297C9 /* MembersView.swift in Sources */,
 				6F4FA1172AE6DB9A002297C9 /* CommentRowView.swift in Sources */,
+				6FD554C12B1EDA810019B679 /* RuleRowView.swift in Sources */,
 				6F4FA1092AE18D9F002297C9 /* Binding+Extension.swift in Sources */,
 				6FC3DA332B0BAF7A009877F9 /* Array+Extension.swift in Sources */,
 				6FD91F642B0E723B00E3CE48 /* RealRemoteUserRepository.swift in Sources */,
@@ -1102,6 +1169,7 @@
 				6FD91F382B0D474400E3CE48 /* RealAuthInteractor.swift in Sources */,
 				6FFF798A2AD9AEAE00630013 /* TextFieldModifier.swift in Sources */,
 				6FEDB9C42AD1C7B800D44B49 /* HomeViewModel.swift in Sources */,
+				6FD554B72B1E8BE00019B679 /* DefinitionOfDoneView.swift in Sources */,
 				6FC3DA292B0BAD39009877F9 /* CommentDTO.swift in Sources */,
 				6F5F5F0F29E07E4800B9BCE6 /* CustomNavigationView.swift in Sources */,
 				6FFF79B12ADB34BF00630013 /* Loadable.swift in Sources */,

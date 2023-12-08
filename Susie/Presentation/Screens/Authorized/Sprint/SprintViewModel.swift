@@ -19,7 +19,7 @@ class SprintViewModel: ObservableObject {
     @Published var issue: IssueGeneralDTO?
     @Published var issues: Loadable<[IssueGeneralDTO]> = .idle
     
-    func fetchSprints() {
+    func onAppear() {
         Task {
             do {
                 self.issues = .loading
@@ -49,6 +49,10 @@ class SprintViewModel: ObservableObject {
                 print(error.localizedDescription)
             }
         }
+    }
+    
+    func issueDetailsButtonTapped(issue: IssueGeneralDTO) {
+        self.issue = issue
     }
     
     init(container: Container = Container.shared,

@@ -24,7 +24,7 @@ struct CustomTextField<T: Hashable, Content: View>: View {
             }
             .frame(width: 30)
             
-            TextField("\(title)", text: $text)
+            TextField(title.asString, text: $text)
                 .focused(focus, equals: field)
                 .keyboardType(keyboardType)
                 .autocorrectionDisabled(true)

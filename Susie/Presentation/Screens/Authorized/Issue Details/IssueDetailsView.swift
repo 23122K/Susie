@@ -56,6 +56,7 @@ struct IssueDetailsView: View {
                 })
                 
             }
+            .onAppear { vm.onAppear() }
             .refreshable { vm.onAppear() }
             .scrollIndicators(.hidden)
             .toolbar{

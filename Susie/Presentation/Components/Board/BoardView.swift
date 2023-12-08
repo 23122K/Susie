@@ -11,18 +11,18 @@ struct BoardView: View {
     @State private var issue: IssueGeneralDTO?
     
     private let issues: Array<IssueGeneralDTO>
-    private let status: IssueStatus
+    private let status: IssueStatus?
     
     let columns = [GridItem(.flexible())]
     
     var body: some View {
         VStack(alignment: .leading) {
             HStack{
-                Text(status.description)
+                Text(status?.description ?? LocalizedStringResource.localized.myIssues.asString)
                     .padding(.leading)
                     .padding(.vertical, 4)
                     .bold()
-                Text("\(issues.count)")
+                Text(verbatim: "\(issues.count)")
                     .fontWeight(.bold)
                     .foregroundColor(.gray)
                     .padding(.horizontal,5)
@@ -51,9 +51,15 @@ struct BoardView: View {
         }
     }
     
-    init(issues: Array<IssueGeneralDTO>, status: IssueStatus) {
-        self.status = status
-        self.issues = issues.with(status: status)
+    init(issues: Array<IssueGeneralDTO>, status: Optional<IssueStatus> = nil) {
+        switch status {
+        case let .some(status):
+            self.status = status
+            self.issues = issues.with(status: status)
+        case .none:
+            self.status = status
+            self.issues = issues
+        }
     }
 }
 

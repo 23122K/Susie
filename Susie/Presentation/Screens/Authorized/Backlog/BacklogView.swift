@@ -6,7 +6,7 @@ struct BacklogView: View {
     
     var body: some View {
         NavigationStack {
-            ScreenHeader(user: vm.user, title: "\(LocalizedStringResource.localized.backlog)") {
+            ScreenHeader(user: vm.user, title: "\(vm.sprint?.name ?? LocalizedStringResource.localized.backlog.asString)") {
                 Menu(content: {
                     NavigationLink("\(.localized.createSprint)") {
                         SprintFormView(project: vm.project)
@@ -45,6 +45,7 @@ struct BacklogView: View {
                         } onEdit: {
                             vm.issue = issue
                         }
+                        .onTapGesture { vm.issue = issue }
                         .onDrag{ vm.onDragIssueGesture(issue: issue) }
                     }
                 }, placeholder: IssuePlaceholderView())
@@ -60,101 +61,13 @@ struct BacklogView: View {
         .navigationTitle("\(LocalizedStringResource.localized.backlog)")
         .onAppear { vm.fetchInactiveSprintsAndIssues() }
         .refreshable { vm.fetchInactiveSprintsAndIssues() }
+        .fullScreenCover(item: $vm.sprint) { sprint in
+            SprintView(sprint: sprint, project: vm.project)
+        }
+        .fullScreenCover(item: $vm.issue) { issue in
+            IssueDetailsView(issue: issue)
+        }
     }
     
     init(project: Project, user: User) { self._vm = ObservedObject(initialValue: BacklogViewModel(project: project, user: user)) }
 }
-
-//struct BacklogView: View {
-//    @ObservedObject private var vm: BacklogViewModel
-//    
-//    @State private var dropStatus: DropStatus = .exited
-//    @State private var isPresented: Bool = false
-//    
-//    var body: some View {
-//        NavigationStack {
-//            ScreenHeader(user: vm.appStore.state.user, screenTitle: "Backlog", action: {
-//                isPresented.toggle()
-//            }, content: {
-//                Menu(content: {
-//                    NavigationLink("Crate sprint") {
-//                        //TODO: Fix
-//                        SprintFormView(project: vm.appStore.state.project?.toDTO()!)
-//                            .onDisappear{ vm.fetch() }
-//                    }
-//                    
-//                    NavigationLink("Create issue") {
-//                        IssueFormView(project: vm.project)
-//                            .onDisappear { vm.fetch() }
-//                    }
-//                }, label: {
-//                    Image(systemName: "ellipsis")
-//                        .fontWeight(.bold)
-//                })
-//            })
-//            
-//            AsyncContentView(state: $vm.sprints, { sprints in
-//                if sprints.isEmpty {
-//                    NavigationLink(destination: {
-//                        SprintFormView(project: self.vm.project)
-//                            .onDisappear{ self.vm.fetch() }
-//                    }, label: { CreateSprintView() })
-//                } else {
-//                    Carousel(sprints, type: .unbounded) { sprint in
-//                        SprintRowView(sprint: sprint, status: $dropStatus)
-//                            .onTapGesture { self.vm.sprint = sprint }
-//                            .onDrop(of: [.text], delegate: SprintDropDelegate(backlogViewModel: vm, dropStatus: $dropStatus, sprint: sprint))
-//                    }
-//                }
-//            }, placeholder: SprintRowPlaceholderView() ,onAppear: {
-//                vm.fetch()
-//            })
-//            .frame(height: 215)
-//            
-//            ScrollView(showsIndicators: false) {
-//                AsyncContentView(state: $vm.issues, { issues in
-//                    ForEach(issues) { issue in
-//                        SwipeView(label: {
-//                            IssueRowView(issue: issue)
-//                        }, leadingActions: {
-//                            vm.deleteIssueButtonTapped(issue: issue)
-//                        }, trailingActions: {
-//                            vm.issue = issue
-//                        })
-//                        .onDrag {
-//                            vm.draggedIssue = issue
-//                            return NSItemProvider()
-//                        }
-//                        .onTapGesture {
-//                            vm.issue = issue
-//                        }
-//                    }
-//                }, placeholder: IssuePlaceholderView())
-//                
-//                NavigationLink("Create issue", destination: {
-//                    IssueFormView(project: vm.project)
-//                        .onDisappear{ vm.fetch() }
-//                })
-//                .buttonStyle(.issueCreation)
-//                .offset(y: -15)
-//            }
-//        }
-//        .refreshable {
-//            vm.fetch()
-//        }
-//            
-//        .navigationTitle("Backlog")
-//        .fullScreenCover(item: $vm.sprint) { sprint in
-//            SprintView(sprint: sprint, project: vm.project)
-//                .onDisappear{ vm.fetch() }
-//        }
-//        .fullScreenCover(item: $vm.issue) { issue in
-//            IssueDetailsView(issue: issue)
-//        }
-//    }
-//    
-//    init() {
-//        _vm = ObservedObject(initialValue: BacklogViewModel())
-//    }
-//}
-//

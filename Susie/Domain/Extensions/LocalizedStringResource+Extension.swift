@@ -111,6 +111,10 @@ extension LocalizedStringResource {
             LocalizedStringResource("backlog", defaultValue: "Backlog", comment: "dont traslate")
         }
         
+        var home: LocalizedStringResource {
+            LocalizedStringResource("home", defaultValue: "Home", comment: "dont translate")
+        }
+        
         //MARK: Forms
         var lastName: LocalizedStringResource {
             LocalizedStringResource("lastName", defaultValue: "Last name", comment: "e.g. person last name")
@@ -253,7 +257,22 @@ extension LocalizedStringResource {
         var unassigned: LocalizedStringResource {
             LocalizedStringResource("unassigned", defaultValue: "Unassigned", comment: "this object has noone assigned to it")
         }
+        
+        var myIssues: LocalizedStringResource {
+            LocalizedStringResource("myIssues", defaultValue: "My issues")
+        }
+        
+        //MARK: Definition of Done
+        
+        var definitionOfDone: LocalizedStringResource {
+            LocalizedStringResource("definitionOfDone", defaultValue: "Definition of done")
+        }
     }
     
     static let localized = Localized()
+    
+    var asString: String {
+        String(localized: self)
+    }
 }
+

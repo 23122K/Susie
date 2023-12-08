@@ -15,6 +15,19 @@ class HomeViewModel: ObservableObject {
     
     let issueInteractor: any IssueInteractor
     
+    @Published var issues: Loadable<[IssueGeneralDTO]> = .idle
+    
+    func onAppear() async {
+        do {
+            self.issues = .loading
+            let issues = try await issueInteractor.fetchIssuesAssignedToSignedUser()
+            print(issues)
+            self.issues = .loaded(issues)
+        } catch {
+            self.issues = .failed(error)
+        }
+    }
+    
     init(container: Container = Container.shared, project: Project, user: User) {
         self.project = project
         self.user = user

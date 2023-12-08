@@ -19,7 +19,7 @@ class ProjectSelectionViewModel: ObservableObject {
         Task { try await projectInteractor.details(of: project) }
     }
     
-    func fetch() {
+    func onAppear() {
         Task {
             do {
                 self.projects = .loading
@@ -35,7 +35,7 @@ class ProjectSelectionViewModel: ObservableObject {
     func delete(project: ProjectDTO) {
         Task {
             try await projectInteractor.delete(project: project)
-            self.fetch()
+            self.onAppear()
         }
     }
     

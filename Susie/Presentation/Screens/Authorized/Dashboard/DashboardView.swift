@@ -12,9 +12,13 @@ struct DashboardView: View {
                     Menu(content: {
                         Button("\(.localized.addNewMember)") { isPresented.toggle() }
                         
-                        NavigationLink("\(.localized.editProject)", destination: {
+                        NavigationLink("\(.localized.editProject)") {
                             ProjectFormView(project: vm.project)
-                        })
+                        }
+                        
+                        NavigationLink("\(.localized.definitionOfDone)") {
+                            DefinitionOfDoneView(project: vm.project)
+                        }
                         
                         Section {
                             Button(role: .destructive, action: {
@@ -32,6 +36,7 @@ struct DashboardView: View {
                 ToggableSection(title: .localized.members, isToggled: true) {
                     MembersView(users: vm.project.members)
                 }
+                
                 .padding()
                 
                 Spacer()

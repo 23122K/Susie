@@ -60,6 +60,11 @@ extension Container {
             .singleton
     }
     
+    var remoteCommitmentRuleRepository: Factory<RealCommitmentRuleRemoteRepository> {
+        self { RealCommitmentRuleRemoteRepository(authenticationInterceptor: self.authenticationInterceptor.resolve()) }
+            .singleton
+    }
+    
     //MARK: - interactors
     
     var authenticationInteractor: Factory<RealAuthenticationInteractor> {
@@ -87,5 +92,9 @@ extension Container {
     
     var commentInteractor: Factory<RealCommentInteractor> {
         self { RealCommentInteractor(repository: self.remoteCommentRepository.resolve() )}
+    }
+    
+    var commitmentRuleInteracotr: Factory<RealCommitmentRuleInteractor> {
+        self { RealCommitmentRuleInteractor(repository: self.remoteCommitmentRuleRepository.resolve()) }
     }
 }

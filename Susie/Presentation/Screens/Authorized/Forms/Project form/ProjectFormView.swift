@@ -46,7 +46,7 @@ struct ProjectFormView: View {
         }
         .bind($vm.focus, to: $focus)
         .padding()
-        .navigationTitle(vm.project.name.isEmpty ? "\(LocalizedStringResource.localized.newProject)" : vm.project.name)
+        .navigationTitle("\(vm.project.name.isEmpty ?  LocalizedStringResource.localized.newProject.asString : vm.project.name)")
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: vm.shouldDismiss) { shouldDismiss in if shouldDismiss { dismiss() } }
     }

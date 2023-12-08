@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ScreenHeader<Content: View>: View {
     let user: User?
-    let title: String
+    let title: LocalizedStringResource
     let content: Content?
     
     let action: (() -> Void)?
@@ -27,7 +27,7 @@ struct ScreenHeader<Content: View>: View {
         .padding(.horizontal)
     }
     
-    init(user: User?, title: String, action: (() -> Void)? = nil,  @ViewBuilder content: @escaping () -> Content?) {
+    init(user: User?, title: LocalizedStringResource, action: (() -> Void)? = nil,  @ViewBuilder content: @escaping () -> Content?) {
         self.user = user
         self.title = title
         
