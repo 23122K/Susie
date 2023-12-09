@@ -16,7 +16,7 @@ class SprintFromViewModel: ObservableObject {
     @Published var sprint: Sprint
     @Published var startDate: Date
     @Published var shouldHaveStartDate: Bool
-    @Published var shouldDismiss: Bool = false
+    @Published var dismiss: Bool = false
     @Published var focus: Field?
     
     enum Field: Hashable {
@@ -45,7 +45,7 @@ class SprintFromViewModel: ObservableObject {
         shouldHaveStartDate ? (sprint.startTime = startDate) : (sprint.startTime = nil)
         doesExist ? updateSprintRequestSent() : createSprintRequestSent()
         
-        shouldDismiss.toggle()
+        dismiss.toggle()
     }
     
     init(container: Container = Container.shared, sprint: Sprint?, project: Project, startDate: Date = Date(), focus: Field? = .name) {

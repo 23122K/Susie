@@ -10,13 +10,8 @@ import PartialSheet
 
 struct IssueFormView: View {
     @Environment (\.dismiss) var dismiss
-    
     @ObservedObject private var vm: IssueFormViewModel
     @FocusState private var focus: IssueFormViewModel.Field?
-    
-    @State private var isEstimationPresented: Bool = false
-    @State private var isPriorityPresented: Bool = false
-    @State private var isTypePresented: Bool = false
     
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -36,12 +31,12 @@ struct IssueFormView: View {
             
             ToggableSection(title: .localized.details, isToggled: true) {
                 ToggableSectionRowView(title: .localized.issuePriority) {
-                    Button(action: { isPriorityPresented.toggle() }, label: {
+                    Button(action: { vm.destinationButtonTapped(for: .priority) }, label: {
                         TagView(text: vm.issue.priority.description, color: vm.issue.priority.color)
                     })
                 }
                 ToggableSectionRowView(title: .localized.issueTitle) {
-                    Button(action: { isTypePresented.toggle() }, label: {
+                    Button(action: { vm.destinationButtonTapped(for: .type) }, label: {
                         TagView(text: vm.issue.type.description, color: vm.issue.type.color)
                     })
                 }
@@ -56,15 +51,17 @@ struct IssueFormView: View {
             }
         }
         .bind($vm.focus, to: $focus)
-        .partialSheet(isPresented: $isPriorityPresented) {
-            TagPickerView(enum: $vm.issue.priority, onSelect: {
-                isPriorityPresented.toggle()
-            })
-        }
-        .partialSheet(isPresented: $isTypePresented) {
-            TagPickerView(enum: $vm.issue.type, onSelect: {
-                isTypePresented.toggle()
-            })
+        .sheet(item: $vm.destination) { destination in
+            switch destination {
+            case .priority:
+                TagPickerView(enum: $vm.issue.priority, onSelect: {
+                    vm.dismissDestintationButtonTapped()
+                })
+            case .type:
+                TagPickerView(enum: $vm.issue.type, onSelect: {
+                    vm.dismissDestintationButtonTapped()
+                })
+            }
         }
         .padding()
         .navigationTitle(vm.issue.name)
@@ -72,40 +69,10 @@ struct IssueFormView: View {
         .toolbar{
             Button("\(.localized.save)") { vm.createIssueButtonTapped() }
         }
-        .onChange(of: vm.shouldDismiss) { shouldDismiss in if shouldDismiss { dismiss() } }
+        .onChange(of: vm.dismiss) { _ in dismiss() }
     }
     
     init(project: Project) {
         _vm = ObservedObject(initialValue: IssueFormViewModel(project: project))
-    }
-}
-
-
-struct ToggableSectionRowView<Content: View>: View {
-    let title: LocalizedStringResource
-    let content: Content
-    let divider: Bool
-    
-    var body: some View {
-        VStack {
-            HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(title)
-                    content
-                }
-                .padding(.bottom, 5)
-                .foregroundColor(.gray)
-                Spacer()
-            }
-            .padding(.top, 5)
-            
-            if divider { Divider() }
-        }
-    }
-    
-    init(title: LocalizedStringResource, divider: Bool = true, @ViewBuilder content: @escaping () -> Content) {
-        self.title = title
-        self.divider = divider
-        self.content = content()
     }
 }

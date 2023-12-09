@@ -16,8 +16,15 @@ class SprintViewModel: ObservableObject {
     let issueInteractor: any IssueInteractor
     let sprintInteractor: any SprintInteractor
     
-    @Published var issue: IssueGeneralDTO?
-    @Published var issues: Loadable<[IssueGeneralDTO]> = .idle
+    @Published var dismiss: Bool
+    @Published var destination: Destination?
+    @Published var issues: Loadable<[IssueGeneralDTO]>
+    
+    enum Destination: Identifiable, Hashable {
+        var id: Self { self }
+        
+        case details(IssueGeneralDTO)
+    }
     
     func onAppear() {
         Task {
@@ -41,6 +48,14 @@ class SprintViewModel: ObservableObject {
         }
     }
     
+    func destinationButtonTapped(for destination: Destination) {
+        self.destination = destination
+    }
+    
+    func dismissButtonTapped() {
+        self.dismiss.toggle()
+    }
+    
     func deleteSprintButtonTapped() {
         Task {
             do {
@@ -51,15 +66,13 @@ class SprintViewModel: ObservableObject {
         }
     }
     
-    func issueDetailsButtonTapped(issue: IssueGeneralDTO) {
-        self.issue = issue
-    }
-    
     init(container: Container = Container.shared,
          sprint: Sprint,
          project: Project,
          issue: IssueGeneralDTO? = .none,
-         issues: Loadable<[IssueGeneralDTO]> = .idle
+         issues: Loadable<[IssueGeneralDTO]> = .idle,
+         destination: Destination? = .none,
+         dismiss: Bool = .deafult
     ) {
         self.issueInteractor = container.issueInteractor.resolve()
         self.sprintInteractor = container.sprintInteractor.resolve()
@@ -68,5 +81,6 @@ class SprintViewModel: ObservableObject {
         self.project = project
         self.issues = issues
         self.issues = issues
+        self.dismiss = dismiss
     }
 }

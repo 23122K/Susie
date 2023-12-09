@@ -18,7 +18,7 @@ struct DefinitionOfDoneFormView: View {
             TextEditor(text: $vm.rule.definition)
                 .focused($focus, equals: .definition)
                 .textFieldStyle(.susieSecondaryTextField)
-                .onChange(of: vm.shouldDismiss) { _ in dimiss() }
+                .onChange(of: vm.dismiss) { _ in dimiss() }
                 .padding(.horizontal)
                 .toolbar{
                     ToolbarItem(placement: .topBarLeading) {
@@ -29,11 +29,10 @@ struct DefinitionOfDoneFormView: View {
                     
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("\(.localized.save)") {
-                            vm.saveButtonTapped()
+                            vm.dismissButtonTapped()
                         }
                     }
                 }
-//            ./*onAppear { self.focus = .definition }*/
         }
         .bind($vm.focus, to: $focus)
     }

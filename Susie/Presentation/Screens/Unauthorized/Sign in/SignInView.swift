@@ -8,7 +8,6 @@ struct SignInView: View {
     
     var body : some View {
         VStack(alignment: .leading){
-//            Text(localized.logInToSusie.fill(words: [.localized.susie], with: .susieBluePriamry))")
             Text(.localized.logInToSusie)
             .font(.title)
             .bold()

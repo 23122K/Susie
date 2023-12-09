@@ -17,7 +17,7 @@ struct SprintView: View {
                 AsyncContentView(state: $vm.issues, { issues in
                     ForEach(issues) { issue in
                         IssueRowView(issue: issue)
-                            .onTapGesture { vm.issueDetailsButtonTapped(issue: issue) }
+                            .onTapGesture { vm.destinationButtonTapped(for: .details(issue)) }
                     }
                 }, placeholder: EmptyView())
             }
@@ -27,7 +27,7 @@ struct SprintView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("\(.localized.close)") {
-                        dismiss()
+                        vm.dismissButtonTapped()
                     }
                 }
                 
@@ -35,7 +35,7 @@ struct SprintView: View {
                     Menu(content: {
                         Button(action: {
                             vm.startSprintButtonTapped()
-                            dismiss()
+                            vm.dismissButtonTapped()
                         }, label: {
                             Text(.localized.start)
                             Image(systemName: "play.fill")
@@ -51,7 +51,7 @@ struct SprintView: View {
                         Section {
                             Button(role: .destructive, action: {
                                 vm.deleteSprintButtonTapped()
-                                dismiss()
+                                vm.dismissButtonTapped()
                             }, label: {
                                 Text(.localized.delete)
                                     .foregroundColor(.red)
@@ -67,8 +67,12 @@ struct SprintView: View {
         }
         .refreshable { vm.onAppear() }
         .onAppear{ vm.onAppear() }
-        .fullScreenCover(item: $vm.issue) { issue in
-            IssueDetailsView(issue: issue)
+        .onChange(of: vm.dismiss) { _ in dismiss() }
+        .fullScreenCover(item: $vm.destination) { destination in
+            switch destination {
+            case let .details(issue: issue):
+                IssueDetailsView(issue: issue)
+            }
         }
     }
     

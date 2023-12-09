@@ -5,7 +5,7 @@
 //  Created by Patryk Maciąg on 20/11/2023.
 //
 
-struct IssueGeneralDTO: Identifiable, Codable {
+struct IssueGeneralDTO: Identifiable, Codable, Equatable, Hashable {
     let id: Int32
     var name: String
     var assignee: User?

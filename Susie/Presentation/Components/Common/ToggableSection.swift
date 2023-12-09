@@ -48,3 +48,33 @@ struct ToggableSection<Content: View> : View {
         _isToggled = State(initialValue: isToggled)
     }
 }
+
+struct ToggableSectionRowView<Content: View>: View {
+    let title: LocalizedStringResource
+    let content: Content
+    let divider: Bool
+    
+    var body: some View {
+        VStack {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                    content
+                }
+                .padding(.bottom, 5)
+                .foregroundColor(.gray)
+                Spacer()
+            }
+            .padding(.top, 5)
+            
+            if divider { Divider() }
+        }
+    }
+    
+    init(title: LocalizedStringResource, divider: Bool = true, @ViewBuilder content: @escaping () -> Content) {
+        self.title = title
+        self.divider = divider
+        self.content = content()
+    }
+}
+

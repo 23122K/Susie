@@ -12,15 +12,15 @@ import Foundation
 class DashboardViewModel: ObservableObject {
     let project: Project
     let user: User
-    var destintation: Destination?
     
     let projectInteractor: any ProjectInteractor
+    
+    @Published var destintation: Destination?
+    @Published var invitation: InviteRequest
     
     enum Destination {
         case invite
     }
-    
-    @Published var invitation: InviteRequest
     
     func inviteButtonTapped() {
         Task {
@@ -37,7 +37,12 @@ class DashboardViewModel: ObservableObject {
         Task { try await projectInteractor.details(of: project.toDTO()) }
     }
     
-    init(container: Container = Container.shared, project: Project, user: User, destination: Destination? = nil) {
+    init(
+        container: Container = Container.shared,
+        project: Project,
+        user: User,
+        destination: Destination? = .none
+    ) {
         self.project = project
         self.user = user
         self.destintation = destination

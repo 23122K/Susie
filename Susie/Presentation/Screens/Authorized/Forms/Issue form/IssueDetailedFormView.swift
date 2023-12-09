@@ -11,21 +11,17 @@ import PartialSheet
 struct IssueDetailedFormView: View {
     @ObservedObject private var vm: IssueDetailedFormViewModel
     
-    @State private var isPriorityPresented: Bool = false
-    @State private var isStatusPresented: Bool = false
-    @State private var isTypePresented: Bool = false
-    
     var body: some View {
         VStack(alignment: .leading) {
             TextField("\(.localized.issueTitle)", text: $vm.issue.name)
                 .textFieldStyle(.susiePrimaryTextField)
             
             Button(action: {
-                isStatusPresented.toggle()
+                vm.destinationButtonTapped(for: .status)
             }, label: {
                 HStack {
                     Spacer()
-                    Text(vm.issue.status.description)
+                    Text(verbatim: vm.issue.status.description)
                     Spacer()
                 }
                 .foregroundStyle(Color.susieWhitePrimary)
@@ -45,13 +41,13 @@ struct IssueDetailedFormView: View {
             
             ToggableSection(title: .localized.details, isToggled: false) {
                 ToggableSectionRowView(title: .localized.issuePriority) {
-                    Button(action: { isPriorityPresented.toggle() }, label: {
+                    Button(action: { vm.destinationButtonTapped(for: .priority) }, label: {
                         TagView(text: vm.issue.priority.description, color: vm.issue.priority.color)
                     })
                 }
                 
                 ToggableSectionRowView(title: .localized.issueType) {
-                    Button(action: { isTypePresented.toggle() }, label: {
+                    Button(action: { vm.destinationButtonTapped(for: .type) }, label: {
                         TagView(text: vm.issue.type.description, color: vm.issue.type.color)
                     })
                 }
@@ -88,20 +84,21 @@ struct IssueDetailedFormView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(vm.issue.name)
         .padding()
-        .partialSheet(isPresented: $isPriorityPresented) {
-            TagPickerView(enum: $vm.issue.priority, onSelect: {
-                isPriorityPresented.toggle()
-            })
-        }
-        .partialSheet(isPresented: $isTypePresented) {
-            TagPickerView(enum: $vm.issue.type, onSelect: {
-                isTypePresented.toggle()
-            })
-        }
-        .partialSheet(isPresented: $isStatusPresented) {
-            TagPickerView(enum: $vm.issue.status, onSelect: {
-                isStatusPresented.toggle()
-            })
+        .sheet(item: $vm.destination) { destination in
+            switch destination {
+            case .priority:
+                TagPickerView(enum: $vm.issue.priority, onSelect: {
+                    vm.dismissDestintationButtonTapped()
+                })
+            case .type:
+                TagPickerView(enum: $vm.issue.type, onSelect: {
+                    vm.dismissDestintationButtonTapped()
+                })
+            case .status:
+                TagPickerView(enum: $vm.issue.status, onSelect: {
+                    vm.dismissDestintationButtonTapped()
+                })
+            }
         }
     }
     

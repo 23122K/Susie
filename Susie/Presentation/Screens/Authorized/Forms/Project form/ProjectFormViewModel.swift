@@ -15,7 +15,7 @@ class ProjectFormViewModel: ObservableObject {
     
     @Published var project: ProjectDTO
     @Published var focus: Field?
-    @Published var shouldDismiss: Bool = .deafult
+    @Published var dismiss: Bool = .deafult
     
     enum Field: Hashable {
         case name
@@ -30,7 +30,7 @@ class ProjectFormViewModel: ObservableObject {
     
     func saveProjectButtonTapped() {
         doesExist ? updateProjectActionInitiated() : createProjectActionInitiated()
-        shouldDismiss.toggle()
+        dismiss.toggle()
     }
     
     func createProjectActionInitiated() {
@@ -52,9 +52,10 @@ class ProjectFormViewModel: ObservableObject {
         }
     }
     
-    init(container: Container = Container.shared, project: Project? = nil, focus: Field? = .name) {
+    init(container: Container = Container.shared, project: Project? = nil, focus: Field? = .name, dismiss: Bool = .deafult) {
         self.projectInteractor = container.projectInteractor.resolve()
         self.focus = focus
+        self.dismiss = dismiss
         
         switch project {
         case .none:

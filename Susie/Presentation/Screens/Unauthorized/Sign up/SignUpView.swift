@@ -10,7 +10,6 @@ struct SignUpView: View {
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading){
-//                Text(LocalizedStringResource("Crete your account").fill(words: [.localized.account], with: .susieBluePriamry))
                 Text(.localized.createYourAccount)
                 .font(.title)
                 .bold()

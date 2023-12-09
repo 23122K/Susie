@@ -6,7 +6,7 @@ struct BacklogView: View {
     
     var body: some View {
         NavigationStack {
-            ScreenHeader(user: vm.user, title: "\(vm.sprint?.name ?? LocalizedStringResource.localized.backlog.asString)") {
+            ScreenHeader(user: vm.user, title: LocalizedStringResource.localized.backlog) {
                 Menu(content: {
                     NavigationLink("\(.localized.createSprint)") {
                         SprintFormView(project: vm.project)
@@ -28,7 +28,7 @@ struct BacklogView: View {
                 case false:
                     Carousel(sprints, type: .unbounded) { sprint in
                         SprintRowView(sprint: sprint, status: $vm.dropStatus)
-                            .onTapGesture { vm.sprint = sprint }
+                            .onTapGesture { vm.destinationButtonTapped(for: .details(sprint)) }
                             .onDrop(of: [.text], delegate: SprintDropDelegate(vm: vm, sprint: sprint))
                     }
                 }
@@ -43,9 +43,9 @@ struct BacklogView: View {
                         } onDelete: {
                             vm.deleteIssueButtonTapped(issue: issue)
                         } onEdit: {
-                            vm.issue = issue
+                            vm.destinationButtonTapped(for: .edit(issue))
                         }
-                        .onTapGesture { vm.issue = issue }
+                        .onTapGesture { vm.destinationButtonTapped(for: .edit(issue)) }
                         .onDrag{ vm.onDragIssueGesture(issue: issue) }
                     }
                 }, placeholder: IssuePlaceholderView())
@@ -59,13 +59,15 @@ struct BacklogView: View {
             .scrollIndicators(.hidden)
         }
         .navigationTitle("\(LocalizedStringResource.localized.backlog)")
-        .onAppear { vm.fetchInactiveSprintsAndIssues() }
-        .refreshable { vm.fetchInactiveSprintsAndIssues() }
-        .fullScreenCover(item: $vm.sprint) { sprint in
-            SprintView(sprint: sprint, project: vm.project)
-        }
-        .fullScreenCover(item: $vm.issue) { issue in
-            IssueDetailsView(issue: issue)
+        .onAppear { vm.onAppear() }
+        .refreshable { vm.onAppear() }
+        .fullScreenCover(item: $vm.destination) { destination in
+            switch destination {
+            case let .details(sprint):
+                SprintView(sprint: sprint, project: vm.project)
+            case let .edit(issue):
+                IssueDetailsView(issue: issue)
+            }
         }
     }
     

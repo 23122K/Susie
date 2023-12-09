@@ -45,9 +45,3 @@ struct ProjectSelectionView: View {
     
     init(user: User) { self._vm = ObservedObject(initialValue: ProjectSelectionViewModel(user: user)) }
 }
-
-//struct ProjectsView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ProjectsView()
-//    }
-//}

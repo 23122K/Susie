@@ -44,7 +44,7 @@ struct SprintFormView: View {
         .padding(.vertical)
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("\(vm.sprint.name.isEmpty ? LocalizedStringResource.localized.newSprint.asString : vm.sprint.name)")
-        .onChange(of: vm.shouldDismiss) { _ in dismiss() }
+        .onChange(of: vm.dismiss) { _ in dismiss() }
     }
     
     init(sprint: Sprint? = nil, project: Project) {

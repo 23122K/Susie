@@ -9,10 +9,15 @@ import Foundation
 
 enum HTTPMethod: String {
     case get = "GET"
-    case put = "PUT"
+    case head = "HEAD"
     case post = "POST"
-    case patch = "PATCH"
+    case put = "PUT"
     case delete = "DELETE"
+    case connect = "CONNECT"
+    case options = "OPTIONS"
+    case patch = "PATCH"
+    case query = "QUERY"
+    case trace = "TRACE"
 }
 
 enum Endpoints {

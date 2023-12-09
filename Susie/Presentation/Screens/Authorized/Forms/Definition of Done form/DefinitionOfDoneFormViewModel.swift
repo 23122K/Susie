@@ -16,7 +16,7 @@ class DefinitionOfDoneFormViewModel: ObservableObject {
     let doesExist: Bool
     
     @Published var rule: Rule
-    @Published var shouldDismiss: Bool = false
+    @Published var dismiss: Bool = false
     @Published var focus: Field?
     
     enum Field: Hashable {
@@ -25,7 +25,7 @@ class DefinitionOfDoneFormViewModel: ObservableObject {
     
     func saveButtonTapped() {
         doesExist ? updateCommitmentRuleSent() : createCommitmentRuleRequestSent()
-        self.shouldDismiss = true
+        dismiss.toggle()
     }
     
     func createCommitmentRuleRequestSent(){
@@ -37,7 +37,7 @@ class DefinitionOfDoneFormViewModel: ObservableObject {
     }
     
     func dismissButtonTapped() {
-        self.shouldDismiss = true
+        self.dismiss = true
     }
     
     init(container: Container = Container.shared, project: Project, rule: Rule? = nil, focus: Field? = .definition) {

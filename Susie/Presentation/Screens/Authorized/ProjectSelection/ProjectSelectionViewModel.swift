@@ -13,7 +13,7 @@ class ProjectSelectionViewModel: ObservableObject {
     let user: User
     let projectInteractor: any ProjectInteractor
     
-    @Published var projects: Loadable<[ProjectDTO]> = .idle
+    @Published var projects: Loadable<[ProjectDTO]>
     
     func selectProjectButtonTapped(project: ProjectDTO) {
         Task { try await projectInteractor.details(of: project) }
@@ -39,8 +39,14 @@ class ProjectSelectionViewModel: ObservableObject {
         }
     }
     
-    init(user: User, container: Container = Container.shared) {
-        self.user = user
+    init(
+        container: Container = Container.shared,
+        user: User,
+        projects: Loadable<[ProjectDTO]> = .idle
+    ) {
         self.projectInteractor = container.projectInteractor.resolve()
+        
+        self.user = user
+        self.projects = projects
     }
 }

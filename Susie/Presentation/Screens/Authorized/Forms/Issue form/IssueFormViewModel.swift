@@ -14,17 +14,25 @@ class IssueFormViewModel: ObservableObject {
     
     @Published var issue: IssueDTO
     @Published var focus: Field?
-    @Published var shouldDismiss: Bool = .deafult
+    @Published var dismiss: Bool
+    @Published var destination: Destination?
     
     enum Field: Hashable {
         case title
         case description
     }
     
+    enum Destination: Identifiable, Hashable {
+        var id: Self { return self }
+        
+        case priority
+        case type
+    }
+    
     func createIssueButtonTapped() {
         Task {
             try await issueInteractor.create(issue)
-            shouldDismiss.toggle()
+            dismiss.toggle()
         }
     }
     
@@ -37,11 +45,20 @@ class IssueFormViewModel: ObservableObject {
         }
     }
     
+    func destinationButtonTapped(for destination: Destination) {
+        self.destination = destination
+    }
     
-    init(container: Container = Container.shared, project: Project, focus: Field? = .title) {
+    func dismissDestintationButtonTapped() {
+        self.destination = .none
+    }
+    
+    init(container: Container = Container.shared, project: Project, focus: Field? = .title, dismiss: Bool = .deafult, destination: Destination? = nil) {
         self.issueInteractor = container.issueInteractor.resolve()
         
         self.issue = IssueDTO(project: project)
         self.focus = focus
+        self.dismiss = dismiss
+        self.destination = destination
     }
 }

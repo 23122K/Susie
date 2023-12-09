@@ -16,18 +16,23 @@ class BacklogViewModel: ObservableObject {
     let issueInteractor: any IssueInteractor
     let sprintInteractor: any SprintInteractor
     
-    @Published var sprint: Sprint?
-    @Published var issue: IssueGeneralDTO?
+    @Published var destination: Destination?
+    @Published var dropStatus: DropStatus
     @Published var draggedIssue: IssueGeneralDTO?
+    @Published var sprints: Loadable<[Sprint]>
+    @Published var issues: Loadable<[IssueGeneralDTO]>
     
-    @Published var sprints: Loadable<[Sprint]> = .idle
-    @Published var issues: Loadable<[IssueGeneralDTO]> = .idle
-    
-    @Published var dropStatus: DropStatus = .exited
     
     enum DropStatus {
         case entered
         case exited
+    }
+    
+    enum Destination: Identifiable, Hashable {
+        var id: Self { self }
+        
+        case details(Sprint)
+        case edit(IssueGeneralDTO)
     }
     
     func onDragIssueGesture(issue: IssueGeneralDTO) -> NSItemProvider {
@@ -51,7 +56,7 @@ class BacklogViewModel: ObservableObject {
         } catch { issues = .failed(error) }
     }
     
-    func fetchInactiveSprintsAndIssues() {
+    func onAppear() {
         Task {
             await fetchInactiveSprints(project: project)
             await fetchInactiveIssues(project: project)
@@ -73,11 +78,29 @@ class BacklogViewModel: ObservableObject {
         Task { try await issueInteractor.delete(issue) }
     }
     
+    func destinationButtonTapped(for destination: Destination) {
+        self.destination = destination
+    }
     
-    init(project: Project, user: User, container: Container = Container.shared) {
-        self.project = project
-        self.user = user
+    init(
+        container: Container = Container.shared,
+        project: Project,
+        user: User,
+        dropStatus: DropStatus = .exited,
+        destination: Destination? = .none,
+        draggedIssue: IssueGeneralDTO? = .none,
+        sprints: Loadable<[Sprint]> = .idle,
+        issues: Loadable<[IssueGeneralDTO]> = .idle
+    ) {
         self.issueInteractor = container.issueInteractor.resolve()
         self.sprintInteractor = container.sprintInteractor.resolve()
+        
+        self.project = project
+        self.user = user
+        self.destination = destination
+        self.dropStatus = dropStatus
+        self.draggedIssue = draggedIssue
+        self.sprints = sprints
+        self.issues = issues
     }
 }

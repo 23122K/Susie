@@ -48,7 +48,7 @@ struct ProjectFormView: View {
         .padding()
         .navigationTitle("\(vm.project.name.isEmpty ?  LocalizedStringResource.localized.newProject.asString : vm.project.name)")
         .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: vm.shouldDismiss) { shouldDismiss in if shouldDismiss { dismiss() } }
+        .onChange(of: vm.dismiss) { _ in dismiss() }
     }
     
     init(project: Project? = nil) {

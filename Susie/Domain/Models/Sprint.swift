@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct Sprint: Identifiable, Codable {
+struct Sprint: Identifiable, Codable, Hashable {
     let id: Int32
     var name: String
     var goal: String

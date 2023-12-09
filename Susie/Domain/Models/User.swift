@@ -5,7 +5,7 @@
 //  Created by Patryk Maciąg on 22/08/2023.
 //
 
-struct User: Identifiable, Codable, Equatable {
+struct User: Identifiable, Codable, Equatable, Hashable {
     let id: String
     let email: String
     let firstName: String

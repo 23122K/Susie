@@ -15,7 +15,7 @@ class HomeViewModel: ObservableObject {
     
     let issueInteractor: any IssueInteractor
     
-    @Published var issues: Loadable<[IssueGeneralDTO]> = .idle
+    @Published var issues: Loadable<[IssueGeneralDTO]>
     
     func onAppear() async {
         do {
@@ -28,10 +28,16 @@ class HomeViewModel: ObservableObject {
         }
     }
     
-    init(container: Container = Container.shared, project: Project, user: User) {
+    init(
+        container: Container = Container.shared,
+        project: Project,
+        user: User,
+        issues: Loadable<[IssueGeneralDTO]> = .idle
+    ) {
+        self.issueInteractor = container.issueInteractor.resolve()
+        
         self.project = project
         self.user = user
-        self.issueInteractor = container.issueInteractor.resolve()
+        self.issues = issues
     }
 }
-
