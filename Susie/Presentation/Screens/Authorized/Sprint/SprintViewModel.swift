@@ -10,19 +10,27 @@ import Factory
 
 @MainActor
 class SprintViewModel: ObservableObject {
-    private var client: Client
-    private(set) var project: ProjectDTO
-    private(set) var sprint: Sprint
+    let sprint: Sprint
+    let project: Project
     
-    @Published var issue: IssueGeneralDTO?
-    @Published var issues: Loadable<[IssueGeneralDTO]> = .idle
+    let issueInteractor: any IssueInteractor
+    let sprintInteractor: any SprintInteractor
     
-    func fetch() {
-        self.issues = .idle
+    @Published var dismiss: Bool
+    @Published var destination: Destination?
+    @Published var issues: Loadable<[IssueGeneralDTO]>
+    
+    enum Destination: Identifiable, Hashable {
+        var id: Self { self }
+        
+        case details(IssueGeneralDTO)
+    }
+    
+    func onAppear() {
         Task {
             do {
                 self.issues = .loading
-                let issues = try await client.issues(sprint: sprint)
+                let issues = try await issueInteractor.fetchIssuesFromSprint(sprint)
                 self.issues = .loaded(issues)
             } catch {
                 self.issues = .failed(error)
@@ -30,29 +38,49 @@ class SprintViewModel: ObservableObject {
         }
     }
     
-    func start() {
+    func startSprintButtonTapped() {
         Task {
             do {
-                try await client.start(sprint: sprint)
+                try await sprintInteractor.startSprint(sprint: sprint)
             } catch {
                 print(error.localizedDescription)
             }
         }
     }
     
-    func delete() {
+    func destinationButtonTapped(for destination: Destination) {
+        self.destination = destination
+    }
+    
+    func dismissButtonTapped() {
+        self.dismiss.toggle()
+    }
+    
+    func deleteSprintButtonTapped() {
         Task {
             do {
-                try await client.delete(sprint: sprint) 
+                try await sprintInteractor.delete(sprint: sprint)
             } catch {
                 print(error.localizedDescription)
             }
         }
     }
     
-    init(sprint: Sprint, project: ProjectDTO, container: Container = Container.shared) {
-        self.client = container.client()
+    init(container: Container = Container.shared,
+         sprint: Sprint,
+         project: Project,
+         issue: IssueGeneralDTO? = .none,
+         issues: Loadable<[IssueGeneralDTO]> = .idle,
+         destination: Destination? = .none,
+         dismiss: Bool = .deafult
+    ) {
+        self.issueInteractor = container.issueInteractor.resolve()
+        self.sprintInteractor = container.sprintInteractor.resolve()
+        
         self.sprint = sprint
         self.project = project
+        self.issues = issues
+        self.issues = issues
+        self.dismiss = dismiss
     }
 }

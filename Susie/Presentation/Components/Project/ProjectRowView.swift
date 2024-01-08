@@ -31,5 +31,5 @@ struct ProjectRowView: View {
 }
 
 #Preview {
-    ProjectRowView(project: ProjectDTO(name: "Test project name", description: "Test project description", goal: ""))
+    ProjectRowView(project: .mock)
 }

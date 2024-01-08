@@ -10,72 +10,97 @@ import Factory
 
 @MainActor
 class BacklogViewModel: ObservableObject {
-    private var client: Client
-    private(set) var project: ProjectDTO
-    private(set) var user: User?
+    let project: Project
+    let user: User
     
-    @Published var sprint: Sprint?
-    @Published var issue: IssueGeneralDTO?
+    let issueInteractor: any IssueInteractor
+    let sprintInteractor: any SprintInteractor
+    
+    @Published var destination: Destination?
+    @Published var dropStatus: DropStatus
     @Published var draggedIssue: IssueGeneralDTO?
+    @Published var sprints: Loadable<[Sprint]>
+    @Published var issues: Loadable<[IssueGeneralDTO]>
     
-    @Published var sprints: Loadable<[Sprint]> = .idle
-    @Published var issues: Loadable<[IssueGeneralDTO]> = .idle
     
-    func fetch() {
-        issues = .idle
-        sprints = .idle
+    enum DropStatus {
+        case entered
+        case exited
+    }
+    
+    enum Destination: Identifiable, Hashable {
+        var id: Self { self }
         
-        Task(priority: .high) {
-            do {
-                issues = .loading
-                try await Task.sleep(nanoseconds: 500_000_000)
-                let issues = try await client.issues(backlog: project)
-                self.issues = .loaded(issues)
-            } catch {
-                issues = .failed(error)
-            }
-        }
-        
-        Task(priority: .high) {
-            do {
-                sprints = .loading
-                try await Task.sleep(nanoseconds: 500_000_000)
-                let sprints = try await client.sprints(project: project)
-                self.sprints = .loaded(sprints)
-            } catch {
-                sprints = .failed(error)
-            }
+        case details(Sprint)
+        case edit(IssueGeneralDTO)
+    }
+    
+    func onDragIssueGesture(issue: IssueGeneralDTO) -> NSItemProvider {
+        draggedIssue = issue
+        return NSItemProvider()
+    }
+
+    func fetchInactiveSprints(project: Project) async {
+        do {
+            sprints = .loading
+            let sprints = try await sprintInteractor.fetchInactiveSprints(project: project)
+            self.sprints = .loaded(sprints)
+        } catch { sprints = .failed(error) }
+    }
+    
+    func fetchInactiveIssues(project: Project) async {
+        do {
+            issues = .loading
+            let issues = try await issueInteractor.fetchIssuesFromProductBacklog(project: project)
+            self.issues = .loaded(issues)
+        } catch { issues = .failed(error) }
+    }
+    
+    func onAppear() {
+        Task {
+            await fetchInactiveSprints(project: project)
+            await fetchInactiveIssues(project: project)
         }
     }
     
-    func assign(to sprint: Sprint) -> Bool {
-        defer { draggedIssue = nil }
-        
-        guard let issue = draggedIssue else {
-            return false
-        }
+    func assignIssue(to sprint: Sprint) -> Bool {
+        guard let issue = draggedIssue else { return false }
         
         Task {
-            try await client.assign(issue: issue, to: sprint)
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.fetch()
+            try await sprintInteractor.assignIssueToSprint(issue: issue, sprint: sprint)
+            self.draggedIssue = nil
         }
         
         return true
     }
     
-    func delete(issue: IssueGeneralDTO) {
-        Task { try await client.delete(issue: issue) }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [self] in
-            fetch()
-        }
+    func deleteIssueButtonTapped(issue: IssueGeneralDTO) {
+        Task { try await issueInteractor.delete(issue) }
     }
     
-    init(project: ProjectDTO, container: Container = Container.shared) {
-        self.client = container.client()
-        self.user = client.user
+    func destinationButtonTapped(for destination: Destination) {
+        self.destination = destination
+    }
+    
+    init(
+        container: Container = Container.shared,
+        project: Project,
+        user: User,
+        dropStatus: DropStatus = .exited,
+        destination: Destination? = .none,
+        draggedIssue: IssueGeneralDTO? = .none,
+        sprints: Loadable<[Sprint]> = .idle,
+        issues: Loadable<[IssueGeneralDTO]> = .idle
+    ) {
+        self.issueInteractor = container.issueInteractor.resolve()
+        self.sprintInteractor = container.sprintInteractor.resolve()
+        
         self.project = project
+        self.user = user
+        self.destination = destination
+        self.dropStatus = dropStatus
+        self.draggedIssue = draggedIssue
+        self.sprints = sprints
+        self.issues = issues
     }
 }

@@ -2,39 +2,32 @@ import SwiftUI
 
 struct SignInView: View {
     @StateObject private var vm = SignInViewModel()
-    @FocusState private var focusedField: Field?
+    @FocusState private var focus: SignInViewModel.Field?
     
     private let envelopeImage = Image(systemName: "envelope")
     
-    private enum Field: Hashable {
-        case email
-        case password
-    }
-    
     var body : some View {
         VStack(alignment: .leading){
-            FormTitleView(title: "Log in to", highlighted: "Susie")
+            Text(.localized.logInToSusie)
+            .font(.title)
+            .bold()
             
-            CustomTextField(title: "Email address", text: $vm.email, keyboard: .emailAddress, focusedField: $focusedField, equals: .email) { envelopeImage }
-                .onSubmit { focusedField = .password }
+            CustomTextField(title: .localized.email, text: $vm.credentials.email , keyboard: .emailAddress, focus: $focus, equals: .email) { envelopeImage }
+                .onSubmit { vm.onSubmitOf(field: .email) }
             
             Divider()
             
-            PasswordField(title: "Password", text: $vm.password, focusedField: $focusedField, equals: .password)
-                .onSubmit { if vm.isValid { vm.signIn() } }
+            PasswordField(title: .localized.password, text: $vm.credentials.password, focusedField: $focus, equals: .password)
+                .onSubmit { vm.onSubmitOf(field: .password) }
             
-            Button("Sign in") {
-                vm.signIn()
-            }
+            Button("\(.localized.signIn)") { vm.onSignInButtonTapped() }
             .buttonStyle(.secondary)
             .disabled(!vm.isValid)
 
             Spacer()
         }
         .padding()
-        .onAppear {
-            focusedField = .email
-        }
+        .bind($vm.focus, to: $focus)
     }
 }
 

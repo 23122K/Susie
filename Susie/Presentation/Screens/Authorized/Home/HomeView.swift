@@ -9,31 +9,29 @@ import SwiftUI
 import Factory
 
 struct HomeView: View {
-    @StateObject private var home: HomeViewModel
-    @State private var isPresented: Bool = false
-    
+    @ObservedObject var vm: HomeViewModel
+
     var body: some View {
         NavigationStack {
-           ScreenHeader(user: home.user, screenTitle: "Home", action: {
-               isPresented.toggle()
-           }, content: {
+            ScreenHeader(user: vm.user, title: .localized.home) {
                Menu(content: {
-                   Button("Create sprint") {}
-                   Button("Create issue") {}
+                   Button("\(.localized.createSprint)") {}
+                   Button("\(.localized.createIssue)") {}
                }, label: {
                    Image(systemName: "ellipsis")
                        .scaleEffect(1.1)
                })
-           })
+            }
             
+            AsyncContentView(state: $vm.issues) { issues in
+                BoardView(issues: issues)
+            }
+        
             Spacer()
         }
-        .sideMenu(isPresented: $isPresented) {
-
-        }
+        .task { await vm.onAppear() }
+        .refreshable{ await vm.onAppear() }
     }
     
-    init(project: ProjectDTO) {
-        _home = StateObject(wrappedValue: HomeViewModel(project: project))
-    }
+    init(project: Project, user: User) { self._vm = ObservedObject(initialValue: HomeViewModel(project: project, user: user)) }
 }

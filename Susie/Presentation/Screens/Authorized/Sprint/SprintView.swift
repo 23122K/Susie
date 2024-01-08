@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SprintView: View {
     @Environment (\.dismiss) var dismiss
-    @StateObject private var vm: SprintViewModel
+    @ObservedObject var vm: SprintViewModel
     
     var body: some View {
         NavigationStack {
@@ -17,47 +17,43 @@ struct SprintView: View {
                 AsyncContentView(state: $vm.issues, { issues in
                     ForEach(issues) { issue in
                         IssueRowView(issue: issue)
+                            .onTapGesture { vm.destinationButtonTapped(for: .details(issue)) }
                     }
-                }, placeholder: EmptyView(), onAppear: {
-                    vm.fetch()
-                })
+                }, placeholder: EmptyView())
             }
             .padding()
             .navigationBarTitleDisplayMode(.inline)
             .navigationTitle(vm.sprint.name)
-            .refreshable {
-                vm.fetch()
-            }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Close") {
-                        dismiss()
+                    Button("\(.localized.close)") {
+                        vm.dismissButtonTapped()
                     }
                 }
                 
                 ToolbarItem(placement: .confirmationAction) {
                     Menu(content: {
                         Button(action: {
-                            vm.start()
-                            dismiss()
+                            vm.startSprintButtonTapped()
+                            vm.dismissButtonTapped()
                         }, label: {
-                            Text("Start")
+                            Text(.localized.start)
                             Image(systemName: "play.fill")
                         })
                         
                         NavigationLink(destination: {
                             SprintFormView(sprint: vm.sprint, project: vm.project)
                         }, label: {
-                            Text("Edit")
+                            Text(.localized.edit)
                             Image(systemName: "pencil")
                         })
                         
                         Section {
                             Button(role: .destructive, action: {
-                                vm.delete()
-                                dismiss()
+                                vm.deleteSprintButtonTapped()
+                                vm.dismissButtonTapped()
                             }, label: {
-                                Text("Delete")
+                                Text(.localized.delete)
                                     .foregroundColor(.red)
                                 Image(systemName: "trash.fill")
                                     .foregroundStyle(.red)
@@ -69,16 +65,16 @@ struct SprintView: View {
                 }
             }
         }
-        .sheet(item: $vm.issue) { issue in
-            IssueDetailsView(issue: issue)
+        .refreshable { vm.onAppear() }
+        .onAppear{ vm.onAppear() }
+        .onChange(of: vm.dismiss) { _ in dismiss() }
+        .fullScreenCover(item: $vm.destination) { destination in
+            switch destination {
+            case let .details(issue: issue):
+                IssueDetailsView(issue: issue)
+            }
         }
-        .onAppear{
-            vm.fetch()
-        }
-        
     }
     
-    init(sprint: Sprint, project: ProjectDTO) {
-        _vm = StateObject(wrappedValue: SprintViewModel(sprint: sprint, project: project))
-    }
+    init(sprint: Sprint, project: Project) { self._vm = ObservedObject(initialValue: SprintViewModel(sprint: sprint, project: project)) }
 }

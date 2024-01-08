@@ -26,7 +26,7 @@ struct IssueRowPlaceholderView: View {
                     TagView(image: image, text: IssuePriority.allCases.randomElement()!.description, color: IssuePriority.allCases.randomElement()!.color)
                         .shimmering()
                     Spacer()
-                    InitialsView(user: User(email: "", firstName: "X", lastName: "X"), size: 30)
+                    InitialsView(user: .mock, size: 30)
                         .shimmering()
                 }
                 .offset(y: -3)

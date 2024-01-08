@@ -21,7 +21,7 @@ struct TagPickerView<Enum: Tag>: View where Enum: Hashable, Enum.AllCases: Rando
                     HStack {
                         VStack(alignment: .leading) {
                             TagView(text: `case`.description, color: `case`.color, enlarged: true)
-                            Text(`case`.description)
+                            Text(verbatim: `case`.description)
                                 .font(.caption)
                         }
                         Spacer()

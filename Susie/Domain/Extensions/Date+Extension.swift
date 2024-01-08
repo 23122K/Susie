@@ -23,7 +23,7 @@ extension JSONDecoder.DateDecodingStrategy {
         let dateString = try container.decode(String.self)
         
         guard let date = formatter.date(from: dateString) else {
-            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Cannot decode date string \(dateString)")
+            throw DecodingError.dataCorruptedError(in: container, debugDescription: "Cannot decode date represented as: \(dateString) String")
         }
         
         return date

@@ -5,24 +5,23 @@
 //  Created by Patryk Maciąg on 22/08/2023.
 //
 
-struct User: Identifiable, Codable {
+struct User: Identifiable, Codable, Equatable, Hashable {
     let id: String
     let email: String
     let firstName: String
     let lastName: String
     
-    init(email: String, firstName: String, lastName: String) {
-        self.id = String()
-        self.email = email
-        self.firstName = firstName
-        self.lastName = lastName
-    }
-    
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case id = "uuid"
         case email
         case firstName
         case lastName
+    }
+}
+
+extension User {
+    static var mock: User {
+        User(id: .default, email: "Joe@example.com", firstName: "Joe", lastName: "Doe")
     }
 }
 
@@ -38,14 +37,19 @@ extension User {
     }
 }
 
-class InviteRequest: Codable {
+struct InviteRequest: Codable {
     var email: String
     var projectID: Int32
     
-    required init(email: String = "", project: any ProjectEntity) {
+    init(email: String, projectID: Int32) {
         self.email = email
-        self.projectID = project.id
+        self.projectID = projectID
     }
+}
+
+extension InviteRequest {
+    init() { self.init(email: String(), projectID: Int32()) }
+    init(project: Project) { self.init(email: String(), projectID: project.id)}
 }
 
 struct UserRemovalDTO: Codable {

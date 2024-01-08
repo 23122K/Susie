@@ -1,137 +1,75 @@
 import SwiftUI
-import SwipeActions
-
-//struct SprintsView: View {
-//    @ObservedObject var sprintsViewModel: SprintsViewModel
-//    @Binding var dropStatus: DropStatus
-//
-//    var body: some View {
-//    }
-//}
-//
-
 
 @MainActor
 struct BacklogView: View {
-    @StateObject private var vm: BacklogViewModel
-    
-    @State private var dropStatus: DropStatus = .exited
-    @State private var isPresented: Bool = false
+    @ObservedObject private var vm: BacklogViewModel
     
     var body: some View {
         NavigationStack {
-            ScreenHeader(user: vm.user, screenTitle: "Backlog", action: {
-                isPresented.toggle()
-            }, content: {
+            ScreenHeader(user: vm.user, title: LocalizedStringResource.localized.backlog) {
                 Menu(content: {
-                    NavigationLink("Crate sprint") {
+                    NavigationLink("\(.localized.createSprint)") {
                         SprintFormView(project: vm.project)
-                            .onDisappear{ vm.fetch() }
+                    }
+               
+                    NavigationLink("\(.localized.createIssue)") {
+                        IssueFormView(project: vm.project)
                     }
                     
-                    NavigationLink("Create issue") {
-                        IssueFormView(project: vm.project)
-                            .onDisappear { vm.fetch() }
-                    }
-                }, label: {
-                    Image(systemName: "ellipsis")
-                        .fontWeight(.bold)
-                })
-            })
+                }, label: { Image(systemName: "ellipsis").fontWeight(.bold) })
+            }
             
             AsyncContentView(state: $vm.sprints, { sprints in
-                if sprints.isEmpty {
+                switch sprints.isEmpty {
+                case true:
                     NavigationLink(destination: {
-                        SprintFormView(project: self.vm.project)
-                            .onDisappear{ self.vm.fetch() }
+                        SprintFormView(project: vm.project)
                     }, label: { CreateSprintView() })
-                } else {
+                case false:
                     Carousel(sprints, type: .unbounded) { sprint in
-                        SprintRowView(sprint: sprint, status: $dropStatus)
-                            .onTapGesture { self.vm.sprint = sprint }
-                            .onDrop(of: [.text], delegate: SprintDropDelegate(backlogViewModel: vm, dropStatus: $dropStatus, sprint: sprint))
+                        SprintRowView(sprint: sprint, status: $vm.dropStatus)
+                            .onTapGesture { vm.destinationButtonTapped(for: .details(sprint)) }
+                            .onDrop(of: [.text], delegate: SprintDropDelegate(vm: vm, sprint: sprint))
                     }
                 }
-            }, placeholder: SprintRowPlaceholderView() ,onAppear: {
-                vm.fetch()
-            })
+            }, placeholder: SprintRowPlaceholderView())
             .frame(height: 215)
             
-            ScrollView(showsIndicators: false) {
+            ScrollView {
                 AsyncContentView(state: $vm.issues, { issues in
                     ForEach(issues) { issue in
-                        SwipeView(label: {
+                        SwipeContent {
                             IssueRowView(issue: issue)
-                        }, leadingActions: { _ in
-                            SwipeAction(action: {
-                                vm.delete(issue: issue)
-                            }, label: { _ in
-                                HStack {
-                                    Text("Delete")
-                                        .fontWeight(.semibold)
-                                    Image(systemName: "trash.fill")
-                                }
-                                .foregroundColor(Color.susieWhitePrimary)
-                            }, background: { _ in
-                                Color.red.opacity(0.95)
-                            })
-                            .allowSwipeToTrigger()
-                            
-                        }, trailingActions: { _ in
-                            SwipeAction(action: {
-                                vm.issue = issue
-                            }, label: { _ in
-                                HStack {
-                                    Text("Edit")
-                                    Image(systemName: "pencil")
-                                }
-                                .fontWeight(.semibold)
-                                .foregroundColor(Color.susieWhitePrimary)
-                            }, background: { _ in
-                                Color.susieBluePriamry
-                            })
-                            .allowSwipeToTrigger()
-                        })
-                        .swipeSpacing(10)
-                        .swipeMinimumDistance(10)
-                        .swipeActionsStyle(.cascade)
-                        .swipeActionsMaskCornerRadius(9)
-                        .swipeActionCornerRadius(9)
-                        .padding(.horizontal)
-                        .onDrag {
-                            vm.draggedIssue = issue
-                            return NSItemProvider()
+                        } onDelete: {
+                            vm.deleteIssueButtonTapped(issue: issue)
+                        } onEdit: {
+                            vm.destinationButtonTapped(for: .edit(issue))
                         }
-                        .onTapGesture {
-                            vm.issue = issue
-                        }
+                        .onTapGesture { vm.destinationButtonTapped(for: .edit(issue)) }
+                        .onDrag{ vm.onDragIssueGesture(issue: issue) }
                     }
-                    
                 }, placeholder: IssuePlaceholderView())
-                NavigationLink("Create issue", destination: {
+                
+                NavigationLink("\(.localized.createIssue)") {
                     IssueFormView(project: vm.project)
-                        .onDisappear{ vm.fetch() }
-                })
+                }
                 .buttonStyle(.issueCreation)
                 .offset(y: -15)
             }
+            .scrollIndicators(.hidden)
         }
-        .refreshable {
-            vm.fetch()
-        }
-            
-        .navigationTitle("Backlog")
-        .fullScreenCover(item: $vm.sprint) { sprint in
-            SprintView(sprint: sprint, project: vm.project)
-                .onDisappear{ vm.fetch() }
-        }
-        .fullScreenCover(item: $vm.issue) { issue in
-            IssueDetailsView(issue: issue)
+        .navigationTitle("\(LocalizedStringResource.localized.backlog)")
+        .onAppear { vm.onAppear() }
+        .refreshable { vm.onAppear() }
+        .fullScreenCover(item: $vm.destination) { destination in
+            switch destination {
+            case let .details(sprint):
+                SprintView(sprint: sprint, project: vm.project)
+            case let .edit(issue):
+                IssueDetailsView(issue: issue)
+            }
         }
     }
     
-    init(project: ProjectDTO) {
-        _vm = StateObject(wrappedValue: BacklogViewModel(project: project))
-    }
+    init(project: Project, user: User) { self._vm = ObservedObject(initialValue: BacklogViewModel(project: project, user: user)) }
 }
-

@@ -8,59 +8,56 @@
 import SwiftUI
 import Factory
 
+@MainActor
 class SignUpViewModel: ObservableObject {
-    private var client: Client
+    let userInteractor: any UserInteractor
+    let authInteractor: any AuthenticationInteractor
     
-    @Published var firstName = String()
-    @Published var lastName = String()
-    @Published var emial = String()
-    @Published var password = String()
-    @Published var confirmPassword = String()
-    @Published var isScrumMaster = Bool()
+    @Published var credentials: SignUpRequest
+    @Published var confirmPassword: String
+    @Published var focus: Field?
     
-    //TODO: Chage to real validation
-    var areCrendentailsValid: Bool {
-        if(self.firstName == "" || self.lastName == "" || self.emial == "") {
-            return true
-        }
-        return false
+    enum Field {
+        case firstName
+        case lastName
+        case email
+        case password
+        case confirmPassword
     }
     
-    var doesPasswordsMatch: Bool {
-        guard password.isEmpty || confirmPassword.isEmpty else {
-            return password.hashValue == confirmPassword.hashValue
+    func onSubmitOf(field: Field) {
+        switch field {
+        case .firstName:
+            focus = .lastName
+        case .lastName:
+            focus = .email
+        case .email:
+            focus = .password
+        case .password:
+            focus = .confirmPassword
+        case .confirmPassword:
+            focus = .none
         }
-        
-        return false
     }
     
-    func signUp() {
-//        defer { clean() }
-        
+    //TODO: Add validation
+    
+    func onSignUpButtonTapped() {
         Task {
-            switch isScrumMaster {
-            case true:
-                let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password, isScrumMaster: true)
-                try await client.signUp(with: credentials)
-            case false:
-                let credentials = SignUpRequest(firstName: firstName, lastName: lastName, email: emial, password: password, isScrumMaster: false)
-                try await client.signUp(with: credentials)
-            }
+            try await authInteractor.signUp(credentials)
+            try await userInteractor.signedUserInfo()
             
-            try await client.signIn(with: SignInRequest(email: emial, password: password))
+            credentials = .init()
+            confirmPassword = .init()
         }
     }
     
-    func clean() {
-        firstName = .init()
-        lastName = .init()
-        emial = .init()
-        password = .init()
-        confirmPassword = .init()
-        isScrumMaster = .init()
-    }
-    
-    init(container: Container = Container.shared) {
-        self.client = container.client()
+    init(container: Container = Container.shared, credentials: SignUpRequest = SignUpRequest(), confirmPassword: String = String(), focus: Field? = .firstName) {
+        self.userInteractor = container.userInteractor.resolve()
+        self.authInteractor = container.authenticationInteractor.resolve()
+        
+        self.credentials = credentials
+        self.confirmPassword = confirmPassword
+        self.focus = focus
     }
 }

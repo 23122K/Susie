@@ -8,56 +8,50 @@
 import SwiftUI
 
 struct ProjectFormView: View {
-    @Environment (\.dismiss) var dismiss
-    @StateObject private var projectViewModel: ProjectViewModel
-    @FocusState private var focusedField: FocusedField?
-    
-    private enum FocusedField: Hashable {
-        case name
-        case description
-        case goal
-    }
+    @Environment (\.dismiss) private var dismiss
+    @ObservedObject private var vm: ProjectFormViewModel
+    @FocusState private var focus: ProjectFormViewModel.Field?
     
     var body: some View {
         ScrollView(showsIndicators: false) {
-            TextField("Project name", text: $projectViewModel.project.name)
+            TextField("\(.localized.projectTitle)", text: $vm.project.name)
                 .textFieldStyle(.susiePrimaryTextField)
-                .focused($focusedField, equals: .name)
-                .onSubmit { focusedField = .description }
+                .focused($focus, equals: .name)
+                .onSubmit { vm.onSumbitOf(field: .name) }
             
-            ToggableSection(title: "Description", isToggled: true) {
-                TextField("Project description", text: $projectViewModel.project.description, axis: .vertical)
+            ToggableSection(title: .localized.description, isToggled: true) {
+                TextField("\(.localized.projectDescription)", text: $vm.project.description, axis: .vertical)
                     .lineLimit(4...)
                     .textFieldStyle(.susieSecondaryTextField)
-                    .focused($focusedField, equals: .description)
-                    .onSubmit{ focusedField = .goal }
+                    .focused($focus, equals: .description)
+                    .onSubmit { vm.onSumbitOf(field: .description) }
                     .padding(.top)
             }
             
-            ToggableSection(title: "Goal", isToggled: true) {
-                TextField("Project goal", text: $projectViewModel.project.goal, axis: .vertical)
+            ToggableSection(title: .localized.projectGoal, isToggled: true) {
+                TextField("\(.localized.projectGoal)", text: $vm.project.goal, axis: .vertical)
                     .lineLimit(4...)
                     .textFieldStyle(.susieSecondaryTextField)
-                    .focused($focusedField, equals: .goal)
+                    .focused($focus, equals: .goal)
+                    .onSubmit { vm.onSumbitOf(field: .goal) }
                     .padding(.top)
-                    .onSubmit{ projectViewModel.save(); dismiss() }
             }
             
         }
         .toolbar(.hidden, for: .tabBar)
         .toolbar {
-            Button("Save") {
-                projectViewModel.save()
-                dismiss()
+            Button("\(.localized.save)") {
+                vm.saveProjectButtonTapped()
             }
         }
+        .bind($vm.focus, to: $focus)
         .padding()
-        .navigationTitle(projectViewModel.project.name.isEmpty ? "New project" : projectViewModel.project.name)
+        .navigationTitle("\(vm.project.name.isEmpty ?  LocalizedStringResource.localized.newProject.asString : vm.project.name)")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear{ focusedField = .name }
+        .onChange(of: vm.dismiss) { _ in dismiss() }
     }
     
-    init(project: ProjectDTO? = nil) {
-        _projectViewModel = StateObject(wrappedValue: ProjectViewModel(project: project))
+    init(project: Project? = nil) {
+        self._vm = ObservedObject(initialValue: ProjectFormViewModel(project: project))
     }
 }

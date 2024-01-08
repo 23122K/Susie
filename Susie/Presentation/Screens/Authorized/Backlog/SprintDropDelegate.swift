@@ -7,35 +7,27 @@
 
 import SwiftUI
 
-enum DropStatus {
-    case entered
-    case exited
-}
-
 struct SprintDropDelegate: DropDelegate {
-    @ObservedObject var backlogViewModel: BacklogViewModel
-    @Binding var dropStatus: DropStatus
-    var sprint: Sprint
+    @ObservedObject var vm: BacklogViewModel
+    let sprint: Sprint
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
         return DropProposal(operation: .move)
     }
     
     func performDrop(info: DropInfo) -> Bool {
-        dropStatus = .exited
+        vm.dropStatus = .exited
         
-        guard backlogViewModel.assign(to: sprint) else {
-            return false
-        }
+        guard vm.assignIssue(to: sprint) else { return false }
         
         return true
     }
     
     func dropEntered(info: DropInfo) {
-        dropStatus = .entered
+        vm.dropStatus = .entered
     }
     
     func dropExited(info: DropInfo) {
-        dropStatus = .exited
+        vm.dropStatus = .exited
     }
 }

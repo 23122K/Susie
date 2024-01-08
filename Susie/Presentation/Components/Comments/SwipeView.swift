@@ -21,7 +21,7 @@ struct SwipeContent<Content: View>: View {
                 onDelete?()
             }, label: { _ in
                 HStack {
-                    Text("Delete")
+                    Text(.localized.delete)
                         .fontWeight(.semibold)
                     Image(systemName: "trash.fill")
                 }
@@ -35,7 +35,7 @@ struct SwipeContent<Content: View>: View {
                onEdit?()
             }, label: { _ in
                 HStack {
-                    Text("Edit")
+                    Text(.localized.edit)
                     Image(systemName: "pencil")
                 }
                 .fontWeight(.semibold)

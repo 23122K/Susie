@@ -6,13 +6,12 @@
 //
 
 struct SignInRequest: Codable {
-    let email: String
-    let password: String
-    
-    init(email: String, password: String) {
-        self.email = email
-        self.password = password
-    }
+    var email: String
+    var password: String
+}
+
+extension SignInRequest {
+    init() { self.init(email: .default, password: .default) }
 }
 
 struct SignInResponse: Codable {

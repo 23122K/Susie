@@ -16,8 +16,8 @@ struct MembersView: View {
                 ForEach(users) { user in
                     VStack {
                         InitialsView(user: user, size: 45)
-                        Text(user.firstName)
-                        Text(user.lastName)
+                        Text(verbatim: user.firstName)
+                        Text(verbatim: user.lastName)
                     }
                     .font(.caption)
                 }

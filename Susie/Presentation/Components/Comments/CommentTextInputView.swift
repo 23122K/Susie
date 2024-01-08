@@ -17,7 +17,7 @@ struct CommentTextInputView: View {
     
     var body: some View {
         HStack {
-            TextField("Add comment...", text: $text)
+            TextField("\(.localized.addComment)", text: $text)
                 .onSubmit { 
                     onSubmit()
                     hideKeyboard()

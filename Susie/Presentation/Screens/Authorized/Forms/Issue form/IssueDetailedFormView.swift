@@ -9,23 +9,19 @@ import SwiftUI
 import PartialSheet
 
 struct IssueDetailedFormView: View {
-    @StateObject private var vm: IssueDetailedFormViewModel
-    
-    @State private var isPriorityPresented: Bool = false
-    @State private var isStatusPresented: Bool = false
-    @State private var isTypePresented: Bool = false
+    @ObservedObject private var vm: IssueDetailedFormViewModel
     
     var body: some View {
         VStack(alignment: .leading) {
-            TextField("Issue title", text: $vm.issue.name)
+            TextField("\(.localized.issueTitle)", text: $vm.issue.name)
                 .textFieldStyle(.susiePrimaryTextField)
             
             Button(action: {
-                isStatusPresented.toggle()
+                vm.destinationButtonTapped(for: .status)
             }, label: {
                 HStack {
                     Spacer()
-                    Text(vm.issue.status.description)
+                    Text(verbatim: vm.issue.status.description)
                     Spacer()
                 }
                 .foregroundStyle(Color.susieWhitePrimary)
@@ -37,26 +33,26 @@ struct IssueDetailedFormView: View {
                 .transition(.move(edge: .trailing))
             })
             
-            ToggableSection(title: "Description", isToggled: true) {
-                TextField("Description", text: $vm.issue.description, axis: .vertical)
+            ToggableSection(title: .localized.description, isToggled: true) {
+                TextField("\(.localized.description)", text: $vm.issue.description, axis: .vertical)
                     .lineLimit(2...)
                     .textFieldStyle(.susieSecondaryTextField)
             }
             
-            ToggableSection(title: "Details", isToggled: false) {
-                ToggableSectionRowView(title: "Issue Priority") {
-                    Button(action: { isPriorityPresented.toggle() }, label: {
+            ToggableSection(title: .localized.details, isToggled: false) {
+                ToggableSectionRowView(title: .localized.issuePriority) {
+                    Button(action: { vm.destinationButtonTapped(for: .priority) }, label: {
                         TagView(text: vm.issue.priority.description, color: vm.issue.priority.color)
                     })
                 }
                 
-                ToggableSectionRowView(title: "Issue Type") {
-                    Button(action: { isTypePresented.toggle() }, label: {
+                ToggableSectionRowView(title: .localized.issueType) {
+                    Button(action: { vm.destinationButtonTapped(for: .type) }, label: {
                         TagView(text: vm.issue.type.description, color: vm.issue.type.color)
                     })
                 }
                 
-                ToggableSectionRowView(title: "Issue Estimation") {
+                ToggableSectionRowView(title: .localized.issueEstimation) {
                     HStack {
                         Text(vm.issue.estimation.description)
                         Slider(value: .convert(from: $vm.issue.estimation), in: 1...20, step: 1)
@@ -64,13 +60,13 @@ struct IssueDetailedFormView: View {
                     }
                 }
                 
-                ToggableSectionRowView(title: "Asignee", divider: false) {
+                ToggableSectionRowView(title: .localized.asignee, divider: false) {
                     Button(action: {
-                        vm.assign()
+                        vm.assignToIssueButtonTapped()
                     }, label: {
                         HStack{
                             InitialsView(user: vm.issue.assignee, size: 30)
-                            Text(vm.issue.assignee?.fullName ?? "Unassigned")
+                            Text(vm.issue.assignee?.fullName ?? "\(LocalizedStringResource.localized.unassigned)")
                         }
                     })
                 }
@@ -80,32 +76,33 @@ struct IssueDetailedFormView: View {
         }
         .toolbar{
             ToolbarItem(placement: .topBarTrailing, content: {
-                Button("Save") {
-                    vm.save()
+                Button("\(.localized.save)") {
+                    vm.updateIssueDetailsButtonTapped()
                 }
             })
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(vm.issue.name)
         .padding()
-        .partialSheet(isPresented: $isPriorityPresented) {
-            TagPickerView(enum: $vm.issue.priority, onSelect: {
-                isPriorityPresented.toggle()
-            })
-        }
-        .partialSheet(isPresented: $isTypePresented) {
-            TagPickerView(enum: $vm.issue.type, onSelect: {
-                isTypePresented.toggle()
-            })
-        }
-        .partialSheet(isPresented: $isStatusPresented) {
-            TagPickerView(enum: $vm.issue.status, onSelect: {
-                isStatusPresented.toggle()
-            })
+        .sheet(item: $vm.destination) { destination in
+            switch destination {
+            case .priority:
+                TagPickerView(enum: $vm.issue.priority, onSelect: {
+                    vm.dismissDestintationButtonTapped()
+                })
+            case .type:
+                TagPickerView(enum: $vm.issue.type, onSelect: {
+                    vm.dismissDestintationButtonTapped()
+                })
+            case .status:
+                TagPickerView(enum: $vm.issue.status, onSelect: {
+                    vm.dismissDestintationButtonTapped()
+                })
+            }
         }
     }
     
     init(issue: Issue) {
-        _vm = StateObject(wrappedValue: IssueDetailedFormViewModel(issue: issue))
+        _vm = ObservedObject(initialValue: IssueDetailedFormViewModel(issue: issue))
     }
 }

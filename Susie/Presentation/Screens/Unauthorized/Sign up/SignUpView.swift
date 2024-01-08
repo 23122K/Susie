@@ -2,55 +2,46 @@ import SwiftUI
 
 struct SignUpView: View {
     @StateObject private var vm = SignUpViewModel()
-    @FocusState private var focusedField: FocusedField?
-    @State private var isPresented: Bool = false
+    @FocusState private var focus: SignUpViewModel.Field?
     
     private let personImage = Image(systemName: "person")
     private let envelopeImage = Image(systemName: "envelope")
     
-    private enum FocusedField: Hashable {
-        case fistName
-        case lastName
-        case email
-    }
-    
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading){
-                FormTitleView(title: "Create your", highlighted: "accout")
+                Text(.localized.createYourAccount)
+                .font(.title)
+                .bold()
                 
-                CustomTextField(title: "First name", text: $vm.firstName, keyboard: .default, focusedField: $focusedField, equals: .fistName) { personImage }
-                    .onSubmit { focusedField = .lastName }
+                CustomTextField(title: .localized.fistName, text: $vm.credentials.firstName, keyboard: .default, focus: $focus, equals: .firstName) { personImage }
+                    .onSubmit { vm.onSubmitOf(field: .firstName) }
                 
                 Divider()
 
-                CustomTextField(title: "Last name", text: $vm.lastName, keyboard: .default, focusedField: $focusedField, equals: .lastName) { personImage }
-                    .onSubmit { focusedField = .email }
+                CustomTextField(title: .localized.lastName, text: $vm.credentials.lastName, keyboard: .default, focus: $focus, equals: .lastName) { personImage }
+                    .onSubmit { vm.onSubmitOf(field: .lastName) }
                 
                 Divider()
                 
-                CustomTextField(title: "Email address", text: $vm.emial, keyboard: .emailAddress, focusedField: $focusedField, equals: .email) { envelopeImage }
-                    .onSubmit { if !vm.areCrendentailsValid { isPresented.toggle() } }
+                CustomTextField(title: .localized.email, text: $vm.credentials.email, keyboard: .emailAddress, focus: $focus, equals: .email) { envelopeImage }
+                    .onSubmit { vm.onSubmitOf(field: .email) }
                 
             }
             .padding()
             
-            Button("Next") { isPresented.toggle() }
-                .buttonStyle(.secondary)
-                .disabled(vm.areCrendentailsValid)
-
+            NavigationLink("\(.localized.next)") {
+                SignUpFinalisationView(vm: vm)
+                    .custom(title: .localized.next)
+            }
+            .buttonStyle(.secondary)
+    
             Spacer()
             
-            Checkbox(title: "Register as a scrum master", isSelected: $vm.isScrumMaster)
+            Checkbox(title: .localized.registerAsAScrumMaster, isSelected: $vm.credentials.isScrumMaster)
                 .padding()
         }
-        .navigationDestination(isPresented: $isPresented) {
-            SignUpFinalisationView(vm: vm)
-                .custom(title: "Back")
-        }
-        .onAppear {
-            focusedField = .fistName
-        }
+        .bind($vm.focus, to: $focus)
     }
 }
 
@@ -60,4 +51,3 @@ struct SignUpView_Previews: PreviewProvider {
         SignUpView()
     }
 }
-

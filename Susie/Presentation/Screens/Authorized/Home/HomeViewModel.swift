@@ -10,16 +10,34 @@ import Factory
 
 @MainActor
 class HomeViewModel: ObservableObject {
-    private(set) var user: User?
+    let user: User
+    let project: Project
     
-    private var client: Client
-    private var project: ProjectDTO
+    let issueInteractor: any IssueInteractor
     
+    @Published var issues: Loadable<[IssueGeneralDTO]>
     
-    init(project: ProjectDTO, container: Container = Container.shared) {
-        self.client = container.client()
-        self.user = client.user
+    func onAppear() async {
+        do {
+            self.issues = .loading
+            let issues = try await issueInteractor.fetchIssuesAssignedToSignedUser()
+            print(issues)
+            self.issues = .loaded(issues)
+        } catch {
+            self.issues = .failed(error)
+        }
+    }
+    
+    init(
+        container: Container = Container.shared,
+        project: Project,
+        user: User,
+        issues: Loadable<[IssueGeneralDTO]> = .idle
+    ) {
+        self.issueInteractor = container.issueInteractor.resolve()
+        
         self.project = project
+        self.user = user
+        self.issues = issues
     }
 }
-

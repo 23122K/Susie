@@ -9,10 +9,15 @@ import Foundation
 
 enum HTTPMethod: String {
     case get = "GET"
-    case put = "PUT"
+    case head = "HEAD"
     case post = "POST"
-    case patch = "PATCH"
+    case put = "PUT"
     case delete = "DELETE"
+    case connect = "CONNECT"
+    case options = "OPTIONS"
+    case patch = "PATCH"
+    case query = "QUERY"
+    case trace = "TRACE"
 }
 
 enum Endpoints {
@@ -89,10 +94,10 @@ enum Endpoints {
         case create(issue: IssueDTO)
         case update(issue: IssueDTO)
         case delete(issue: IssueGeneralDTO)
-        case fetch(project: any ProjectEntity)
+        case fetch(project: Project)
         case details(issue: IssueGeneralDTO)
-        case backlog(project: any ProjectEntity)
-        case history(project: any ProjectEntity)
+        case backlog(project: Project)
+        case history(project: Project)
         case assignTo(issue: IssueDTO)
         case unassignFrom(issue: IssueDTO)
         case assignedTo(sprint: Sprint)
@@ -177,9 +182,9 @@ enum Endpoints {
         case assign(issue: IssueGeneralDTO, to: Sprint)
         case unassign(issue: IssueGeneralDTO, from: Sprint)
         case start(sprint: Sprint)
-        case stop(project: any ProjectEntity)
-        case ongoing(project: any ProjectEntity)
-        case unbegun(project: any ProjectEntity)
+        case stop(project: Project)
+        case ongoing(project: Project)
+        case unbegun(project: Project)
         
         var schema: String { "http" }
         var host: String { "127.0.0.1" }
@@ -354,7 +359,63 @@ enum Endpoints {
                 return nil
             }
         }
+    }
+    
+    internal enum CommitmentRuleEndpoint: Endpoint {
+        case create(rule: Rule, project: Project)
+        case update(rule: Rule)
+        case fetch(project: Project)
+        case delete(rule: Rule, project: Project)
         
+        var schema: String { "http" }
+        var host: String { "127.0.0.1" }
+        var port: Int { 8081 }
+        var version: String { "/api" }
         
+        var headers: [String: String] {
+            [
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            ]
+        }
+        
+        var path: String {
+            switch self {
+            case .create(_, let project):
+                "commitment/dod/project/\(project.id)/rule"
+            case .update(let rule):
+                "commitment/dod/rule/\(rule.id)"
+            case .fetch(let project):
+                "commitment/dod/project/\(project.id)"
+            case .delete(let rule, let project):
+                "commitment/dod/project/\(project.id)/rule/\(rule.id)"
+            }
+        }
+        
+        var method: HTTPMethod {
+            switch self {
+            case .create:
+                return .post
+            case .update:
+                return .patch
+            case .fetch:
+                return .get
+            case .delete:
+                return .delete
+            }
+        }
+        
+        var queries: [String : String]? {
+            switch self {
+            case let .create(rule, _):
+                return ["rule": rule.definition]
+            case let .update(rule):
+                return ["rule": rule.definition]
+            default:
+                return nil
+            }
+        }
+        
+        var body: Data? { return nil }
     }
 }

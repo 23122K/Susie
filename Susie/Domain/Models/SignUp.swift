@@ -6,19 +6,15 @@
 //
 
 struct SignUpRequest: Codable {
-    let email: String
-    let password: String
-    let firstName: String
-    let lastName: String
-    let isScrumMaster: Bool
-    
-    init(firstName: String, lastName: String, email: String, password: String, isScrumMaster: Bool = false) {
-        self.firstName = firstName
-        self.lastName = lastName
-        self.email = email
-        self.password = password
-        self.isScrumMaster = isScrumMaster
-    }
+    var email: String
+    var password: String
+    var firstName: String
+    var lastName: String
+    var isScrumMaster: Bool
+}
+
+extension SignUpRequest {
+    init() { self.init(email: .default, password: .default, firstName: .default, lastName: .default, isScrumMaster: .deafult) }
 }
 
 struct SignUpResponse: Codable {

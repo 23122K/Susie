@@ -18,15 +18,13 @@ struct IssueDetailsView: View {
             ScrollView {
                 AsyncContentView(state: $vm.issueDetails, { issue in
                     IssueDetailedFormView(issue: issue)
-                }, placeholder: EmptyView(), onAppear: {
-                    vm.fetch()
-                })
+                }, placeholder: EmptyView())
                 
                 AsyncContentView(state: $vm.issueDetails, { issue in
                     ScrollView {
                         VStack(alignment: .leading) {
                             HStack {
-                                Text("Comments")
+                                Text(.localized.comments)
                                     .foregroundStyle(Color.gray)
                                     .multilineTextAlignment(.leading)
                                 Text(issue.comments.count.description)
@@ -47,9 +45,9 @@ struct IssueDetailsView: View {
                                 SwipeContent({
                                     CommentRowView(comment: comment)
                                 }, onDelete: {
-                                    vm.delete(comment: comment)
+                                    vm.deleteCommentButtonTapped(comment: comment)
                                 }, onEdit: {
-                                    vm.comment.body = comment.body
+                                    vm.editCommentButtonTapped(comment: comment)
                                 })
                             }
                         }
@@ -58,23 +56,24 @@ struct IssueDetailsView: View {
                 })
                 
             }
-            .refreshable { vm.fetch() }
+            .onAppear { vm.onAppear() }
+            .refreshable { vm.onAppear() }
             .scrollIndicators(.hidden)
             .toolbar{
                 ToolbarItem(placement: .topBarLeading, content: {
-                    Button("Close") {
+                    Button("\(.localized.dissmis)") {
                         dismiss()
                     }
                 })
                 
                 ToolbarItem(placement: .keyboard) {
                     CommentTextInputView(text: $vm.comment.body, onSubmit: {
-                        vm.post()
+                        vm.postCommentButtonTapped()
                     })
                 }
                 
                 ToolbarItem(placement: .bottomBar) {
-                    TextField("Add comment...", text: $vm.comment.body)
+                    TextField("\(.localized.addComment)", text: $vm.comment.body)
                         .textFieldStyle(.susieSecondaryTextField)
                 }
             }

@@ -10,58 +10,51 @@ import Foundation
 
 @MainActor
 class IssueDetailedFormViewModel: ObservableObject {
-    private var client: Client
-    private var status: IssueStatus
+    var status: IssueStatus
     
+    let issueInteractor: any IssueInteractor
     
-    @Published var error: NetworkError?
+    @Published var issue: Issue { didSet { changeStatusActionInitated() } }
+    @Published var destination: Destination?
     
-    @Published var issue: Issue {
-        didSet { changeStatus() }
-    }
-    
-    private func changeStatus() {
-        guard issue.status != status else { return }
+    enum Destination: Identifiable, Hashable {
+        var id: Self { self }
         
-        Task {
-            do {
-                try await client.status(of: issue.toDTO(), to: issue.status)
-            } catch { print(error) }
-        }
+        case priority
+        case type
+        case status
     }
     
-    func save() {
-        Task {
-            do {
-                let _  = try await client.update(issue: issue.toDTO())
-            } catch { print(error) }
-        }
+    private func changeStatusActionInitated() {
+        guard issue.status != status else { return }
+        Task { try await issueInteractor.updateIssueStatus(issue: issue.toDTO(), new: issue.status) }
     }
     
-    
-    func assign() {
-        Task {
-            do {
-                try await client.assign(to: issue.toDTO())
-            } catch {
-                print(error)
-            }
-        }
+    func updateIssueDetailsButtonTapped() {
+        Task { try await issueInteractor.update(issue.toDTO()) }
     }
     
-    private func unassign() {
-        Task {
-            do {
-                try await client.unassign(from: issue.toDTO())
-            } catch {
-                print(error)
-            }
-        }
+    func assignToIssueButtonTapped() {
+        Task { try await issueInteractor.assignSignedUserToIssue(issue.toDTO()) }
     }
     
-    init(issue: Issue, container: Container = Container.shared) {
-        self.client = container.client()
+    func unassignFromIssueButtonTapped() {
+        Task { try await issueInteractor.unassignSignedUserFromIssue(issue.toDTO()) }
+    }
+    
+    func destinationButtonTapped(for destination: Destination) {
+        self.destination = destination
+    }
+    
+    func dismissDestintationButtonTapped() {
+        self.destination = .none
+    }
+    
+    init(container: Container = Container.shared, issue: Issue, destination: Destination? = nil) {
+        self.issueInteractor = container.issueInteractor.resolve()
+        
         self.status = issue.status
+        self.destination = destination
         _issue = Published(initialValue: issue)
     }
 }

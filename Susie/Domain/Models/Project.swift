@@ -7,11 +7,7 @@
 
 import Foundation
 
-protocol ProjectEntity {
-    var id: Int32 { get set }
-}
-
-class Project: ProjectEntity, Identifiable, Codable {
+struct Project: Identifiable, Codable, Equatable {
     var id: Int32
     var name: String
     var description: String
@@ -19,7 +15,7 @@ class Project: ProjectEntity, Identifiable, Codable {
     var members: Array<User>
     var owner: User
     
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case id = "projectID"
         case name
         case description
@@ -32,5 +28,9 @@ class Project: ProjectEntity, Identifiable, Codable {
 extension Project {
     func toDTO() -> ProjectDTO {
         ProjectDTO(id: self.id, name: self.name, description: self.description, goal: self.goal)
+    }
+    
+    static var mock: Project {
+        Project(id: .default, name: "Mock name", description: "Mock description", goal: "Mock goal", members: [.mock], owner: .mock)
     }
 }

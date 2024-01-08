@@ -9,37 +9,60 @@ import Foundation
 import Factory
 
 class SprintFromViewModel: ObservableObject {
-    private var client: Client
-    private(set) var doesExist: Bool = false
+    let sprintInteractor: any SprintInteractor
+    
+    let doesExist: Bool
     
     @Published var sprint: Sprint
-    @Published var shouldHaveStartDate: Bool = false
-    @Published var startDate: Date = Date()
+    @Published var startDate: Date
+    @Published var shouldHaveStartDate: Bool
+    @Published var dismiss: Bool = false
+    @Published var focus: Field?
     
-    func save() {
-        shouldHaveStartDate ? (sprint.startTime = startDate) : (sprint.startTime = nil)
-        
-        switch doesExist {
-        case true:
-            Task { 
-                try await client.update(sprint: sprint)
-            }
-        case false:
-            Task { try await client.create(sprint: sprint) }
+    enum Field: Hashable {
+        case name
+        case goal
+    }
+    
+    func onSubmitOf(field: Field) {
+        switch field {
+        case .name:
+            self.focus = .goal
+        case .goal:
+            self.focus = .none
         }
     }
     
-    init(sprint: Sprint?, project: ProjectDTO, container: Container = Container.shared) {
-        self.client = container.client()
+    func createSprintRequestSent(){
+        Task { try await sprintInteractor.create(sprint: sprint) }
+    }
+    
+    func updateSprintRequestSent() {
+        Task { try await sprintInteractor.update(sprint: sprint) }
+    }
+    
+    func saveSprintButtonTapped() {
+        shouldHaveStartDate ? (sprint.startTime = startDate) : (sprint.startTime = nil)
+        doesExist ? updateSprintRequestSent() : createSprintRequestSent()
         
-        if let sprint {
+        dismiss.toggle()
+    }
+    
+    init(container: Container = Container.shared, sprint: Sprint?, project: Project, startDate: Date = Date(), focus: Field? = .name) {
+        self.sprintInteractor = container.sprintInteractor.resolve()
+        
+        self.startDate = startDate
+        self.focus = focus
+        
+        switch sprint {
+        case .none:
+            self.doesExist = false
+            self.sprint = Sprint(project: project)
+            self.shouldHaveStartDate = false
+        case let .some(sprint):
             self.doesExist = true
             self.sprint = sprint
-            
-            if sprint.hasStartDate { shouldHaveStartDate = true }
-            
-        } else {
-            self.sprint = Sprint(name: "", projectID: project.id, goal: "")
+            self.shouldHaveStartDate = sprint.hasStartDate
         }
     }
 }

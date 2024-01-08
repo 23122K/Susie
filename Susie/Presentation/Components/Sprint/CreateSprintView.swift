@@ -14,7 +14,7 @@ struct CreateSprintView: View {
             Image(systemName: "plus")
                 .scaleEffect(2)
                 .padding(.bottom, 5)
-            Text("Create sprint")
+            Text(.localized.createSprint)
         }
         .frame(height: 200)
         .fontWeight(.semibold)

@@ -9,34 +9,31 @@ import SwiftUI
 
 struct SignUpFinalisationView: View {
     @ObservedObject var vm: SignUpViewModel
-    @FocusState private var focusedField: FocusedField?
-    
-    private enum FocusedField: Hashable {
-        case password
-        case confirmPassword
-    }
+    @FocusState private var focus: SignUpViewModel.Field?
     
     var body: some View {
         VStack(alignment: .leading){
-            FormTitleView(title: "Create", highlighted: "password")
-            PasswordField(title: "Password", text: $vm.password, focusedField: $focusedField, equals: .password)
-                .onSubmit { focusedField = .confirmPassword }
+//            Text(LocalizedStringResource("Create password").fill(words: ["password"], with: .susieBluePriamry))
+            Text(.localized.createPassword)
+            .font(.title)
+            .bold()
+            
+            PasswordField(title: .localized.password, text: $vm.credentials.password, focusedField: $focus, equals: .password)
+                .onSubmit { vm.onSubmitOf(field: .password) }
             
             Divider()
+            PasswordField(title: .localized.confirmPassword, text: $vm.confirmPassword, focusedField: $focus, equals: .confirmPassword)
+                .onSubmit { vm.onSubmitOf(field: .confirmPassword) }
             
-            PasswordField(title: "Confirm password", text: $vm.confirmPassword, focusedField: $focusedField, equals: .confirmPassword)
-                .onSubmit { if vm.doesPasswordsMatch { vm.signUp() } }
-            
-            Button("Sign up") {
-                vm.signUp()
+            Button("\(.localized.signUp)") {
+                vm.onSignUpButtonTapped()
             }
             .buttonStyle(.secondary)
-            .disabled(!vm.doesPasswordsMatch)
             
             Spacer()
         }
         .padding()
-        .onAppear { focusedField = .password }
+        .bind($vm.focus, to: $focus)
     }
     
 }

@@ -8,19 +8,16 @@
 import SwiftUI
 
 struct BoardsView: View {
-    @StateObject private var boards: BoardsViewModel
-    @State private var isPresented: Bool = false
+    @ObservedObject private var vm: BoardsViewModel
     
     var body: some View {
         NavigationStack{
-            ScreenHeader(user: boards.user, screenTitle: boards.sprint?.name ?? "Boards", action: {
-                isPresented.toggle()
-            }, content: {
+            ScreenHeader(user: vm.user, title: "\(LocalizedStringResource.localized.boards)") {
                 Menu(content: {
                     Button(role: .destructive, action: {
-                        boards.stop()
+                        vm.stopSprintButtonTapped()
                     }, label: {
-                        Text("Stop sprint")
+                        Text(.localized.stopSprint)
                             .foregroundColor(.red)
                         Image(systemName: "pause.fill")
                             .foregroundStyle(.red)
@@ -29,28 +26,25 @@ struct BoardsView: View {
                     Image(systemName: "ellipsis")
                         .scaleEffect(1.1)
                 })
-            })
+            }
             
             GeometryReader { reader in
                 TabView {
                     ForEach(IssueStatus.allCases, id: \.rawValue) { status in
-                        AsyncContentView(state: $boards.issues, { issues in
+                        AsyncContentView(state: $vm.issues, { issues in
                             BoardView(issues: issues, status: status)
                                 .frame(width: reader.size.width, height: reader.size.height)
-                        }, placeholder: BoardPlaceholderView(), onAppear: {
-                            boards.fetch()
-                        })
+                        }, placeholder: BoardPlaceholderView())
                     }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
         }
-        .refreshable { boards.fetch() }
+        .task { vm.fetchIssuesAssignedToActiveSprint() }
+        .refreshable { vm.fetchIssuesAssignedToActiveSprint() }
     }
     
-    init(project: ProjectDTO) {
-        _boards = StateObject(wrappedValue: BoardsViewModel(project: project))
-    }
+    init(project: Project, user: User) { self._vm = ObservedObject(initialValue: BoardsViewModel(project: project, user: user)) }
     
     
 }
