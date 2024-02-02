@@ -9,37 +9,32 @@ Moreover, we want to provide tools for efficient execution of scrum events – P
 
 # Susie interface
 <p float="left" align="center">
-  <img src="https://i.imgur.com/8dYbIuA.png" width="200">
-  <img src="https://i.imgur.com/eZVP4lt.png" width="200">
-  <img src="https://i.imgur.com/8uknZ5v.png" width="200">
-  <img src="https://i.imgur.com/PY1TjJL.png" width="200">
+  <img src="https://i.imgur.com/J6Uu9em.png" width="200">
+  <img src="https://i.imgur.com/IwKaVqo.png" width="200">
+  <img src="https://i.imgur.com/TDVP3v1.png" width="200">
+  <img src="https://i.imgur.com/xf8JSpA.png" width="200">
 </p>
 <p float="left" align="center">
-  <img src="https://i.imgur.com/WgACoy9.png" width="200">
-  <img src="https://i.imgur.com/EUgMNvt.png" width="200">
-  <img src="https://i.imgur.com/WeFDqS0.png" width="200">
+  <img src="https://i.imgur.com/hPiiGRq.png" width="200">
+  <img src="https://i.imgur.com/yXqYf0y.png" width="200">
+  <img src="https://i.imgur.com/37sUSun.png" width="200">
+  <img src="https://i.imgur.com/6kH2Rb7.png" width="200">
 </p>
-
-## Roadmap
-- [ ] Agile Boards
-    - [x] Kanban boards
-    - [x] Issue overview 
-    - [ ] Comments regarding an issue
-- [ ] Dashboard
-    - [ ] Cumulative flow diagram
-    - [ ] Burndown char
-    - [ ] Scrum Overview  
-- [ ] Backlog
-    - [ ] Product Backlog
-    - [ ] Sprint Backlogs
-- [ ] Events
-    - [ ] Daily scrum
-    - [ ] Sprint review
-    - [ ] Sprint retrospecitve
-- [x] Authentication
-    - [x] Sign in
-    - [x] Sign up (Developer, Scrum Master, Product Owner) 
-- [x] Fetching resources assigned to the team/user 
-- [ ] Tests
-    - [ ] Unit tests
-    - [ ] UI tests
+<p float="left" align="center">
+  <img src="https://i.imgur.com/RtoJW3r.png" width="200">
+  <img src="https://i.imgur.com/uzlwMPt.png" width="200">
+  <img src="https://i.imgur.com/8RHBXY9.png" width="200">
+  <img src="https://i.imgur.com/RDrqJzQ.png" width="200">
+</p>
+<p float="left" align="center">
+  <img src="https://i.imgur.com/Aiv4DGB.png" width="200">
+  <img src="https://i.imgur.com/5nwrJ7M.png" width="200">
+  <img src="https://i.imgur.com/QzSAYq8.png" width="200">
+  <img src="https://i.imgur.com/rqaBAOF.png" width="200">
+</p>
+<p float="left" align="center">
+  <img src="https://i.imgur.com/VK3XeLO.png" width="200">
+  <img src="https://i.imgur.com/d3PKoVU.png" width="200">
+  <img src="https://i.imgur.com/AryA5JU.png" width="200">
+  <img src="https://i.imgur.com/4K4DJOd.png" width="200">
+</p>
